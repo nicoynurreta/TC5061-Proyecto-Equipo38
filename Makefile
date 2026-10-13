@@ -61,10 +61,21 @@ create_environment:
 #################################################################################
 
 
-## Make dataset
+## Ingesta de los datos de MiBici
 .PHONY: data
 data: requirements
-	$(PYTHON_INTERPRETER) mibici/dataset.py
+	$(PYTHON_INTERPRETER) -m mibici.dataset
+
+
+## Experimento base: baseline y modelo candidato de cada pregunta
+.PHONY: train
+train:
+	$(PYTHON_INTERPRETER) -m mibici.modeling.train --pregunta p1 --modelo naive7 --nombre_corrida p1_baseline_naive7
+	$(PYTHON_INTERPRETER) -m mibici.modeling.train --pregunta p1 --modelo hgb --nombre_corrida p1_hgb
+	$(PYTHON_INTERPRETER) -m mibici.modeling.train --pregunta p2 --modelo dummy --nombre_corrida p2_baseline_dummy
+	$(PYTHON_INTERPRETER) -m mibici.modeling.train --pregunta p2 --modelo regresion_logistica --nombre_corrida p2_regresion_logistica
+	$(PYTHON_INTERPRETER) -m mibici.modeling.train --pregunta p3 --modelo kmeans --k 4 --nombre_corrida p3_kmeans_k4
+	$(PYTHON_INTERPRETER) -m mibici.modeling.train --pregunta p3 --modelo kmeans --seleccionar_k --nombre_corrida p3_kmeans_silueta
 
 
 #################################################################################

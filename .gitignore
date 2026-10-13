@@ -1,5 +1,24 @@
-# Data
-/data/
+# Datos de MiBici: solo el manifiesto se versiona
+data/raw/*
+data/interim/*
+data/processed/*
+data/external/*
+!data/*/.gitkeep
+*.csv
+*.parquet
+
+# MLflow
+mlruns/
+mlartifacts/
+mlflow.db
+mlflow.db-journal
+
+# Modelos serializados
+models/*
+!models/.gitkeep
+*.pkl
+*.joblib
+*.skops
 
 # Mac OS-specific storage files
 .DS_Store
