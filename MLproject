@@ -1,0 +1,29 @@
+name: mibici-equipo38
+
+python_env: python_env.yaml
+
+entry_points:
+  ingesta:
+    command: "python -m mibici.dataset"
+
+  p1:
+    parameters:
+      modelo: {type: string, default: hgb}
+      nombre_corrida: {type: string, default: p1_hgb}
+    command: "python -m mibici.modeling.train --pregunta p1 --modelo {modelo} --nombre_corrida {nombre_corrida}"
+
+  p2:
+    parameters:
+      modelo: {type: string, default: regresion_logistica}
+      nombre_corrida: {type: string, default: p2_regresion_logistica}
+    command: "python -m mibici.modeling.train --pregunta p2 --modelo {modelo} --nombre_corrida {nombre_corrida}"
+
+  p3:
+    parameters:
+      modelo: {type: string, default: kmeans}
+      k: {type: int, default: 4}
+      nombre_corrida: {type: string, default: p3_kmeans_k4}
+    command: "python -m mibici.modeling.train --pregunta p3 --modelo {modelo} --k {k} --nombre_corrida {nombre_corrida}"
+
+  main:
+    command: "python -m mibici.modeling.train --pregunta p1 --nombre_corrida p1_hgb"
