@@ -123,6 +123,22 @@ Cada corrida registra:
 - Etiquetas: `equipo`, `pregunta`, `commit_git` (el commit con que se ejecutó) y `rama`.
 - Artefactos: la gráfica de real contra predicho en P1, la matriz de confusión y la curva precisión-recall en P2, el mapa de grupos y los perfiles medios por grupo en P3, `metricas.json` y el manifiesto de datos; en los modelos de scikit-learn, el modelo con su firma.
 
+### Resultados de la línea base
+
+Corridas con `version_datos` `7aa5e436d887`, semilla 42 y la partición por defecto (entrenamiento del 1 de enero al 30 de septiembre, validación octubre, prueba noviembre y diciembre de 2025). P1 usa 95,035 registros estación-día de entrenamiento, 11,379 de validación y 22,399 de prueba; P2 usa 2,340,156, 273,230 y 536,089 registros estación-hora (1.81 % de positivos en entrenamiento con el umbral de 0.5); P3 agrupa 369 estaciones con 98 variables cada una.
+
+| Corrida | Modelo | Métricas en prueba | Artefactos |
+|---|---|---|---|
+| `p1_baseline_naive7` | Valor de hace siete días | `test_mae` 7.28, `test_rmse` 12.67 | `real_vs_predicho.png` |
+| `p1_hgb` | `HistGradientBoostingRegressor` (200 árboles, tasa 0.1) | `test_mae` 6.05, `test_rmse` 10.62 | `real_vs_predicho.png` |
+| `p2_baseline_dummy` | `DummyClassifier` estratificado | `test_recall` 0.017, `test_precision` 0.012, `test_f1` 0.014, `test_pr_auc` 0.013 | `matriz_confusion.png`, `curva_precision_recall.png` |
+| `p2_baseline_regla_semana` | Riesgo de la misma hora de la semana anterior | `test_recall` 0.320, `test_precision` 0.287, `test_f1` 0.303, `test_pr_auc` 0.101 | `matriz_confusion.png`, `curva_precision_recall.png` |
+| `p2_regresion_logistica` | Regresión logística balanceada (C 1.0) | `test_recall` 0.839, `test_precision` 0.058, `test_f1` 0.108, `test_pr_auc` 0.207 | `matriz_confusion.png`, `curva_precision_recall.png` |
+| `p3_kmeans_k4` | `KMeans`, k = 4 | `train_silhouette` 0.084, `train_davies_bouldin` 2.34 | `mapa_grupos.png`, `perfiles_grupos.png`, `grupos_estaciones.csv` |
+| `p3_kmeans_silueta` | `KMeans`, k elegido por silueta entre 3 y 8 (k = 3) | `train_silhouette` 0.095, `train_davies_bouldin` 2.41 | `mapa_grupos.png`, `perfiles_grupos.png`, `grupos_estaciones.csv` |
+
+Todas las corridas registran además `metricas.json` y `manifiesto.json`; las de scikit-learn guardan el modelo con su firma. En P1 el modelo candidato reduce el error absoluto medio de 7.28 a 6.05 viajes por estación y día respecto del baseline estacional. En P2 la regresión logística balanceada detecta 84 % de las horas en riesgo (1,080 falsos negativos de 6,718 positivos en prueba) a costa de 92,194 falsos positivos, mientras que la regla de la semana anterior equilibra ambos errores (recall 0.32, precisión 0.29); el umbral de decisión y el costo relativo de cada error se calibrarán en las siguientes entregas. En P3 la silueta es baja en todas las k (0.03 a 0.10), como es habitual con perfiles horarios de 96 dimensiones, y los grupos siguen siendo interpretables: estaciones de salida matutina en la periferia, estaciones de llegada vespertina en el centro, y un grupo pequeño de uso de fin de semana.
+
 ### Con MLflow Projects
 
 `MLproject` declara los puntos de entrada `ingesta`, `p1`, `p2` y `p3`, para que cada etapa se pueda correr con un solo comando desde el entorno activado:
