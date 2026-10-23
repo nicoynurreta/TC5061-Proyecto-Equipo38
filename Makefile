@@ -5,6 +5,8 @@
 PROJECT_NAME = TC5061-Proyecto-Equipo38
 PYTHON_VERSION = 3.14
 PYTHON_INTERPRETER = python
+EXPERIMENTO = mibici-equipo38
+MLFLOW_RUN = $(PYTHON_INTERPRETER) -m mlflow run . --experiment-name $(EXPERIMENTO) --env-manager local
 
 #################################################################################
 # COMMANDS                                                                      #
@@ -16,7 +18,7 @@ PYTHON_INTERPRETER = python
 requirements:
 	$(PYTHON_INTERPRETER) -m pip install -U pip
 	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
-	
+
 
 
 
@@ -52,7 +54,7 @@ test:
 create_environment:
 	@bash -c "if [ ! -z `which virtualenvwrapper.sh` ]; then source `which virtualenvwrapper.sh`; mkvirtualenv $(PROJECT_NAME) --python=$(PYTHON_INTERPRETER); else mkvirtualenv.bat $(PROJECT_NAME) --python=$(PYTHON_INTERPRETER); fi"
 	@echo ">>> New virtualenv created. Activate with:\nworkon $(PROJECT_NAME)"
-	
+
 
 
 
@@ -61,22 +63,60 @@ create_environment:
 #################################################################################
 
 
-## Ingesta de los datos de MiBici
-.PHONY: data
-data: requirements
-	$(PYTHON_INTERPRETER) -m mibici.dataset
+## Servidor de tracking local con base de datos (requiere MLFLOW_TRACKING_URI=http://127.0.0.1:5000 en los demás comandos)
+.PHONY: server
+server:
+	$(PYTHON_INTERPRETER) -m mlflow server --backend-store-uri sqlite:///mlflow.db --port 5000
 
 
-## Experimento base: baseline y modelo candidato de cada pregunta
-.PHONY: train
-train:
-	$(PYTHON_INTERPRETER) -m mibici.modeling.train --pregunta p1 --modelo naive7 --nombre_corrida p1_baseline_naive7
-	$(PYTHON_INTERPRETER) -m mibici.modeling.train --pregunta p1 --modelo hgb --nombre_corrida p1_hgb
-	$(PYTHON_INTERPRETER) -m mibici.modeling.train --pregunta p2 --modelo dummy --nombre_corrida p2_baseline_dummy
-	$(PYTHON_INTERPRETER) -m mibici.modeling.train --pregunta p2 --modelo regla_semana --nombre_corrida p2_baseline_regla_semana
-	$(PYTHON_INTERPRETER) -m mibici.modeling.train --pregunta p2 --modelo regresion_logistica --nombre_corrida p2_regresion_logistica
-	$(PYTHON_INTERPRETER) -m mibici.modeling.train --pregunta p3 --modelo kmeans --k 4 --nombre_corrida p3_kmeans_k4
-	$(PYTHON_INTERPRETER) -m mibici.modeling.train --pregunta p3 --modelo kmeans --seleccionar_k --nombre_corrida p3_kmeans_silueta
+## Ingesta de los datos de MiBici con el punto de entrada ingest del MLproject
+.PHONY: ingest
+ingest:
+	$(MLFLOW_RUN) -e ingest
+
+
+## Baseline de cada pregunta, relanzado desde el MLproject
+.PHONY: baselines
+baselines:
+	$(MLFLOW_RUN) -e train -P question=p1 -P model=naive7 -P run_name=p1_baseline_naive7
+	$(MLFLOW_RUN) -e train -P question=p2 -P model=dummy -P run_name=p2_baseline_dummy
+	$(MLFLOW_RUN) -e train -P question=p2 -P model=regla_semana -P run_name=p2_baseline_regla_semana
+	$(MLFLOW_RUN) -e train -P question=p3 -P model=kmeans -P k=4 -P run_name=p3_kmeans_k4
+
+
+## Corridas candidatas de cada pregunta
+.PHONY: candidatas
+candidatas:
+	$(MLFLOW_RUN) -e train -P question=p1 -P model=hgb -P run_name=p1_hgb
+	$(MLFLOW_RUN) -e train -P question=p1 -P model=bosque -P run_name=p1_bosque
+	$(MLFLOW_RUN) -e train -P question=p1 -P model=ridge -P run_name=p1_ridge
+	$(MLFLOW_RUN) -e train -P question=p2 -P model=regresion_logistica -P run_name=p2_regresion_logistica
+	$(MLFLOW_RUN) -e train -P question=p2 -P model=bosque -P run_name=p2_bosque
+	$(MLFLOW_RUN) -e train -P question=p2 -P model=hgb -P run_name=p2_hgb
+	$(MLFLOW_RUN) -e train -P question=p3 -P model=aglomerativo -P k=4 -P run_name=p3_aglomerativo_k4
+	$(MLFLOW_RUN) -e train -P question=p3 -P model=kmeans_pca -P k=4 -P run_name=p3_kmeans_pca_k4
+
+
+## Búsquedas de hiperparámetros con nested runs (la mejor hija queda como candidata pregunta_modelo_mejor)
+.PHONY: busquedas
+busquedas:
+	$(MLFLOW_RUN) -e search -P question=p1 -P model=hgb -P run_name=p1_busqueda_hgb
+	$(MLFLOW_RUN) -e search -P question=p2 -P model=hgb -P run_name=p2_busqueda_hgb
+	$(MLFLOW_RUN) -e search -P question=p3 -P model=kmeans -P run_name=p3_busqueda_k
+
+
+## Todas las corridas de la entrega en orden
+.PHONY: corridas
+corridas: baselines candidatas busquedas
+
+
+## Registro de los modelos elegidos en el Model Registry (sustituir los identificadores de corrida)
+.PHONY: registry
+registry:
+	$(PYTHON_INTERPRETER) -m mibici.modeling.registry --pregunta p1 --champion RUN_ID_P1 --challenger RUN_ID_P1_SEGUNDO
+	$(PYTHON_INTERPRETER) -m mibici.modeling.registry --pregunta p2 --champion RUN_ID_P2 --challenger RUN_ID_P2_SEGUNDO
+	$(PYTHON_INTERPRETER) -m mibici.modeling.registry --pregunta p3 --champion RUN_ID_P3 --challenger RUN_ID_P3_SEGUNDO
+	$(PYTHON_INTERPRETER) -m mibici.modeling.registry --verificar
 
 
 #################################################################################
