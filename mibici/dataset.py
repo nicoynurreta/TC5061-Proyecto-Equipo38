@@ -165,7 +165,7 @@ def leer_argumentos():
         description="Descarga, limpia y versiona los viajes de MiBici y la nomenclatura de estaciones."
     )
     parser.add_argument("--meses", nargs="+", default=config.MESES, metavar="AAAA-MM",
-                        help="meses a ingerir (por defecto el rango de config.py, %s a %s)" % (config.MESES[0], config.MESES[-1]))
+                        help="meses a ingerir, separados por espacios o por comas (por defecto el rango de config.py, %s a %s)" % (config.MESES[0], config.MESES[-1]))
     parser.add_argument("--forzar", action="store_true",
                         help="vuelve a descargar los archivos que ya estén en data/raw")
     return parser.parse_args()
@@ -173,16 +173,17 @@ def leer_argumentos():
 
 def main():
     args = leer_argumentos()
+    meses = [mes.strip() for parte in args.meses for mes in parte.strip().strip("\"'").split(",") if mes.strip()] or config.MESES
     inicio = time.time()
     enlaces = obtener_enlaces()
-    faltan = [mes for mes in args.meses if mes not in enlaces]
+    faltan = [mes for mes in meses if mes not in enlaces]
     if faltan:
         raise SystemExit(f"el portal no publica estos meses: {faltan}")
     config.DIR_DATOS_CRUDOS.mkdir(parents=True, exist_ok=True)
     config.DIR_DATOS_PROCESADOS.mkdir(parents=True, exist_ok=True)
 
     crudos, partes, limpieza = [], [], {}
-    for mes in args.meses:
+    for mes in meses:
         url = enlaces[mes]
         ruta = config.DIR_DATOS_CRUDOS / url.rsplit("/", 1)[-1]
         tamano = descargar(url, ruta, args.forzar)
@@ -220,9 +221,9 @@ def main():
         "estaciones_con_viajes": int(pd.concat([viajes["origen_id"], viajes["destino_id"]]).nunique()),
         "viajes_con_estacion_fuera_de_nomenclatura": int((~(viajes["origen_conocido"] & viajes["destino_conocido"])).sum()),
     }
-    manifiesto = escribir_manifiesto(args.meses, crudos, procesados, limpieza, resumen)
+    manifiesto = escribir_manifiesto(meses, crudos, procesados, limpieza, resumen)
 
-    print("Meses:", len(args.meses))
+    print("Meses:", len(meses))
     print("Viajes válidos:", len(viajes))
     print("Estaciones con viajes:", resumen["estaciones_con_viajes"], "de", len(estaciones), "en la nomenclatura")
     print("Descartados:", {clave: valor for clave, valor in limpieza.items() if clave != "registros_crudos"})
