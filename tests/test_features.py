@@ -48,6 +48,26 @@ def test_particion_temporal_no_mezcla_periodos():
     assert len(entrenamiento) + len(validacion) + len(prueba) == len(df)
 
 
+def test_particion_p2_excluye_la_ventana_que_cruza_el_corte():
+    horas = pd.date_range("2025-09-29", "2025-10-02 23:00", freq="h")
+    df = pd.DataFrame({"estacion_id": 2, "hora": horas, "riesgo": 0})
+    entrenamiento, validacion, _ = features.particion_temporal(df, "hora", "2025-09-30", "2025-10-01")
+    recortado = features.sin_ventana_posterior(entrenamiento, "2025-09-30", ventana=2)
+    assert len(entrenamiento) - len(recortado) == 2
+    assert recortado["hora"].max() == pd.Timestamp("2025-09-30 21:00")
+    assert len(features.sin_ventana_posterior(validacion, "2025-10-01", ventana=2)) == 22
+
+
+def test_perfiles_p3_incluyen_estaciones_de_solo_llegada():
+    perfil = features.perfiles_por_estacion(_viajes_de_prueba(), _estaciones_de_prueba(), viajes_minimos=1)
+    assert sorted(perfil["estacion_id"]) == [2, 3]
+    solo_llegada = perfil[perfil["estacion_id"] == 3].iloc[0]
+    salidas = [columna for columna in perfil.columns if columna.startswith("salidas_")]
+    assert solo_llegada[salidas].sum() == 0
+    assert solo_llegada["proporcion_salidas"] == 0
+    assert np.isclose(solo_llegada["log_viajes"], np.log1p(40))
+
+
 def test_perfiles_p3_suman_uno_por_bloque():
     perfil = features.perfiles_por_estacion(_viajes_de_prueba(), _estaciones_de_prueba(), viajes_minimos=1)
     salidas = [columna for columna in perfil.columns if columna.startswith("salidas_")]
