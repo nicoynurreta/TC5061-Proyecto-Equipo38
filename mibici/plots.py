@@ -4,7 +4,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from sklearn.metrics import ConfusionMatrixDisplay, PrecisionRecallDisplay
+from sklearn.metrics import ConfusionMatrixDisplay, PrecisionRecallDisplay, precision_score, recall_score
 
 
 def grafica_real_vs_predicho(fechas, real, predicho, ruta):
@@ -31,6 +31,26 @@ def grafica_real_vs_predicho(fechas, real, predicho, ruta):
     return ruta
 
 
+def grafica_residuales(real, predicho, ruta):
+    """Residuales de P1 en prueba: distribución y residual contra valor predicho."""
+    residual = np.asarray(real, dtype=float) - np.asarray(predicho, dtype=float)
+    figura, ejes = plt.subplots(1, 2, figsize=(12, 4.5))
+    ejes[0].hist(residual, bins=80, color="steelblue", alpha=0.85)
+    ejes[0].axvline(0, color="gray", linewidth=1)
+    ejes[0].set_title(f"Residuales en prueba (media {residual.mean():.2f}, desv. {residual.std():.2f})")
+    ejes[0].set_xlabel("Real menos predicho (viajes)")
+    ejes[0].set_ylabel("Registros estación-día")
+    ejes[1].scatter(predicho, residual, s=6, alpha=0.25)
+    ejes[1].axhline(0, color="gray", linewidth=1)
+    ejes[1].set_title("Residual contra valor predicho")
+    ejes[1].set_xlabel("Predicho (viajes)")
+    ejes[1].set_ylabel("Residual (viajes)")
+    figura.tight_layout()
+    figura.savefig(ruta, dpi=120)
+    plt.close(figura)
+    return ruta
+
+
 def grafica_matriz_confusion(real, predicho, ruta):
     """Matriz de confusión de P2 en el conjunto de prueba."""
     figura, eje = plt.subplots(figsize=(5, 4.5))
@@ -45,12 +65,16 @@ def grafica_matriz_confusion(real, predicho, ruta):
     return ruta
 
 
-def grafica_curva_precision_recall(real, puntuacion, ruta):
-    """Curva precisión-recall de P2 en prueba, con la proporción de positivos como referencia."""
+def grafica_curva_precision_recall(real, puntuacion, ruta, umbral=None):
+    """Curva precisión-recall de P2 en prueba, con la proporción de positivos y el umbral de decisión elegido."""
     figura, eje = plt.subplots(figsize=(5.5, 4.5))
     PrecisionRecallDisplay.from_predictions(real, puntuacion, ax=eje, name="Modelo")
     tasa = float(np.mean(real))
     eje.axhline(tasa, color="gray", linestyle="--", linewidth=1, label=f"Proporción de positivos ({tasa:.3f})")
+    if umbral is not None:
+        prediccion = (np.asarray(puntuacion) >= umbral).astype(int)
+        eje.scatter([recall_score(real, prediccion, zero_division=0)], [precision_score(real, prediccion, zero_division=0)],
+                    color="crimson", zorder=5, label=f"Umbral de decisión {umbral:.2f}")
     eje.set_title("Curva precisión-recall en prueba")
     eje.set_xlabel("Recall")
     eje.set_ylabel("Precisión")
@@ -97,6 +121,22 @@ def grafica_perfiles_grupos(perfil, grupos, ruta):
     ejes[0].set_ylabel("Salidas de la estación (%)")
     ejes[0].legend()
     figura.suptitle("Perfil horario medio de salidas por grupo")
+    figura.tight_layout()
+    figura.savefig(ruta, dpi=120)
+    plt.close(figura)
+    return ruta
+
+
+def grafica_resultados_busqueda(resultados, metrica, ruta, menor_es_mejor=True):
+    """Métrica de validación de cada combinación de una búsqueda de hiperparámetros."""
+    orden = resultados.sort_values(metrica, ascending=menor_es_mejor)
+    figura, eje = plt.subplots(figsize=(8, 0.45 * len(orden) + 1.8))
+    colores = ["crimson" if i == 0 else "steelblue" for i in range(len(orden))]
+    eje.barh(orden["combinacion"], orden[metrica], color=colores)
+    eje.invert_yaxis()
+    eje.set_xlabel(metrica)
+    eje.set_title("Combinaciones de la búsqueda ordenadas por su métrica de validación")
+    eje.grid(axis="x", alpha=0.3)
     figura.tight_layout()
     figura.savefig(ruta, dpi=120)
     plt.close(figura)
