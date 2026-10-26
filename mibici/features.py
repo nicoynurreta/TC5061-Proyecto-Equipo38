@@ -147,7 +147,9 @@ def perfiles_por_estacion(viajes, estaciones, viajes_minimos=config.VIAJES_MINIM
     sobre el total. Los perfiles normalizados dicen cuándo se usa la estación (zona
     habitacional, de trabajo o de ocio) sin que el tamaño domine; el volumen y la
     proporción dicen cuánto y en qué sentido. Entran las estaciones con coordenadas y
-    al menos `viajes_minimos` viajes en el periodo.
+    al menos `viajes_minimos` viajes en el periodo; los dos bloques se alinean sobre la
+    unión de las estaciones con salidas y con llegadas, para que una estación que solo
+    recibe viajes (o que solo los origina) conserve su perfil en lugar de desaparecer.
     """
     def bloque(ids, tiempos, nombre):
         tipo = np.where(tiempos.dt.dayofweek >= 5, "finde", "habil")
@@ -159,10 +161,13 @@ def perfiles_por_estacion(viajes, estaciones, viajes_minimos=config.VIAJES_MINIM
 
     salidas = bloque(viajes["origen_id"], viajes["inicio"], "salidas")
     llegadas = bloque(viajes["destino_id"], viajes["fin"], "llegadas")
+    indice = salidas.index.union(llegadas.index)
+    salidas = salidas.reindex(indice, fill_value=0)
+    llegadas = llegadas.reindex(indice, fill_value=0)
     total_salidas = salidas.sum(axis=1)
-    total_llegadas = llegadas.sum(axis=1).reindex(total_salidas.index, fill_value=0)
-    llegadas = llegadas.reindex(total_salidas.index, fill_value=0)
-    perfil = pd.concat([salidas.div(total_salidas, axis=0), llegadas.div(total_llegadas.replace(0, np.nan), axis=0)], axis=1).fillna(0)
+    total_llegadas = llegadas.sum(axis=1)
+    perfil = pd.concat([salidas.div(total_salidas.replace(0, np.nan), axis=0),
+                        llegadas.div(total_llegadas.replace(0, np.nan), axis=0)], axis=1).fillna(0)
     total = total_salidas + total_llegadas
     perfil["log_viajes"] = np.log1p(total)
     perfil["proporcion_salidas"] = total_salidas / total
@@ -177,12 +182,31 @@ def conjuntos_p1(viajes, estaciones, fin_entrenamiento=config.FIN_ENTRENAMIENTO,
     return particion_temporal(datos, "fecha", fin_entrenamiento, fin_validacion)
 
 
+def sin_ventana_posterior(df, fin, ventana=config.VENTANA_RIESGO_HORAS):
+    """Quita las últimas `ventana` horas de un bloque de P2, cuya etiqueta mira horas del bloque siguiente.
+
+    La etiqueta de la hora t se calcula con las horas t+1 a t+ventana. En las últimas
+    horas de cada bloque esa ventana cruza la fecha de corte, así que esas filas de
+    entrenamiento o de validación quedarían etiquetadas con flujo del periodo siguiente;
+    se descartan para que ningún bloque use información del que viene después.
+    """
+    limite = pd.Timestamp(fin) + pd.Timedelta(days=1) - pd.Timedelta(hours=ventana)
+    return df[pd.to_datetime(df["hora"]) < limite]
+
+
 def conjuntos_p2(viajes, estaciones, umbral=config.UMBRAL_RIESGO, ventana=config.VENTANA_RIESGO_HORAS,
                  fin_entrenamiento=config.FIN_ENTRENAMIENTO, fin_validacion=config.FIN_VALIDACION):
-    """Arma las features y la etiqueta de P2 y las parte en entrenamiento, validación y prueba."""
+    """Arma las features y la etiqueta de P2 y las parte en entrenamiento, validación y prueba.
+
+    Las horas de entrenamiento y de validación cuya ventana objetivo cruza el corte
+    siguiente se excluyen con `sin_ventana_posterior`.
+    """
     etiquetado = etiquetar_riesgo(flujo_por_estacion_y_hora(viajes, estaciones), estaciones, umbral, ventana)
     datos = construir_features_p2(etiquetado)
-    return particion_temporal(datos, "hora", fin_entrenamiento, fin_validacion)
+    entrenamiento, validacion, prueba = particion_temporal(datos, "hora", fin_entrenamiento, fin_validacion)
+    entrenamiento = sin_ventana_posterior(entrenamiento, fin_entrenamiento, ventana)
+    validacion = sin_ventana_posterior(validacion, fin_validacion, ventana)
+    return entrenamiento, validacion, prueba
 
 
 def conjunto_p3(viajes, estaciones, fin_entrenamiento=config.FIN_ENTRENAMIENTO):
