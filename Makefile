@@ -5,6 +5,11 @@
 PROJECT_NAME = TC5061-Proyecto-Equipo38
 PYTHON_VERSION = 3.14
 PYTHON_INTERPRETER = python
+ifeq ($(OS),Windows_NT)
+PYTHON_DEEPCHECKS = .venv-deepchecks/Scripts/python.exe
+else
+PYTHON_DEEPCHECKS = .venv-deepchecks/bin/python
+endif
 EXPERIMENTO = mibici-equipo38
 MLFLOW_RUN = $(PYTHON_INTERPRETER) -m mlflow run . --experiment-name $(EXPERIMENTO) --env-manager local
 
@@ -43,10 +48,10 @@ format:
 
 
 
-## Run tests
+## Pruebas con pytest; no necesitan datos ni el entorno de DeepChecks (la prueba lenta se omite sola si falta data/processed)
 .PHONY: test
 test:
-	python -m pytest tests
+	$(PYTHON_INTERPRETER) -m pytest -q tests
 
 
 ## Set up Python interpreter environment
@@ -117,6 +122,22 @@ registry:
 	$(PYTHON_INTERPRETER) -m mibici.modeling.registry --pregunta p2 --champion RUN_ID_P2 --challenger RUN_ID_P2_SEGUNDO
 	$(PYTHON_INTERPRETER) -m mibici.modeling.registry --pregunta p3 --champion RUN_ID_P3 --challenger RUN_ID_P3_SEGUNDO
 	$(PYTHON_INTERPRETER) -m mibici.modeling.registry --verificar
+
+
+## Chequeos de datos y seguridad: tablas de data/interim, suites de DeepChecks (entorno .venv-deepchecks), bandit, pip-audit y búsqueda de secretos
+.PHONY: chequeos
+chequeos:
+	$(PYTHON_INTERPRETER) -m mibici.validacion --exportar
+	$(PYTHON_DEEPCHECKS) chequeos/validar_datos.py
+	$(PYTHON_INTERPRETER) -m bandit -c pyproject.toml -r mibici -f txt --exit-zero
+	$(PYTHON_INTERPRETER) -m bandit -c pyproject.toml -r mibici -q --severity-level medium
+	$(PYTHON_INTERPRETER) -m pip_audit -r requirements.txt
+	$(PYTHON_INTERPRETER) chequeos/secretos.py
+
+
+## Pruebas y chequeos en un solo comando
+.PHONY: verificar
+verificar: test chequeos
 
 
 #################################################################################
