@@ -232,7 +232,7 @@ def lectura_p2(exportacion, resultado):
     ]
     if etiqueta:
         lineas.append(f"- DeepChecks mide esa deriva de la etiqueta en {etiqueta['Drift score']:.3f} ({etiqueta['Method']}) sobre la muestra: con una clase positiva tan rara la puntuación queda muy por debajo del umbral de 0.15 aunque la caída relativa de la tasa sea grande, "
-                      "por eso la lectura operativa se hace con los conteos completos y no solo con la condición del chequeo.")
+                      "por eso la lectura operativa se hace con los conteos completos y no únicamente con la condición del chequeo.")
     if mayor is not None:
         lineas.append(f"- Las variables de flujo se mueven poco en distribución (la mayor deriva es `{mayor}`, {flujo[mayor]:.3f}), así que el cambio está en la etiqueta más que en las entradas: "
                       "en noviembre y diciembre el mismo patrón de flujo desemboca menos veces en una estación llena o vacía, y un umbral de probabilidad fijado en octubre tiende a sobrealertar.")
