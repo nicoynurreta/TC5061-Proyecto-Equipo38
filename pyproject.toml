@@ -30,3 +30,9 @@ extend-select = ["I"]  # Add import sorting
 known-first-party = ["mibici"]
 force-sort-within-sections = true
 
+[tool.bandit]
+# Se corre con: bandit -c pyproject.toml -r mibici -f txt
+# Sin skips: B403, B404 y B603 siguen en el reporte y se justifican aquí.
+# B403: pickle solo mide el tamaño del modelo con pickle.dumps; nunca se deserializa nada con pickle.load.
+# B404 y B603: subprocess corre git con una lista fija de argumentos y sin shell para leer el commit y la rama.
+exclude_dirs = ["tests", "venv", ".venv", ".venv-deepchecks", "mlruns", "mlartifacts"]

@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import tempfile
 import time
@@ -98,9 +99,12 @@ def limpiar(texto):
 
 
 def git(*argumentos):
-    """Ejecuta un comando de git en la raíz del repositorio; devuelve 'desconocido' si no hay repositorio."""
+    """Ejecuta un comando de git en la raíz del repositorio; devuelve 'desconocido' si no hay git o no hay repositorio."""
+    ejecutable = shutil.which("git")
+    if ejecutable is None:
+        return "desconocido"
     try:
-        resultado = subprocess.run(["git", *argumentos], capture_output=True, text=True, check=True, cwd=config.RAIZ_PROYECTO)
+        resultado = subprocess.run([ejecutable, *argumentos], capture_output=True, text=True, check=True, cwd=config.RAIZ_PROYECTO)
         return resultado.stdout.strip()
     except (OSError, subprocess.CalledProcessError):
         return "desconocido"

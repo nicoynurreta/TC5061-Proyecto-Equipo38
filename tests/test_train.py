@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 from sklearn.cluster import KMeans
 
 from mibici import config
@@ -52,3 +53,29 @@ def test_inercia_coincide_con_kmeans():
     X = np.vstack([rng.normal(0, 1, (30, 4)), rng.normal(6, 1, (30, 4))])
     kmeans = KMeans(n_clusters=2, n_init=5, random_state=0).fit(X)
     assert np.isclose(train.inercia(X, kmeans.labels_), kmeans.inertia_)
+
+
+def test_elegir_umbral_sin_positivos_no_emite_alertas():
+    probabilidad = np.array([0.2, 0.5, 0.7, 0.1, 0.3])
+    umbral, costos = train.elegir_umbral(np.zeros(5), probabilidad, costo_falso_negativo=5)
+    assert umbral > probabilidad.max()
+    assert len(costos) == 99 and min(costos) == 0
+    assert costos[0] == 5 and costos[-1] == 0
+
+
+def test_elegir_umbral_con_probabilidades_constantes():
+    real = np.array([1, 0, 0, 1, 0])
+    umbral, costos = train.elegir_umbral(real, np.full(5, 0.5), costo_falso_negativo=5)
+    assert sorted(set(costos)) == [3, 10]
+    assert costos[49] == 3 and costos[50] == 10
+    assert umbral <= 0.5
+
+
+def test_valor_hiperparametro_rechaza_texto_invalido():
+    with pytest.raises(ValueError):
+        train.valor_hiperparametro("abc", 0.1)
+    with pytest.raises(ValueError):
+        train.valor_hiperparametro("1.5", 200)
+    with pytest.raises(ValueError):
+        train.valor_hiperparametro("abc", None)
+    assert train.valor_hiperparametro(" None ", 4) is None

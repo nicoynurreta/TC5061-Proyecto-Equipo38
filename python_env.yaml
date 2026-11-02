@@ -2,7 +2,7 @@ python: "3.14.2"
 build_dependencies:
   - pip
 dependencies:
-  - mlflow==3.16.1
+  - mlflow==3.17.2
   - scikit-learn==1.9.1
   - pandas==3.0.6
   - pyarrow==25.0.1
