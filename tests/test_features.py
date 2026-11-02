@@ -75,3 +75,68 @@ def test_perfiles_p3_suman_uno_por_bloque():
     assert len(salidas) == 48 and len(llegadas) == 48
     assert np.allclose(perfil.loc[perfil["estacion_id"] == 2, salidas].sum(axis=1), 1)
     assert np.allclose(perfil.loc[perfil["estacion_id"] == 3, llegadas].sum(axis=1), 1)
+
+
+def test_particion_temporal_en_la_fecha_exacta_del_corte():
+    horas = pd.to_datetime(["2025-09-30 23:00:00", "2025-10-01 00:00:00", "2025-10-31 23:00:00", "2025-11-01 00:00:00"])
+    entrenamiento, validacion, prueba = features.particion_temporal(pd.DataFrame({"hora": horas}), "hora", "2025-09-30", "2025-10-31")
+    assert entrenamiento["hora"].tolist() == [pd.Timestamp("2025-09-30 23:00:00")]
+    assert validacion["hora"].tolist() == [pd.Timestamp("2025-10-01 00:00:00"), pd.Timestamp("2025-10-31 23:00:00")]
+    assert prueba["hora"].tolist() == [pd.Timestamp("2025-11-01 00:00:00")]
+
+
+def test_particion_temporal_con_periodo_vacio():
+    df = pd.DataFrame({"fecha": pd.date_range("2025-01-01", "2025-06-30", freq="D"), "salidas": 1})
+    entrenamiento, validacion, prueba = features.particion_temporal(df, "fecha", "2025-09-30", "2025-10-31")
+    assert len(entrenamiento) == len(df)
+    assert validacion.empty and prueba.empty
+    assert list(prueba.columns) == ["fecha", "salidas"]
+    assert all(parte.empty for parte in features.particion_temporal(df.iloc[:0], "fecha", "2025-09-30", "2025-10-31"))
+
+
+def test_sin_ventana_posterior_con_ventana_que_cubre_todo_el_bloque():
+    df = pd.DataFrame({"estacion_id": 2, "hora": pd.date_range("2025-09-30 00:00", periods=24, freq="h"), "riesgo": 0})
+    assert len(features.sin_ventana_posterior(df, "2025-09-30", ventana=24)) == 0
+    assert len(features.sin_ventana_posterior(df, "2025-09-30", ventana=0)) == 24
+    recortado = features.sin_ventana_posterior(df, "2025-09-30", ventana=23)
+    assert recortado["hora"].tolist() == [pd.Timestamp("2025-09-30 00:00")]
+
+
+def test_etiquetar_riesgo_descarta_las_horas_cuya_ventana_cruza_el_final():
+    horas = pd.date_range("2025-03-01", periods=6, freq="h")
+    horario = pd.concat([
+        pd.DataFrame({"estacion_id": 2, "hora": horas, "salidas": 0, "llegadas": 6}),
+        pd.DataFrame({"estacion_id": 3, "hora": horas[:4], "salidas": 6, "llegadas": 0}),
+    ], ignore_index=True)
+    etiquetado = features.etiquetar_riesgo(horario, _estaciones_de_prueba(), umbral=0.5, ventana=2)
+    assert etiquetado.groupby("estacion_id")["hora"].max().tolist() == [horas[3], horas[1]]
+    assert etiquetado["riesgo"].tolist() == [1, 1, 1, 1, 1, 1]
+    vacio = features.etiquetar_riesgo(horario, _estaciones_de_prueba(), umbral=0.5, ventana=6)
+    assert vacio.empty and "riesgo" in vacio.columns
+
+
+def test_perfiles_p3_excluyen_estaciones_por_debajo_de_viajes_minimos():
+    extra = pd.DataFrame({
+        "viaje_id": range(100, 109),
+        "inicio": pd.date_range("2025-03-01 09:00", periods=9, freq="D"),
+        "fin": pd.date_range("2025-03-01 09:10", periods=9, freq="D"),
+        "origen_id": [4] * 5 + [5] * 4,
+        "destino_id": [5] * 5 + [4] * 4,
+        "duracion_min": 10.0,
+    })
+    viajes = pd.concat([_viajes_de_prueba(), extra], ignore_index=True)
+    nuevas = pd.DataFrame({"estacion_id": [4, 5], "nombre": ["c", "d"], "latitud": [20.65, 20.66],
+                           "longitud": [-103.35, -103.36], "capacidad": [10, 10]})
+    estaciones = pd.concat([_estaciones_de_prueba(), nuevas], ignore_index=True)
+    assert sorted(features.perfiles_por_estacion(viajes, estaciones, viajes_minimos=9)["estacion_id"]) == [2, 3, 4, 5]
+    assert sorted(features.perfiles_por_estacion(viajes, estaciones, viajes_minimos=10)["estacion_id"]) == [2, 3]
+
+
+def test_perfiles_p3_sin_salidas_o_sin_llegadas_no_dejan_valores_indefinidos():
+    perfil = features.perfiles_por_estacion(_viajes_de_prueba(), _estaciones_de_prueba(), viajes_minimos=1)
+    numericas = perfil.drop(columns=["estacion_id", "nombre", "latitud", "longitud"])
+    assert not numericas.isna().any().any()
+    assert np.isfinite(numericas.to_numpy()).all()
+    solo_salida = perfil[perfil["estacion_id"] == 2].iloc[0]
+    llegadas = [columna for columna in perfil.columns if columna.startswith("llegadas_")]
+    assert solo_salida[llegadas].sum() == 0 and solo_salida["proporcion_salidas"] == 1
