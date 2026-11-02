@@ -1,0 +1,6 @@
+2026-10-30 08:11:03 (UTC-6), commit 3307f9a de main con mlflow==3.17.2 en requirements.txt y python_env.yaml: python -m pip_audit -r requirements.txt
+
+No known vulnerabilities found
+Name   Skip Reason
+------ ---------------------------------------------------------------------
+mibici Dependency not found on PyPI and could not be audited: mibici (0.0.1)

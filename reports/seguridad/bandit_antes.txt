@@ -1,0 +1,63 @@
+2026-10-29 13:41:59 (UTC-6), commit 3307f9a de main: python -m bandit -r mibici -f txt
+
+Run started:2026-10-29 19:41:59.835984+00:00
+
+Test results:
+>> Issue: [B403:blacklist] Consider possible security implications associated with pickle module.
+   Severity: Low   Confidence: High
+   CWE: CWE-502 (https://cwe.mitre.org/data/definitions/502.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b403-import-pickle
+   Location: mibici\modeling\artefactos.py:2:0
+1	import json
+2	import pickle
+3	import shutil
+
+--------------------------------------------------
+>> Issue: [B404:blacklist] Consider possible security implications associated with the subprocess module.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b404-import-subprocess
+   Location: mibici\modeling\train.py:4:0
+3	import os
+4	import subprocess
+5	import tempfile
+
+--------------------------------------------------
+>> Issue: [B607:start_process_with_partial_path] Starting a process with a partial executable path
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b607_start_process_with_partial_path.html
+   Location: mibici\modeling\train.py:103:20
+102	    try:
+103	        resultado = subprocess.run(["git", *argumentos], capture_output=True, text=True, check=True, cwd=config.RAIZ_PROYECTO)
+104	        return resultado.stdout.strip()
+
+--------------------------------------------------
+>> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html
+   Location: mibici\modeling\train.py:103:20
+102	    try:
+103	        resultado = subprocess.run(["git", *argumentos], capture_output=True, text=True, check=True, cwd=config.RAIZ_PROYECTO)
+104	        return resultado.stdout.strip()
+
+--------------------------------------------------
+
+Code scanned:
+	Total lines of code: 1392
+	Total lines skipped (#nosec): 0
+	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 0
+
+Run metrics:
+	Total issues (by severity):
+		Undefined: 0
+		Low: 4
+		Medium: 0
+		High: 0
+	Total issues (by confidence):
+		Undefined: 0
+		Low: 0
+		Medium: 0
+		High: 4
+Files skipped (0):
