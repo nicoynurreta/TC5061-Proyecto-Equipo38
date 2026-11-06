@@ -6,7 +6,7 @@ Repositorio: https://github.com/nicoynurreta/TC5061-Proyecto-Equipo38
 
 ## Propósito
 
-El proyecto responde tres preguntas sobre la operación de MiBici con un modelo de regresión, uno de clasificación y uno de *clustering*. La primera entrega dejó la base: ingesta reproducible y versionada de los viajes, módulo de *features*, experimento base en MLflow y flujo de trabajo con ramas y *Pull Requests*. La segunda entrega convierte el repositorio en un [MLflow Project](https://mlflow.org/docs/latest/ml/projects/) que se ejecuta con un solo comando, compara varias candidatas por pregunta contra ese experimento base (con una búsqueda de hiperparámetros organizada como *nested runs*), guarda en cada corrida los artefactos que respaldan su resultado y deja el mejor modelo de cada pregunta registrado y en producción en el [Model Registry](https://mlflow.org/docs/latest/ml/model-registry/). La tercera entrega agrega la capa de calidad del repositorio: pruebas unitarias con pytest para cada módulo, con casos límite y una prueba de reproducibilidad del entrenamiento, validación de los datos con DeepChecks, chequeos de seguridad con su evidencia y un solo comando, `make verificar`, que corre todo.
+El proyecto responde tres preguntas sobre la operación de MiBici con un modelo de regresión, uno de clasificación y uno de *clustering*. La primera entrega dejó la base: ingesta reproducible y versionada de los viajes, módulo de *features*, experimento base en MLflow y flujo de trabajo con ramas y *Pull Requests*. La segunda entrega convierte el repositorio en un [MLflow Project](https://mlflow.org/docs/latest/ml/projects/) que se ejecuta con un solo comando, compara varias candidatas por pregunta contra ese experimento base (con una búsqueda de hiperparámetros organizada como *nested runs*), guarda en cada corrida los artefactos que respaldan su resultado y deja el mejor modelo de cada pregunta registrado y en producción en el [Model Registry](https://mlflow.org/docs/latest/ml/model-registry/). La tercera entrega agrega la capa de calidad del repositorio: pruebas unitarias con pytest para cada módulo, con casos límite y una prueba de reproducibilidad del entrenamiento, validación de los datos con DeepChecks, chequeos de seguridad con su evidencia y un solo comando, `make verificar`, que corre todo. La cuarta entrega despliega el modelo en producción de P2 como un servicio REST con FastAPI y Pydantic, cargado por nombre y alias desde el Model Registry y empaquetado en una imagen OCI con `Containerfile`, con sus pruebas, las capturas del contenedor respondiendo y la documentación para construir la imagen, levantar el contenedor y consumir la API (sección Servicio de predicción).
 
 ## Las tres preguntas
 
@@ -43,15 +43,25 @@ Todas las corridas registran además `tiempo_entrenamiento_s`, `tiempo_inferenci
 Generada con [Cookiecutter Data Science](https://cookiecutter-data-science.drivendata.org/) (`ccds`, con `include_code_scaffold` en Yes).
 
 ```
-├── Makefile           <- make server, ingest, baselines, candidatas, busquedas, corridas, registry, test, chequeos, verificar
+├── Makefile           <- make server, ingest, baselines, candidatas, busquedas, corridas, registry, test, chequeos, verificar, api, imagen, contenedor, probar-api, exportar-modelo
 ├── MLproject          <- puntos de entrada ingest, train y search para mlflow run
 ├── python_env.yaml    <- versión de Python y dependencias con versión fija para mlflow run
 ├── pytest.ini         <- configuración de pytest (carpeta de pruebas y marcador lento)
 ├── README.md
 ├── requirements.txt   <- dependencias con versión fija
 ├── requirements-deepchecks.txt <- versiones fijas del entorno aparte de DeepChecks (Python 3.12)
+├── requirements-api.txt <- dependencias de la imagen del servicio, con las versiones del entrenamiento
 ├── pyproject.toml     <- metadatos del módulo mibici y configuración de bandit
-├── .env.example       <- plantilla de las variables de entorno que lee el código (MLFLOW_TRACKING_URI)
+├── .env.example       <- plantilla de las variables de entorno que lee el código (MLFLOW_TRACKING_URI y RUTA_MODELO)
+├── Containerfile      <- imagen OCI del servicio de predicción, válida para Podman y Docker
+├── .dockerignore      <- exclusiones del contexto de construcción, válidas para Docker y Podman
+├── api                <- servicio de predicción de P2 con FastAPI
+│   ├── main.py        <- aplicación y endpoints /health, /metadata, /predecir y /predecir/lote
+│   ├── esquemas.py    <- modelos de Pydantic de la petición, la respuesta y los metadatos
+│   ├── modelo.py      <- carga desde el Model Registry (o desde RUTA_MODELO) y predicción con la firma
+│   └── ejemplos       <- petición, lote y respuesta de ejemplo de la corrida real
+├── scripts
+│   └── probar_api.py  <- petición de prueba al servicio
 ├── chequeos
 │   ├── validar_datos.py <- suites de DeepChecks sobre las tablas de data/interim (entorno .venv-deepchecks)
 │   └── secretos.py      <- búsqueda de secretos en el historial de Git y en los archivos versionados
@@ -71,7 +81,9 @@ Generada con [Cookiecutter Data Science](https://cookiecutter-data-science.drive
 ├── tests              <- pruebas con pytest: un archivo por módulo, más reproducibilidad y seguridad
 │   ├── test_dataset.py, test_features.py, test_artefactos.py, test_train.py, test_search.py, test_predict.py, test_registry.py
 │   ├── test_reproducibilidad.py <- mismas predicciones y métricas con la misma semilla en P1, P2 y P3
-│   └── test_seguridad.py        <- .gitignore, .env.example y ausencia de secretos en los archivos versionados
+│   ├── test_seguridad.py        <- .gitignore, .env.example y ausencia de secretos en los archivos versionados
+│   ├── conftest.py              <- cliente de la API con un modelo mínimo inyectado
+│   └── test_api.py, test_api_ejemplos.py <- servicio de predicción: validación, endpoints, ejemplos y registry real
 └── mibici
     ├── __init__.py
     ├── config.py      <- rutas, URL, rango de fechas, partición, umbrales, semilla, experimento, hiperparámetros y rejillas
@@ -99,7 +111,7 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-En Linux o macOS el entorno se activa con `source venv/bin/activate`. `requirements.txt` fija la versión de cada dependencia e instala el módulo `mibici` en modo editable. Las pruebas se corren con `python -m pytest -q tests` o `make test`; la sección Pruebas y chequeos describe la suite, el entorno aparte de DeepChecks y los chequeos de seguridad.
+En Linux o macOS el entorno se activa con `source venv/bin/activate`. `requirements.txt` fija la versión de cada dependencia (incluidas FastAPI, uvicorn, Pydantic y httpx2, que usan el servicio de predicción y sus pruebas) e instala el módulo `mibici` en modo editable. Las pruebas se corren con `python -m pytest -q tests` o `make test`; la sección Pruebas y chequeos describe la suite, el entorno aparte de DeepChecks y los chequeos de seguridad.
 
 ## Servidor de tracking
 
@@ -257,7 +269,7 @@ mlflow run . -e train -P question=p3 -P model=kmeans_pca -P k=4 -P run_name=p3_k
 
 ## Pruebas y chequeos
 
-La tercera entrega agrega al repositorio una capa de calidad que se ejecuta con un solo comando: 51 pruebas con pytest (una fila por módulo de `mibici/`, con casos normales y límite y una prueba de reproducibilidad del entrenamiento), la validación de los datos con DeepChecks (integridad de las tablas y deriva entre entrenamiento y prueba) y los chequeos de seguridad (`.gitignore`, variables de entorno, bandit, pip-audit y búsqueda de secretos en el historial), con la evidencia versionada en `reports/`.
+La tercera entrega agregó al repositorio una capa de calidad que se ejecuta con un solo comando: pruebas con pytest (una fila por módulo de `mibici/`, con casos normales y límite y una prueba de reproducibilidad del entrenamiento), la validación de los datos con DeepChecks (integridad de las tablas y deriva entre entrenamiento y prueba) y los chequeos de seguridad (`.gitignore`, variables de entorno, bandit, pip-audit y búsqueda de secretos en el historial), con la evidencia versionada en `reports/`. Con las pruebas del servicio de predicción de la cuarta entrega la suite tiene 78 pruebas.
 
 ### Los dos entornos
 
@@ -283,20 +295,25 @@ El orden es `make ingest` (una sola vez, genera `data/processed/`), `make test` 
 
 | Comando | Qué hace | Equivalente sin `make` |
 |---|---|---|
-| `make test` | Las 51 pruebas. No necesita datos ni el entorno de DeepChecks, así que corre desde un clon limpio | `python -m pytest -q tests` |
-| `make chequeos` | Exporta a `data/interim/` las tablas que valida DeepChecks, corre las seis suites, bandit (reporte completo y compuerta), pip-audit y la búsqueda de secretos | `python -m mibici.validacion --exportar`, `.venv-deepchecks\Scripts\python.exe chequeos\validar_datos.py`, `python -m bandit -c pyproject.toml -r mibici -f txt --exit-zero`, `python -m bandit -c pyproject.toml -r mibici -q --severity-level medium`, `python -m pip_audit -r requirements.txt` y `python chequeos\secretos.py` |
+| `make test` | Las 78 pruebas. No necesita datos, servidor de MLflow ni el entorno de DeepChecks, así que corre desde un clon limpio (ahí se omiten solas las dos pruebas `lento`, que piden los datos reales y el registry del equipo) | `python -m pytest -q tests` |
+| `make chequeos` | Exporta a `data/interim/` las tablas que valida DeepChecks, corre las seis suites, bandit (reporte completo y compuerta) sobre `mibici/`, `api/` y `scripts/`, pip-audit sobre los dos archivos de requisitos y la búsqueda de secretos | `python -m mibici.validacion --exportar`, `.venv-deepchecks\Scripts\python.exe chequeos\validar_datos.py`, `python -m bandit -c pyproject.toml -r mibici api scripts -f txt --exit-zero`, `python -m bandit -c pyproject.toml -r mibici api scripts -q --severity-level medium`, `python -m pip_audit -r requirements.txt`, `python -m pip_audit -r requirements-api.txt` y `python chequeos\secretos.py` |
 | `make verificar` | `make test` seguido de `make chequeos` | Los dos renglones anteriores en ese orden |
+| `make api` | El servicio de predicción sin contenedor, con uvicorn en `127.0.0.1:8000`, para desarrollar | `python -m uvicorn api.main:app --host 127.0.0.1 --port 8000` |
+| `make imagen` | Construye la imagen `mibici-api:1.0` con `Containerfile` (`MOTOR=podman` cambia el motor) | `docker build -f Containerfile -t mibici-api:1.0 .` |
+| `make contenedor` | Levanta el contenedor `mibici-api` en el puerto 8000 apuntando al servidor de tracking del anfitrión | `docker run --rm -d --name mibici-api -p 8000:8000 --add-host=host.docker.internal:host-gateway -e MLFLOW_TRACKING_URI=http://host.docker.internal:5000 mibici-api:1.0` |
+| `make probar-api` | Manda `api/ejemplos/peticion_p2.json` al servicio y muestra la respuesta | `python scripts\probar_api.py` |
+| `make exportar-modelo` | Descarga el `champion` de P2 a `models/api/` para arrancar el servicio sin registry (`RUTA_MODELO`) | `python -m mlflow artifacts download -u models:/mibici-equipo38-p2-riesgo@champion -d models/api` |
 
 - Variables del Makefile: `PYTHON_INTERPRETER` (por defecto `python`) y `PYTHON_DEEPCHECKS` (`.venv-deepchecks/Scripts/python.exe` en Windows y `.venv-deepchecks/bin/python` en Linux o macOS), por ejemplo `make chequeos PYTHON_INTERPRETER=venv/Scripts/python.exe`.
 - `make chequeos` usa `chequeos/secretos.py` y la evidencia de `reports/seguridad/`, que llegan con la rama `feat/chequeos-seguridad`, y la suite incluye los casos límite de `tests/test_dataset.py` y `tests/test_features.py` de la rama `test/casos-limite-datos-features`, así que `make verificar` completo corresponde a `main` con las tres ramas de la tercera entrega integradas.
 - Si `data/processed/` no existe, la exportación y las suites de DeepChecks indican cómo generar los datos y terminan con código 0; bandit, pip-audit y la búsqueda de secretos corren de todos modos.
-- La prueba `test_p1_ridge_reproduce_sobre_los_datos_reales` lleva el marcador `lento`, usa los datos reales y tarda unos 2 s; se omite sola cuando falta `data/processed/`. `python -m pytest -q tests -m "not lento"` la excluye y `python -m pytest -q tests -m lento` corre solo esa.
+- Dos pruebas llevan el marcador `lento`: `test_p1_ridge_reproduce_sobre_los_datos_reales`, que usa los datos reales, tarda unos 2 s y se omite sola cuando falta `data/processed/`, y `test_el_champion_del_registry_responde_al_ejemplo`, que carga el `champion` real de P2 y se omite sola cuando `MLFLOW_TRACKING_URI` no apunta a un servidor HTTP que responda. `python -m pytest -q tests -m "not lento"` las excluye y `python -m pytest -q tests -m lento` corre solo esas dos.
 - bandit se corre dos veces: la primera imprime el reporte completo con `--exit-zero` y la segunda es la compuerta que detiene `make` solo si aparece un hallazgo de severidad media o alta. pip-audit resuelve `requirements.txt` en un entorno temporal y consulta el servicio de avisos de PyPI, por eso tarda de dos a cuatro minutos. `chequeos/secretos.py` devuelve 1 si encuentra algo.
-- Tiempos en la máquina de trabajo: la suite tarda poco más de dos minutos (130.6 s en la captura de abajo), casi todos en las seis pruebas que registran, versionan o cargan modelos en un tracking temporal de MLflow (`log_model` infiere los requisitos del entorno); los comandos de `make chequeos` tardan unos cuatro minutos, de los que las seis suites de DeepChecks ocupan dos (120.7 s en `reports/deepchecks/resumen.md`) y pip-audit uno.
+- Tiempos en la máquina de trabajo: la suite tardó 130.6 s con las 51 pruebas de la tercera entrega (captura de abajo) y 533.9 s con las 74 de la rama del servicio (captura de la sección Servicio de predicción), casi todos en las seis pruebas que registran, versionan o cargan modelos en un tracking temporal de MLflow (`log_model` infiere los requisitos del entorno); los comandos de `make chequeos` tardan unos cuatro minutos, de los que las seis suites de DeepChecks ocupan dos (120.7 s en `reports/deepchecks/resumen.md`) y pip-audit uno.
 
 ### Pruebas
 
-Cada módulo de `mibici/` tiene su archivo en `tests/`, más `test_reproducibilidad.py` y `test_seguridad.py`. Ninguna prueba necesita los datos reales ni un servidor de MLflow: las que registran o cargan modelos usan un tracking temporal en SQLite dentro de `tmp_path`, y las de `predict` redirigen las rutas de `config` con `monkeypatch`, de modo que la suite no deja rastro en el clon. La columna Rama dice en qué *Pull Request* de la tercera entrega llega cada grupo de pruebas nuevas; las de las entregas anteriores se indican entre paréntesis.
+Cada módulo de `mibici/` tiene su archivo en `tests/`, más `test_reproducibilidad.py` y `test_seguridad.py`. Ninguna prueba necesita los datos reales ni un servidor de MLflow: las que registran o cargan modelos usan un tracking temporal en SQLite dentro de `tmp_path`, las de `predict` redirigen las rutas de `config` con `monkeypatch` y las del servicio de predicción inyectan un modelo mínimo con `tests/conftest.py`, de modo que la suite no deja rastro en el clon; solo las dos pruebas `lento` piden los datos reales o el registry del equipo, y se omiten solas si no están. La columna Rama dice en qué *Pull Request* de la tercera entrega llega cada grupo de pruebas nuevas; las de las entregas anteriores se indican entre paréntesis.
 
 | Módulo | Archivo | Pruebas | Casos normales | Casos límite | Rama |
 |---|---|---|---|---|---|
@@ -310,6 +327,8 @@ Cada módulo de `mibici/` tiene su archivo en `tests/`, más `test_reproducibili
 | `registry` | `tests/test_registry.py` | 2 | Versión con linaje y alias `champion`; segunda versión como `challenger` (`feat/model-registry`) | | |
 | reproducibilidad | `tests/test_reproducibilidad.py` | 4 | Dos entrenamientos con `config.SEMILLA` sobre conjuntos sintéticos con las columnas exactas de cada pregunta producen predicciones, probabilidades, umbral, grupos y métricas idénticos en P1 (`hgb`), P2 (`hgb`) y P3 (`kmeans`), y la semilla llega al estimador (`random_state` igual a 42 en los tres); prueba `lento` con los datos reales y `ridge` en P1 | | `feat/tests-reproducibilidad-deepchecks` |
 | seguridad | `tests/test_seguridad.py` | 5 | Entradas de `.gitignore` para datos, modelos, MLflow y `.env`; `git check-ignore` sobre ocho rutas de muestra; `.env.example` define `MLFLOW_TRACKING_URI`; ningún CSV, Parquet, modelo, base de datos ni `.env` versionado; ningún archivo versionado con patrones de secretos | | `feat/chequeos-seguridad` |
+| servicio de predicción (`api`) | `tests/test_api.py` | 23 | 200 con el ejemplo y la respuesta completa (clase, probabilidad, umbral y modelo); `estacion_id` opcional; el orden de los campos del JSON no cambia la predicción; lote en el mismo orden; `/health` y `/metadata` con las columnas de la firma; los campos del esquema son `features.COLUMNAS_P2`; prueba `lento` contra el `champion` real del registry | 422 por campo faltante, por campo de más, por nueve valores fuera de rango o de tipo y por variables derivadas incoherentes; lote con un elemento inválido y lote vacío; 503 en los tres endpoints sin modelo; firma distinta al esquema rechazada; `registered_model_meta` ausente o de otro modelo | `feat/api-pruebas-ejemplos` |
+| ejemplos del servicio | `tests/test_api_ejemplos.py` | 4 | La petición de ejemplo es la del esquema y responde 200; el lote responde una predicción por estación; la respuesta guardada tiene la forma del esquema y el modelo del registry; los ejemplos no traen campos fuera del esquema | | `feat/api-pruebas-ejemplos` |
 
 La prueba de reproducibilidad compara dos ejecuciones completas de `entrenar_p1`, `entrenar_p2` y `entrenar_p3` con la misma semilla y exige igualdad exacta (`numpy.array_equal` e igualdad de los diccionarios de métricas), no cercanía; en conjuntos pequeños dos semillas distintas pueden coincidir por azar, por eso la prueba verifica además que la semilla llega al `HistGradientBoostingRegressor`, al `HistGradientBoostingClassifier` dentro del `FixedThresholdClassifier` y al `KMeans` del `Pipeline`, en lugar de exigir resultados distintos con otra semilla.
 
@@ -359,6 +378,8 @@ Aunque ninguna era explotable en la configuración del proyecto (servidor local 
 
 Los cinco archivos de `reports/seguridad/` llevan en la primera línea la fecha, el commit y el comando exacto con que se generaron, para que la evidencia se lea sin correr nada.
 
+Con la cuarta entrega bandit cubre también `api/` y `scripts/` (sin hallazgos en 194 líneas) y pip-audit audita además `requirements-api.txt` (no encuentra vulnerabilidades conocidas (`No known vulnerabilities found`)); la búsqueda de secretos sobre la rama del servicio tampoco encuentra nada (sin hallazgos en el historial ni en los archivos versionados).
+
 Las dos capturas siguientes son el inicio y el final de la misma corrida de los comandos de `make chequeos`: la exportación de las tablas y las seis suites de DeepChecks, y después el reporte de bandit, la compuerta, pip-audit y la búsqueda de secretos.
 
 ![make chequeos, exportación y DeepChecks](reports/figures/chequeos_inicio.png)
@@ -368,6 +389,167 @@ Las dos capturas siguientes son el inicio y el final de la misma corrida de los 
 ![bandit después de la corrección](reports/figures/bandit_despues.png)
 
 ![pip-audit con MLflow 3.17.2](reports/figures/pip_audit_despues.png)
+
+## Servicio de predicción
+
+La cuarta entrega expone el modelo en producción de P2 como un servicio REST: una aplicación de [FastAPI](https://fastapi.tiangolo.com/) con esquemas de entrada y de salida en [Pydantic](https://pydantic.dev/docs/validation/latest/), que carga el modelo por nombre y alias desde el Model Registry al arrancar y responde en JSON, empaquetada con todas sus dependencias en una imagen OCI descrita en `Containerfile`. El servicio vive en `api/`, sus pruebas en `tests/test_api.py` y `tests/test_api_ejemplos.py`, y `scripts/probar_api.py` manda la petición de ejemplo y muestra la respuesta.
+
+### Modelo que se expone
+
+`mibici-equipo38-p2-riesgo@champion`, que hoy resuelve a la versión 1 del modelo registrado de P2: la corrida `p2_hgb_mejor`, un `HistGradientBoostingClassifier` balanceado dentro de un `FixedThresholdClassifier` con umbral 0.92 (`test_costo` 26,432, 0.7 MB). Se eligió P2 por tres razones. Es la decisión horaria del equipo de rebalanceo, a qué estaciones mandar el camión en la siguiente hora, con variables que cambian cada hora, que es lo que justifica un servicio de inferencia en línea. El umbral de decisión viaja dentro del modelo registrado, así que el servicio devuelve la clase y la probabilidad sin lógica adicional y lo que se despliega es exactamente lo que se evaluó. Y sus 13 variables caben en un cuerpo JSON legible. P1 (demanda diaria) se sirve por lotes con `predict.py` y P3 (98 variables, decisión de largo plazo) no necesita un servicio; los dos quedan como endpoints posteriores si la operación los pide (sección Estrategia de despliegue).
+
+### Archivos
+
+```
+├── Containerfile          <- imagen OCI del servicio: python:3.14-slim, usuario sin privilegios, HEALTHCHECK y uvicorn
+├── .dockerignore          <- lo que no entra al contexto de construcción (Docker y Podman leen este nombre)
+├── requirements-api.txt   <- dependencias de la imagen con las versiones del entrenamiento
+├── api
+│   ├── main.py            <- aplicación: carga del modelo en el lifespan y los cuatro endpoints
+│   ├── esquemas.py        <- PeticionRiesgo, RespuestaRiesgo, Metadata y Salud
+│   ├── modelo.py          <- carga por nombre y alias (o desde RUTA_MODELO), DataFrame con la firma y predicción
+│   └── ejemplos           <- peticion_p2.json, peticion_lote.json y respuesta_p2.json de la corrida real
+├── scripts
+│   └── probar_api.py      <- manda el ejemplo al servicio y muestra la respuesta
+└── tests
+    ├── conftest.py        <- cliente de pruebas con un modelo mínimo inyectado, sin registry
+    ├── test_api.py        <- validación, lote, health, metadata, 503 y la prueba lenta contra el registry real
+    └── test_api_ejemplos.py <- los ejemplos de api/ejemplos validan contra los esquemas y responden 200
+```
+
+### Recuperación del modelo desde el Model Registry
+
+`api/modelo.py` carga el modelo una sola vez, en el evento de arranque de la aplicación (`lifespan`), con `mlflow.pyfunc.load_model("models:/mibici-equipo38-p2-riesgo@champion")`; el servidor de tracking se toma de la variable de entorno `MLFLOW_TRACKING_URI` y, si no está definida, de `sqlite:///mlflow.db`, como el resto del código. Antes de cargar resuelve el alias con `MlflowClient().get_model_version_by_alias`, de modo que cada respuesta y `/metadata` dicen a qué versión apunta `champion` en ese momento (hoy la 1). Del modelo cargado toma el estimador de scikit-learn (`get_raw_model()`), para calcular la probabilidad con `predict_proba` y leer el umbral, y la firma registrada con el modelo, de la que salen los nombres, el orden y los tipos (`float32`) de las 13 columnas con que se reconstruye el DataFrame de cada petición. Si la firma no coincide con los campos de `PeticionRiesgo`, el arranque falla y el servicio responde 503 en lugar de predecir con columnas mal alineadas; si el registry no responde al arrancar, el contenedor queda arriba, los endpoints devuelven 503 y el motivo queda en el registro de uvicorn.
+
+Hay dos formas de que el modelo llegue al contenedor, con la misma imagen:
+
+| Opción | Cómo | Cuándo |
+|---|---|---|
+| A, registry en red (la documentada y capturada abajo) | El servidor de MLflow del equipo corre en el anfitrión escuchando en todas las interfaces y aceptando el nombre con que lo ve el contenedor: `mlflow server --backend-store-uri sqlite:///mlflow.db --host 0.0.0.0 --port 5000 --allowed-hosts localhost:*,127.0.0.1:*,host.docker.internal:*` (o `make server HOST_SERVIDOR=0.0.0.0`). El contenedor recibe `-e MLFLOW_TRACKING_URI=http://host.docker.internal:5000` (con Podman, `http://host.containers.internal:5000`, y ese nombre en `--allowed-hosts`). El modelo y sus artefactos viajan por HTTP desde `mlartifacts/`. Sin `--allowed-hosts`, MLflow 3 solo acepta encabezados `Host` de localhost o de una IP privada (su valor por defecto), como protección contra DNS rebinding; al nombre del contenedor le responde 403 y el servicio arranca sin modelo | Quien tiene `mlflow.db` y `mlartifacts/` de las corridas (hoy, la máquina donde se entrenó, porque el registry no se versiona) o un servidor de tracking compartido |
+| B, modelo exportado | `make exportar-modelo` (`mlflow artifacts download -u models:/mibici-equipo38-p2-riesgo@champion -d models/api`) deja el modelo en `models/api/`, carpeta ignorada por Git, junto con `registered_model_meta`, que anota nombre y versión; el contenedor monta esa carpeta y recibe `-e RUTA_MODELO=/modelo` | Quien recibe la carpeta exportada sin el servidor de MLflow. `/metadata` reporta la versión anotada y `alias` nulo, porque la carpeta no sabe a qué alias apuntaba |
+
+Los modelos no se versionan en Git (`*.skops`, `mlartifacts/`, `models/*` y `mlflow.db` están en `.gitignore` y `tests/test_seguridad.py` lo exige), así que reproducir el servicio desde un clon exige el servidor de MLflow del equipo o la carpeta exportada; la imagen, en cambio, se construye desde cualquier clon.
+
+### Esquemas y validación
+
+`PeticionRiesgo` tiene los 13 campos de la firma, con el nombre exacto de `features.COLUMNAS_P2`, más `estacion_id`, opcional, que el servicio solo devuelve para identificar la respuesta. `ConfigDict(extra="forbid")` rechaza cualquier campo que no esté en la firma, los rangos rechazan valores imposibles y un validador comprueba que las dos variables derivadas coinciden con las que las originan, igual que las calcula `features.py`:
+
+| Campo | Tipo y rango | Qué es |
+|---|---|---|
+| `estacion_id` | entero ≥ 1, opcional | Identificador de la estación; solo se devuelve |
+| `salidas_h0`, `llegadas_h0` | entero ≥ 0 | Salidas y llegadas de la estación en la hora t |
+| `salidas_h1`, `llegadas_h1`, `salidas_h2`, `llegadas_h2` | entero ≥ 0 | Lo mismo en t-1 y en t-2 |
+| `neto_3h` | entero igual a llegadas menos salidas de las tres horas | Flujo neto acumulado |
+| `neto_futuro_semana_anterior` | entero | Flujo neto de las dos horas siguientes a la misma hora de la semana anterior |
+| `riesgo_semana_anterior` | 0 o 1 | Etiqueta de riesgo de la misma hora de la semana anterior |
+| `hora_dia` | entero de 0 a 23 | Hora del día |
+| `dia_semana` | entero de 0 (lunes) a 6 (domingo) | Día de la semana |
+| `fin_de_semana` | 0 o 1, igual a `dia_semana >= 5` | Fin de semana |
+| `capacidad` | entero > 0 | Anclajes de la estación |
+
+Las entradas se validan como enteros, porque los conteos y las banderas lo son por naturaleza (`4.5` salidas se rechaza en lugar de truncarse), y después se convierten al tipo de la firma, `float32`, en el orden de la firma. La respuesta se valida con `response_model=RespuestaRiesgo`: `estacion_id`, `riesgo` (0 o 1), `probabilidad` (de 0 a 1, con seis decimales), `umbral` (el del modelo, 0.92) y `modelo` con `nombre`, `version` y `alias`; `riesgo` es `probabilidad >= umbral` y lo calcula el propio `FixedThresholdClassifier`.
+
+### Endpoints
+
+| Método y ruta | Cuerpo | Respuesta | Códigos |
+|---|---|---|---|
+| `POST /predecir` | Una `PeticionRiesgo` | Una `RespuestaRiesgo` | 200; 422 con el detalle de Pydantic (campo faltante, campo de más, valor fuera de rango o de tipo, variables derivadas incoherentes); 503 si el modelo no está cargado |
+| `POST /predecir/lote` | Lista de `PeticionRiesgo`, al menos una | Lista de `RespuestaRiesgo` en el mismo orden | 200; 422 (el detalle incluye la posición de la petición inválida; la lista vacía también es 422); 503 |
+| `GET /health` | | `{"estado": "ok", "modelo": ..., "version": ...}` | 200 solo cuando el modelo está cargado; 503 si no |
+| `GET /metadata` | | Nombre, versión, alias y origen del modelo, `run_id`, umbral, columnas de la firma con su tipo y versión de MLflow | 200; 503 |
+| `GET /docs` | | Documentación interactiva (OpenAPI) con los esquemas y el ejemplo de petición | 200 |
+
+### Construir la imagen y levantar el contenedor
+
+`Containerfile` parte de `python:3.14-slim`, instala `requirements-api.txt` (MLflow 3.17.2, scikit-learn 1.9.1, pandas 3.0.6, NumPy 2.5.3, SciPy 1.18.1 y skops 0.16.0, las versiones con que se entrenaron y registraron los modelos, más FastAPI 0.142.2, uvicorn 0.54.0 y Pydantic 2.13.5), copia solo `api/`, crea un usuario sin privilegios, fija `OMP_NUM_THREADS=1` (el modelo predice una fila o un lote corto por petición y con los 14 hilos de OpenMP que el contenedor ve en la máquina de trabajo cada predicción tardaba varios segundos por la sincronización de hilos; con un hilo responde en décimas de segundo), expone el puerto 8000, declara un `HEALTHCHECK` sobre `/health` y arranca uvicorn con `CMD` en forma exec, para que las señales de parada lleguen al proceso y el `lifespan` se ejecute completo. `.dockerignore`, el nombre que leen Docker y Podman (Podman acepta además `.containerignore`), deja fuera del contexto los datos, `mlartifacts/`, `mlflow.db`, `models/`, los entornos, los reportes y las libretas: el contexto que viaja al motor pesa menos de 10 kB. El mismo archivo sirve para los dos motores; abajo van los comandos con `docker` y entre paréntesis el cambio para `podman`.
+
+Desde la raíz del repositorio, con el servidor de MLflow del equipo corriendo en otra terminal con `--host 0.0.0.0` y `--allowed-hosts` (el comando de la opción A):
+
+```
+docker build -f Containerfile -t mibici-api:1.0 .
+docker run --rm -d --name mibici-api -p 8000:8000 --add-host=host.docker.internal:host-gateway -e MLFLOW_TRACKING_URI=http://host.docker.internal:5000 mibici-api:1.0
+docker ps
+docker logs mibici-api
+docker stop mibici-api
+```
+
+`--add-host=host.docker.internal:host-gateway` define ese nombre también en Docker Engine sobre Linux, donde no existe por sí solo; en Docker Desktop es inofensivo. Con Podman son los mismos comandos con `podman` en lugar de `docker`, `http://host.containers.internal:5000` como servidor de tracking y `--add-host=host.containers.internal:host-gateway`; `podman build --format docker` conserva el `HEALTHCHECK`, que el formato OCI predeterminado descarta con una advertencia. La imagen construida pesa 1.27 GB en disco (288 MB en capas comprimidas) y la construcción tarda varios minutos, casi todo en descargar e instalar las dependencias. El contenedor tarda alrededor de un minuto en resolver el alias y cargar el modelo; mientras tanto `/health` responde 503, y cuando el `HEALTHCHECK` pasa `docker ps` lo marca `healthy`. Con el modelo exportado (opción B), sin servidor de MLflow:
+
+```
+make exportar-modelo
+docker run --rm -d --name mibici-api -p 8000:8000 -v ${PWD}/models/api:/modelo:ro -e RUTA_MODELO=/modelo mibici-api:1.0
+```
+
+Objetivos del `Makefile` (rama `feat/api-contenedor-herramientas`): `make imagen`, `make contenedor`, `make probar-api`, `make exportar-modelo` y `make api`, que levanta el servicio sin contenedor con `uvicorn api.main:app --host 127.0.0.1 --port 8000` para desarrollar; `MOTOR=podman` cambia el motor y el nombre del anfitrión en los dos primeros (`make contenedor MOTOR=podman`), y `make server HOST_SERVIDOR=0.0.0.0` levanta el servidor de tracking de modo que el contenedor lo alcance.
+
+### Consumir la API
+
+`scripts/probar_api.py` lee `api/ejemplos/peticion_p2.json` (o el archivo que se pase en `--peticion`; si contiene una lista usa `/predecir/lote`), consulta `/health`, manda la petición y muestra la respuesta, que con `--salida` también guarda; `make probar-api` lo corre. Con `curl`:
+
+```
+curl -s http://127.0.0.1:8000/health
+curl -s -X POST http://127.0.0.1:8000/predecir -H "Content-Type: application/json" -d @api/ejemplos/peticion_p2.json
+curl -s -X POST http://127.0.0.1:8000/predecir/lote -H "Content-Type: application/json" -d @api/ejemplos/peticion_lote.json
+```
+
+Ejemplo real, tomado de la corrida contra el contenedor del 5 de noviembre de 2026. La petición (`api/ejemplos/peticion_p2.json`) es la estación 2 a las 0:00 del sábado 1 de noviembre de 2025, la primera fila del conjunto de prueba y del `input_example` guardado con el modelo:
+
+```json
+{
+  "estacion_id": 2,
+  "salidas_h0": 0,
+  "llegadas_h0": 4,
+  "salidas_h1": 1,
+  "llegadas_h1": 2,
+  "salidas_h2": 0,
+  "llegadas_h2": 1,
+  "neto_3h": 6,
+  "neto_futuro_semana_anterior": 0,
+  "riesgo_semana_anterior": 0,
+  "hora_dia": 0,
+  "dia_semana": 5,
+  "fin_de_semana": 1,
+  "capacidad": 15
+}
+```
+
+Respuesta (`api/ejemplos/respuesta_p2.json`): una madrugada de fin de semana sin movimiento, probabilidad de riesgo cercana a cero, muy por debajo del umbral:
+
+```json
+{
+  "estacion_id": 2,
+  "riesgo": 0,
+  "probabilidad": 0.001544,
+  "umbral": 0.92,
+  "modelo": {
+    "nombre": "mibici-equipo38-p2-riesgo",
+    "version": "1",
+    "alias": "champion"
+  }
+}
+```
+
+El lote de `api/ejemplos/peticion_lote.json` son las estaciones 2, 3 y 4 a las 16:00 del martes 4 de noviembre de 2025, también del conjunto de prueba, y responde una predicción por estación en el mismo orden: la estación 2 queda en riesgo (`riesgo` 1, probabilidad 0.970204), la 3 también (1, 0.972269) y la 4 no (0, 0.865297, por debajo del umbral), cada una con el mismo bloque `modelo`. Esa hora tuvo riesgo real en la estación 4 y no en la 2 ni en la 3: un falso negativo y dos falsos positivos cerca del umbral, el comportamiento que miden `test_recall` y `test_precision` del modelo registrado.
+
+Una petición sin `capacidad` responde 422 con `{"detail": [{"type": "missing", "loc": ["body", "capacidad"], "msg": "Field required", ...}]}`; un campo que no está en la firma, `extra_forbidden`; `hora_dia: 24`, `less_than_equal`; un `neto_3h` que no cuadra con las salidas y las llegadas, `value_error` con el valor esperado en el mensaje.
+
+### Estrategia de despliegue
+
+P2 se despliega como inferencia en tiempo real y P1 se queda por lotes. La decisión de P2 la toma el equipo de rebalanceo cada hora y por estación, con variables que cambian cada hora (los flujos de las últimas tres horas) y para una ventana de solo dos horas: una predicción que llega tarde no sirve, así que el servicio responde una petición por estación y hora en milisegundos, y `/predecir/lote` permite calcular todas las estaciones de una hora en una sola llamada cuando el operador prefiere correrlas juntas al cerrar la hora (en la máquina de trabajo una petición responde en 0.3 a 0.4 s desde el anfitrión y el lote de 371 estaciones en 0.5 s, medianas de 20 peticiones, porque el estimador tarda casi lo mismo con 371 filas que con una (50 ms en `predict_proba`): el lote de una hora completa cuesta lo mismo que una petición). El modelo se carga una vez al arrancar y se reutiliza en cada petición; el registry solo se consulta en el arranque, de modo que una caída del servidor de tracking no tira el servicio que ya está arriba. P1, en cambio, es una decisión diaria (flota y personal por estación para el día siguiente) con variables que solo cambian una vez al día: ahí conviene el modo por lotes que ya cubre `python -m mibici.modeling.predict --pregunta p1`, que carga el mismo `champion` del registry, predice todas las estaciones del periodo y deja el CSV en `models/`; un endpoint por petición no aportaría nada que un lote nocturno no dé. P3 es una decisión de planeación que se revisa pocas veces al año y se corre a mano.
+
+### Pruebas y chequeos del servicio
+
+`tests/test_api.py` tiene 23 pruebas que corren con `TestClient` y un modelo mínimo inyectado por `tests/conftest.py` (una regresión logística con la firma de P2 dentro de un `FixedThresholdClassifier`, descrita con la misma función `describir` que usa el servicio), así que `make test` sigue en verde desde un clon sin registry ni servidor: 200 con el ejemplo y la respuesta completa; `estacion_id` opcional; 422 por campo faltante, por campo de más, por nueve valores fuera de rango o de tipo (`hora_dia` 24 y -1, `dia_semana` 7, conteo negativo, `capacidad` 0, bandera 2, decimal en un conteo, texto en una bandera, `estacion_id` 0) y por variables derivadas incoherentes; el orden de los campos del JSON no cambia la predicción (el modelo de prueba exige las columnas en el orden del entrenamiento); lote con el mismo orden, con un elemento inválido y vacío; `/health` y `/metadata`; 503 en los tres endpoints sin modelo; `describir` rechaza una firma distinta al esquema; la lectura de `registered_model_meta`; y una prueba `lento` que carga el `champion` real por `MLFLOW_TRACKING_URI` y se omite sola cuando la variable no apunta a un servidor HTTP que responda. `tests/test_api_ejemplos.py` (rama `feat/api-pruebas-ejemplos`) comprueba que los tres archivos de `api/ejemplos/` validan contra los esquemas y responden 200. Con las dos ramas integradas la suite completa tiene 78 pruebas.
+
+bandit sobre `api/` y `scripts/` no reporta hallazgos (194 líneas) y pip-audit sobre `requirements-api.txt` no encuentra vulnerabilidades conocidas (`No known vulnerabilities found`); `make chequeos` ya incluye las dos carpetas y los dos archivos de requisitos.
+
+![Suite de pruebas en verde con el servicio](reports/figures/api_pytest_verde.png)
+
+![Imagen construida](reports/figures/api_imagen_construida.png)
+
+![Contenedor corriendo](reports/figures/api_contenedor.png)
+
+![Petición y respuesta desde el contenedor](reports/figures/api_peticion_respuesta.png)
 
 ## Flujo de trabajo con Git y GitHub
 
@@ -380,17 +562,18 @@ Las dos capturas siguientes son el inicio y el final de la misma corrida de los 
 - Primera entrega, en el orden en que se integraron: `feat/ingesta` (`dataset.py`, manifiesto y pruebas), `feat/features` (`features.py`, pruebas y notebook de exploración), `feat/experimento-base` (`train.py`, `predict.py`, `plots.py`, `MLproject` y entorno) y `docs/referencias` (ML Canvas, diagrama de arquitectura y resultados del experimento base).
 - Segunda entrega, en el orden en que se integran porque la primera rama consume lo que deja la segunda: `feat/model-registry` (`registry.py`, `predict.py` con carga por alias y `tests/test_registry.py`), `feat/mlflow-project-registry` (`MLproject`, `python_env.yaml`, `Makefile`, `artefactos.py`, `train.py`, `search.py`, pruebas y este README) y `fix/features-particion-perfiles` (corrección de `features.py` señalada en la revisión de la primera entrega: en P2 se excluyen de entrenamiento y validación las horas cuya ventana objetivo cruza el corte siguiente y en P3 los perfiles se alinean sobre la unión de estaciones con salidas y llegadas; entra después de las corridas de esta entrega para que sus `commit_git` reproduzcan exactamente lo que se midió, y se aplica en la siguiente iteración de los modelos).
 - Tercera entrega, en el orden en que se integran: `feat/tests-reproducibilidad-deepchecks` (`pytest.ini`, `tests/test_reproducibilidad.py`, `tests/test_search.py`, `tests/test_predict.py` y los casos límite de `tests/test_train.py`; `mibici/validacion.py`, `chequeos/validar_datos.py`, `requirements-deepchecks.txt` y `reports/deepchecks/`; la corrección de bandit en `train.py`, `[tool.bandit]` en `pyproject.toml` y MLflow 3.17.2 en `requirements.txt` y `python_env.yaml`; `Makefile`, `.gitignore` y este README), `feat/chequeos-seguridad` (`tests/test_seguridad.py`, `.env.example`, `chequeos/secretos.py` y la evidencia de `reports/seguridad/`) y `test/casos-limite-datos-features` (casos límite de `tests/test_dataset.py` y `tests/test_features.py`). Cada rama pasa `python -m pytest -q tests` por separado antes de abrir su *Pull Request*, y la integración cierra con `make verificar` sobre `main`.
+- Cuarta entrega, en el orden en que se integran: `feat/api-rest-contenedor` (`api/`, `.env.example`, `requirements.txt`, las capturas y este README), `feat/api-pruebas-ejemplos` (`tests/conftest.py`, `tests/test_api.py`, `api/ejemplos/` y `tests/test_api_ejemplos.py`) y `feat/api-contenedor-herramientas` (`Containerfile`, `.dockerignore`, `requirements-api.txt`, `scripts/probar_api.py` y los objetivos `api`, `imagen`, `contenedor`, `probar-api` y `exportar-modelo` del `Makefile`). Las dos últimas parten de `main` con la primera integrada, porque sus pruebas, su imagen y su script usan `api/`; cada *Pull Request* lo integra con *merge commit* quien lo revisa, y la integración cierra con `make verificar` sobre `main` y con el contenedor respondiendo a `make probar-api`.
 - Nada de datos de MiBici, modelos serializados, carpetas de MLflow ni credenciales en el historial: `.gitignore` los excluye y los *Pull Requests* se revisan también con ese criterio.
 
 ## Integrantes y roles
 
 El trabajo se repartió por etapas del *pipeline*, que es la separación que propone la plantilla: cada integrante es responsable de un módulo con una interfaz definida y revisa el módulo vecino.
 
-| Integrante | Matrícula | Rol en el proyecto | Primera entrega | Segunda entrega | Tercera entrega |
-|---|---|---|---|---|---|
-| José Andrés Hernández Guerra | A01840564 | Datos e ingesta; Model Registry; seguridad del repositorio | `mibici/dataset.py`, `data/manifiesto.json` y `tests/test_dataset.py` (rama `feat/ingesta`); revisión del *Pull Request* de *features* | `mibici/modeling/registry.py`, `mibici/modeling/predict.py` y `tests/test_registry.py` (rama `feat/model-registry`); revisión del *Pull Request* del MLflow Project | `tests/test_seguridad.py`, `.env.example`, `chequeos/secretos.py` y la evidencia fechada de `reports/seguridad/` (rama `feat/chequeos-seguridad`); revisión del *Pull Request* de pruebas y DeepChecks |
-| Miguel Angel Higuera López | A01451684 | *Features* y exploración; casos límite de datos | `mibici/features.py`, `tests/test_features.py` y `notebooks/1.0-mah-exploracion-mibici.ipynb` (rama `feat/features`); revisión del *Pull Request* de ingesta | Corrección de la partición de P2 y de los perfiles de P3 en `mibici/features.py` con sus pruebas (rama `fix/features-particion-perfiles`); revisión del *Pull Request* del Model Registry | Casos límite de `limpiar_viajes` y `normalizar_nombre` en `tests/test_dataset.py` y de `particion_temporal`, `sin_ventana_posterior`, `etiquetar_riesgo` y `perfiles_por_estacion` en `tests/test_features.py` (rama `test/casos-limite-datos-features`); revisión del *Pull Request* de chequeos de seguridad |
-| Nicolás Hernández Ynurreta García | A01284528 | Integración y MLOps | Estructura con `ccds`, configuración, README, experimento base en MLflow, ML Canvas y diagrama, documento de la propuesta, revisión e integración | `MLproject`, `python_env.yaml`, `Makefile`, `artefactos.py`, `train.py`, `search.py` y sus pruebas (rama `feat/mlflow-project-registry`); corridas de la entrega, selección y registro de los modelos, reporte, revisión de los *Pull Requests* del equipo e integración | Prueba de reproducibilidad, `tests/test_search.py`, `tests/test_predict.py` y casos límite de `train`; validación con DeepChecks (`mibici/validacion.py`, `chequeos/validar_datos.py`, `reports/deepchecks/`); corrección de bandit y MLflow 3.17.2; `Makefile`, `.gitignore`, capturas y este README (rama `feat/tests-reproducibilidad-deepchecks`); revisión del *Pull Request* de casos límite e integración |
+| Integrante | Matrícula | Rol en el proyecto | Primera entrega | Segunda entrega | Tercera entrega | Cuarta entrega |
+|---|---|---|---|---|---|---|
+| José Andrés Hernández Guerra | A01840564 | Datos e ingesta; Model Registry; seguridad del repositorio | `mibici/dataset.py`, `data/manifiesto.json` y `tests/test_dataset.py` (rama `feat/ingesta`); revisión del *Pull Request* de *features* | `mibici/modeling/registry.py`, `mibici/modeling/predict.py` y `tests/test_registry.py` (rama `feat/model-registry`); revisión del *Pull Request* del MLflow Project | `tests/test_seguridad.py`, `.env.example`, `chequeos/secretos.py` y la evidencia fechada de `reports/seguridad/` (rama `feat/chequeos-seguridad`); revisión del *Pull Request* de pruebas y DeepChecks | `tests/conftest.py` y `tests/test_api.py` (las 23 pruebas del servicio con `TestClient` y un modelo mínimo), `api/ejemplos/` (petición, lote y respuesta de la corrida real) y `tests/test_api_ejemplos.py` (rama `feat/api-pruebas-ejemplos`); revisión e integración del *Pull Request* del servicio |
+| Miguel Angel Higuera López | A01451684 | *Features* y exploración; casos límite de datos | `mibici/features.py`, `tests/test_features.py` y `notebooks/1.0-mah-exploracion-mibici.ipynb` (rama `feat/features`); revisión del *Pull Request* de ingesta | Corrección de la partición de P2 y de los perfiles de P3 en `mibici/features.py` con sus pruebas (rama `fix/features-particion-perfiles`); revisión del *Pull Request* del Model Registry | Casos límite de `limpiar_viajes` y `normalizar_nombre` en `tests/test_dataset.py` y de `particion_temporal`, `sin_ventana_posterior`, `etiquetar_riesgo` y `perfiles_por_estacion` en `tests/test_features.py` (rama `test/casos-limite-datos-features`); revisión del *Pull Request* de chequeos de seguridad | `Containerfile`, `.dockerignore` y `requirements-api.txt` (la imagen del servicio), `scripts/probar_api.py` y los objetivos `api`, `imagen`, `contenedor`, `probar-api` y `exportar-modelo` del `Makefile` (rama `feat/api-contenedor-herramientas`); revisión e integración del *Pull Request* de pruebas y ejemplos |
+| Nicolás Hernández Ynurreta García | A01284528 | Integración y MLOps | Estructura con `ccds`, configuración, README, experimento base en MLflow, ML Canvas y diagrama, documento de la propuesta, revisión e integración | `MLproject`, `python_env.yaml`, `Makefile`, `artefactos.py`, `train.py`, `search.py` y sus pruebas (rama `feat/mlflow-project-registry`); corridas de la entrega, selección y registro de los modelos, reporte, revisión de los *Pull Requests* del equipo e integración | Prueba de reproducibilidad, `tests/test_search.py`, `tests/test_predict.py` y casos límite de `train`; validación con DeepChecks (`mibici/validacion.py`, `chequeos/validar_datos.py`, `reports/deepchecks/`); corrección de bandit y MLflow 3.17.2; `Makefile`, `.gitignore`, capturas y este README (rama `feat/tests-reproducibilidad-deepchecks`); revisión del *Pull Request* de casos límite e integración | Servicio de predicción (`api/`) con sus esquemas y la carga desde el registry, `.env.example`, `requirements.txt`, imagen y contenedor probados, capturas y este README (rama `feat/api-rest-contenedor`); revisión e integración del *Pull Request* de la imagen y las herramientas |
 
 El equipo quedó integrado por tres personas: la cuarta inscripción registrada en Canvas está inactiva.
 
@@ -414,3 +597,6 @@ El equipo quedó integrado por tres personas: la cuarta inscripción registrada 
 | Pruebas | Una suite por módulo con casos normales y límite, reproducibilidad con semilla fija y un solo comando que corre todo | `tests/`, `pytest.ini`, `make test` y `make verificar` |
 | Datos | Validación de integridad y de deriva entre conjuntos con condiciones explícitas y hallazgos documentados, no ocultos | `chequeos/validar_datos.py` y `reports/deepchecks/resumen.md` |
 | Seguridad | Análisis estático del código y de las dependencias con hallazgos corregidos o justificados, variables de entorno para la configuración y búsqueda de secretos en el historial | `[tool.bandit]` en `pyproject.toml`, `.env.example`, `chequeos/secretos.py`, `tests/test_seguridad.py` y `reports/seguridad/` |
+| Despliegue | El servicio carga el modelo por nombre y alias desde el registry, una sola vez al arrancar, y devuelve en cada respuesta la versión a la que resolvió | `api/modelo.py`, `/metadata` y el campo `modelo` de `RespuestaRiesgo` |
+| Despliegue | Entradas y salidas validadas con esquemas explícitos, campos desconocidos rechazados y el DataFrame reconstruido con el orden y los tipos de la firma | `api/esquemas.py` (`extra="forbid"`, rangos, variables derivadas), `response_model` y `api/modelo.py` |
+| Despliegue | Imagen reproducible con las versiones del entrenamiento, usuario sin privilegios, `HEALTHCHECK` y configuración por variables de entorno; nada de datos ni modelos en el contexto | `Containerfile`, `requirements-api.txt`, `.dockerignore`, `MLFLOW_TRACKING_URI` y `RUTA_MODELO` |
