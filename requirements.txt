@@ -4,8 +4,13 @@ pandas==3.0.6
 pyarrow==25.0.1
 numpy==2.5.3
 scipy==1.18.1
+skops==0.16.0
 matplotlib==3.11.2
 requests==2.34.2
+fastapi==0.142.2
+uvicorn==0.54.0
+pydantic==2.13.5
+httpx2==2.16.0
 notebook==7.6.3
 ipykernel==7.4.0
 pytest==9.1.1
