@@ -1,0 +1,11 @@
+{
+  "estacion_id": 2,
+  "riesgo": 0,
+  "probabilidad": 0.001544,
+  "umbral": 0.92,
+  "modelo": {
+    "nombre": "mibici-equipo38-p2-riesgo",
+    "version": "1",
+    "alias": "champion"
+  }
+}
