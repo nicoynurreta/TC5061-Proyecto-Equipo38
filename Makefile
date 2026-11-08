@@ -12,6 +12,15 @@ PYTHON_DEEPCHECKS = .venv-deepchecks/bin/python
 endif
 EXPERIMENTO = mibici-equipo38
 MLFLOW_RUN = $(PYTHON_INTERPRETER) -m mlflow run . --experiment-name $(EXPERIMENTO) --env-manager local
+HOST_SERVIDOR = 127.0.0.1
+MOTOR = docker
+IMAGEN = mibici-api:1.0
+CONTENEDOR = mibici-api
+ifeq ($(MOTOR),podman)
+ANFITRION = host.containers.internal
+else
+ANFITRION = host.docker.internal
+endif
 
 #################################################################################
 # COMMANDS                                                                      #
@@ -68,10 +77,10 @@ create_environment:
 #################################################################################
 
 
-## Servidor de tracking local con base de datos (requiere MLFLOW_TRACKING_URI=http://127.0.0.1:5000 en los demás comandos)
+## Servidor de tracking local con base de datos (requiere MLFLOW_TRACKING_URI=http://127.0.0.1:5000 en los demás comandos); con HOST_SERVIDOR=0.0.0.0 lo alcanza también el contenedor del servicio
 .PHONY: server
 server:
-	$(PYTHON_INTERPRETER) -m mlflow server --backend-store-uri sqlite:///mlflow.db --port 5000
+	$(PYTHON_INTERPRETER) -m mlflow server --backend-store-uri sqlite:///mlflow.db --host $(HOST_SERVIDOR) --port 5000 --allowed-hosts localhost:*,127.0.0.1:*,$(ANFITRION):*
 
 
 ## Ingesta de los datos de MiBici con el punto de entrada ingest del MLproject
@@ -129,15 +138,46 @@ registry:
 chequeos:
 	$(PYTHON_INTERPRETER) -m mibici.validacion --exportar
 	$(PYTHON_DEEPCHECKS) chequeos/validar_datos.py
-	$(PYTHON_INTERPRETER) -m bandit -c pyproject.toml -r mibici -f txt --exit-zero
-	$(PYTHON_INTERPRETER) -m bandit -c pyproject.toml -r mibici -q --severity-level medium
+	$(PYTHON_INTERPRETER) -m bandit -c pyproject.toml -r mibici api scripts -f txt --exit-zero
+	$(PYTHON_INTERPRETER) -m bandit -c pyproject.toml -r mibici api scripts -q --severity-level medium
 	$(PYTHON_INTERPRETER) -m pip_audit -r requirements.txt
+	$(PYTHON_INTERPRETER) -m pip_audit -r requirements-api.txt
 	$(PYTHON_INTERPRETER) chequeos/secretos.py
 
 
 ## Pruebas y chequeos en un solo comando
 .PHONY: verificar
 verificar: test chequeos
+
+
+## Servicio de predicción en local con uvicorn (lee MLFLOW_TRACKING_URI o RUTA_MODELO del entorno)
+.PHONY: api
+api:
+	$(PYTHON_INTERPRETER) -m uvicorn api.main:app --host 127.0.0.1 --port 8000
+
+
+## Imagen del servicio con el Containerfile (MOTOR=docker o MOTOR=podman)
+.PHONY: imagen
+imagen:
+	$(MOTOR) build -f Containerfile -t $(IMAGEN) .
+
+
+## Contenedor del servicio en el puerto 8000, apuntando al servidor de tracking del anfitrión (make server HOST_SERVIDOR=0.0.0.0)
+.PHONY: contenedor
+contenedor:
+	$(MOTOR) run --rm -d --name $(CONTENEDOR) -p 8000:8000 --add-host=$(ANFITRION):host-gateway -e MLFLOW_TRACKING_URI=http://$(ANFITRION):5000 $(IMAGEN)
+
+
+## Petición de prueba al servicio con el ejemplo de api/ejemplos/peticion_p2.json
+.PHONY: probar-api
+probar-api:
+	$(PYTHON_INTERPRETER) scripts/probar_api.py
+
+
+## Exporta el champion de P2 a models/api (carpeta ignorada por Git) para arrancar el servicio sin registry: RUTA_MODELO=models/api
+.PHONY: exportar-modelo
+exportar-modelo:
+	$(PYTHON_INTERPRETER) -m mlflow artifacts download -u models:/mibici-equipo38-p2-riesgo@champion -d models/api
 
 
 #################################################################################
