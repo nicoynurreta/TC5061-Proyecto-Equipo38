@@ -1,0 +1,16 @@
+{
+  "estacion_id": 2,
+  "salidas_h0": 0,
+  "llegadas_h0": 4,
+  "salidas_h1": 1,
+  "llegadas_h1": 2,
+  "salidas_h2": 0,
+  "llegadas_h2": 1,
+  "neto_3h": 6,
+  "neto_futuro_semana_anterior": 0,
+  "riesgo_semana_anterior": 0,
+  "hora_dia": 0,
+  "dia_semana": 5,
+  "fin_de_semana": 1,
+  "capacidad": 15
+}
