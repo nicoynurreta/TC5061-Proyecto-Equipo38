@@ -1,0 +1,1504 @@
+{
+  "generado": "2026-11-15T03:02:48",
+  "evidently": "0.7.23",
+  "modelo": {
+    "nombre": "mibici-equipo38-p2-riesgo",
+    "version": "1",
+    "uri": "models:/mibici-equipo38-p2-riesgo@champion",
+    "run_id": "59bb5baa6e9f45d1b35a99646fd44986",
+    "corrida": "p2_hgb_mejor",
+    "umbral": 0.92
+  },
+  "version_datos": "7aa5e436d887",
+  "version_datos_actual": "f396cd21ea7d",
+  "metodos": {
+    "numericas": "Distancia de Wasserstein normalizada",
+    "categoricas": "Distancia de Jensen-Shannon",
+    "umbral": 0.1,
+    "proporcion_para_deriva_del_conjunto": 0.5
+  },
+  "ventanas": {
+    "referencia": [
+      "2025-01-01",
+      "2025-09-30"
+    ],
+    "validacion_2025": [
+      "2025-10-01",
+      "2025-10-31"
+    ],
+    "prueba_2025": [
+      "2025-11-01",
+      "2025-12-31"
+    ],
+    "actual": [
+      "2026-01-01",
+      "2026-06-30"
+    ],
+    "evaluacion": [
+      "2026-07-01",
+      "2026-09-30"
+    ],
+    "confirmacion": [
+      "2026-10-01",
+      "2026-10-31"
+    ]
+  },
+  "conjuntos": {
+    "referencia": {
+      "filas": 2339422,
+      "positivos": 42327,
+      "tasa_riesgo": 0.018092930646971775,
+      "alertas": 43853,
+      "estaciones": 369,
+      "primera_hora": "2025-01-08 00:00:00",
+      "ultima_hora": "2025-09-30 21:00:00"
+    },
+    "validacion_2025": {
+      "filas": 272496,
+      "positivos": 4989,
+      "tasa_riesgo": 0.018308525629734014,
+      "alertas": 5276,
+      "estaciones": 368,
+      "primera_hora": "2025-10-01 00:00:00",
+      "ultima_hora": "2025-10-31 21:00:00"
+    },
+    "prueba_2025": {
+      "filas": 536089,
+      "positivos": 6718,
+      "tasa_riesgo": 0.01253150129922457,
+      "alertas": 8016,
+      "estaciones": 368,
+      "primera_hora": "2025-11-01 00:00:00",
+      "ultima_hora": "2025-12-31 21:00:00"
+    },
+    "actual": {
+      "filas": 1622169,
+      "positivos": 18196,
+      "tasa_riesgo": 0.011217080341197495,
+      "alertas": 19821,
+      "estaciones": 412,
+      "primera_hora": "2026-01-01 00:00:00",
+      "ultima_hora": "2026-06-30 23:00:00"
+    },
+    "evaluacion": {
+      "filas": 1001082,
+      "positivos": 10232,
+      "tasa_riesgo": 0.010220940941900862,
+      "alertas": 11470,
+      "estaciones": 469,
+      "primera_hora": "2026-07-01 00:00:00",
+      "ultima_hora": "2026-09-30 23:00:00"
+    },
+    "confirmacion": {
+      "filas": 346775,
+      "positivos": 4947,
+      "tasa_riesgo": 0.014265734265734267,
+      "alertas": 6191,
+      "estaciones": 469,
+      "primera_hora": "2026-10-01 00:00:00",
+      "ultima_hora": "2026-10-31 21:00:00"
+    }
+  },
+  "principal": {
+    "descripcion": "Referencia contra actual",
+    "filas_referencia": 2339422,
+    "filas_actual": 1622169,
+    "columnas": 16,
+    "columnas_con_deriva": 0,
+    "proporcion_con_deriva": 0.0,
+    "deriva_del_conjunto": false,
+    "detalle": [
+      {
+        "columna": "salidas_h0",
+        "tipo": "numérica",
+        "prueba": "Distancia de Wasserstein normalizada",
+        "estadistico": 0.061174143886837735,
+        "umbral": 0.1,
+        "deriva": false,
+        "media_referencia": 1.386962652206421,
+        "media_actual": 1.2401421070098877,
+        "cambio_relativo": -0.10585760543945921
+      },
+      {
+        "columna": "llegadas_h0",
+        "tipo": "numérica",
+        "prueba": "Distancia de Wasserstein normalizada",
+        "estadistico": 0.055439792674712746,
+        "umbral": 0.1,
+        "deriva": false,
+        "media_referencia": 1.3869494199752808,
+        "media_actual": 1.2403233051300049,
+        "cambio_relativo": -0.10571842976645043
+      },
+      {
+        "columna": "salidas_h1",
+        "tipo": "numérica",
+        "prueba": "Distancia de Wasserstein normalizada",
+        "estadistico": 0.061224795200974326,
+        "umbral": 0.1,
+        "deriva": false,
+        "media_referencia": 1.3868707418441772,
+        "media_actual": 1.2399263381958008,
+        "cambio_relativo": -0.10595392866459828
+      },
+      {
+        "columna": "llegadas_h1",
+        "tipo": "numérica",
+        "prueba": "Distancia de Wasserstein normalizada",
+        "estadistico": 0.0554912971062596,
+        "umbral": 0.1,
+        "deriva": false,
+        "media_referencia": 1.386847734451294,
+        "media_actual": 1.2400890588760376,
+        "cambio_relativo": -0.10582176538170673
+      },
+      {
+        "columna": "salidas_h2",
+        "tipo": "numérica",
+        "prueba": "Distancia de Wasserstein normalizada",
+        "estadistico": 0.061278776065853566,
+        "umbral": 0.1,
+        "deriva": false,
+        "media_referencia": 1.3866685628890991,
+        "media_actual": 1.2395976781845093,
+        "cambio_relativo": -0.1060605891274915
+      },
+      {
+        "columna": "llegadas_h2",
+        "tipo": "numérica",
+        "prueba": "Distancia de Wasserstein normalizada",
+        "estadistico": 0.05552840174422376,
+        "umbral": 0.1,
+        "deriva": false,
+        "media_referencia": 1.3866437673568726,
+        "media_actual": 1.2397962808609009,
+        "cambio_relativo": -0.10590137853205263
+      },
+      {
+        "columna": "neto_3h",
+        "tipo": "numérica",
+        "prueba": "Distancia de Wasserstein normalizada",
+        "estadistico": 0.08181908864014077,
+        "umbral": 0.1,
+        "deriva": false,
+        "media_referencia": -6.112620758358389e-05,
+        "media_actual": 0.0005424835253506899,
+        "cambio_relativo": null
+      },
+      {
+        "columna": "neto_futuro_semana_anterior",
+        "tipo": "numérica",
+        "prueba": "Distancia de Wasserstein normalizada",
+        "estadistico": 0.07769533196744241,
+        "umbral": 0.1,
+        "deriva": false,
+        "media_referencia": 4.70201621283195e-06,
+        "media_actual": -8.383836393477395e-05,
+        "cambio_relativo": null
+      },
+      {
+        "columna": "riesgo_semana_anterior",
+        "tipo": "categórica",
+        "prueba": "Distancia de Jensen-Shannon",
+        "estadistico": 0.020571747191143044,
+        "umbral": 0.1,
+        "deriva": false,
+        "media_referencia": 0.017990341203938408,
+        "media_actual": 0.011061732778767194,
+        "cambio_relativo": -0.38512935061256187
+      },
+      {
+        "columna": "hora_dia",
+        "tipo": "categórica",
+        "prueba": "Distancia de Jensen-Shannon",
+        "estadistico": 0.00045752479490063073,
+        "umbral": 0.1,
+        "deriva": false,
+        "media_referencia": null,
+        "media_actual": null,
+        "cambio_relativo": null
+      },
+      {
+        "columna": "dia_semana",
+        "tipo": "categórica",
+        "prueba": "Distancia de Jensen-Shannon",
+        "estadistico": 0.004025689502180788,
+        "umbral": 0.1,
+        "deriva": false,
+        "media_referencia": null,
+        "media_actual": null,
+        "cambio_relativo": null
+      },
+      {
+        "columna": "fin_de_semana",
+        "tipo": "categórica",
+        "prueba": "Distancia de Jensen-Shannon",
+        "estadistico": 0.0009726323138944423,
+        "umbral": 0.1,
+        "deriva": false,
+        "media_referencia": 0.28616299239726734,
+        "media_actual": 0.2874071690434227,
+        "cambio_relativo": 0.004347790172770341
+      },
+      {
+        "columna": "capacidad",
+        "tipo": "numérica",
+        "prueba": "Distancia de Wasserstein normalizada",
+        "estadistico": 0.0064608181870726665,
+        "umbral": 0.1,
+        "deriva": false,
+        "media_referencia": 16.937061309814453,
+        "media_actual": 16.93979835510254,
+        "cambio_relativo": 0.00016160095532628867
+      },
+      {
+        "columna": "riesgo",
+        "tipo": "categórica",
+        "prueba": "Distancia de Jensen-Shannon",
+        "estadistico": 0.02032319989925925,
+        "umbral": 0.1,
+        "deriva": false,
+        "media_referencia": 0.018092930646971775,
+        "media_actual": 0.011217080341197495,
+        "cambio_relativo": -0.3800296613044883
+      },
+      {
+        "columna": "probabilidad",
+        "tipo": "numérica",
+        "prueba": "Distancia de Wasserstein normalizada",
+        "estadistico": 0.07949678035472223,
+        "umbral": 0.1,
+        "deriva": false,
+        "media_referencia": 0.19960145204892524,
+        "media_actual": 0.17757314163309038,
+        "cambio_relativo": -0.11036147377542825
+      },
+      {
+        "columna": "prediccion",
+        "tipo": "categórica",
+        "prueba": "Distancia de Jensen-Shannon",
+        "estadistico": 0.018758968285909856,
+        "umbral": 0.1,
+        "deriva": false,
+        "media_referencia": 0.018745228522258916,
+        "media_actual": 0.012218825535440512,
+        "cambio_relativo": -0.34816342617902274
+      }
+    ]
+  },
+  "controles": {
+    "mismos_meses": {
+      "descripcion": "Mismos meses un año después",
+      "filas_referencia": 1529820,
+      "filas_actual": 1622169,
+      "columnas": 16,
+      "columnas_con_deriva": 0,
+      "proporcion_con_deriva": 0.0,
+      "deriva_del_conjunto": false,
+      "detalle": [
+        {
+          "columna": "salidas_h0",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.06997945677176891,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "llegadas_h0",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.06304510426902118,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "salidas_h1",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.07010938892783135,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "llegadas_h1",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.06317194482581104,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "salidas_h2",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.07023143588605804,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "llegadas_h2",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.06328320525689998,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "neto_3h",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.08805065516728415,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "neto_futuro_semana_anterior",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.08307976954015439,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "riesgo_semana_anterior",
+          "tipo": "categórica",
+          "prueba": "Distancia de Jensen-Shannon",
+          "estadistico": 0.022651809093823038,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "hora_dia",
+          "tipo": "categórica",
+          "prueba": "Distancia de Jensen-Shannon",
+          "estadistico": 0.000619199728626768,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "dia_semana",
+          "tipo": "categórica",
+          "prueba": "Distancia de Jensen-Shannon",
+          "estadistico": 0.006631349824125439,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "fin_de_semana",
+          "tipo": "categórica",
+          "prueba": "Distancia de Jensen-Shannon",
+          "estadistico": 0.0003914662944962403,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "capacidad",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.006517112305273721,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "riesgo",
+          "tipo": "categórica",
+          "prueba": "Distancia de Jensen-Shannon",
+          "estadistico": 0.02267907866315446,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "probabilidad",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.08521951635747728,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "prediccion",
+          "tipo": "categórica",
+          "prueba": "Distancia de Jensen-Shannon",
+          "estadistico": 0.020657312039089184,
+          "umbral": 0.1,
+          "deriva": false
+        }
+      ]
+    },
+    "mismas_estaciones": {
+      "descripcion": "Solo estaciones de la referencia",
+      "filas_referencia": 2339422,
+      "filas_actual": 1598592,
+      "columnas": 16,
+      "columnas_con_deriva": 0,
+      "proporcion_con_deriva": 0.0,
+      "deriva_del_conjunto": false,
+      "detalle": [
+        {
+          "columna": "salidas_h0",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.05655837790858584,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "llegadas_h0",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.0505742109449613,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "salidas_h1",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.05660822957227599,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "llegadas_h1",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.05062098591309951,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "salidas_h2",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.05666140231736869,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "llegadas_h2",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.050654450745405616,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "neto_3h",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.07864005529499024,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "neto_futuro_semana_anterior",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.07432622451461618,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "riesgo_semana_anterior",
+          "tipo": "categórica",
+          "prueba": "Distancia de Jensen-Shannon",
+          "estadistico": 0.02012863399351485,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "hora_dia",
+          "tipo": "categórica",
+          "prueba": "Distancia de Jensen-Shannon",
+          "estadistico": 0.000491327113127093,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "dia_semana",
+          "tipo": "categórica",
+          "prueba": "Distancia de Jensen-Shannon",
+          "estadistico": 0.0037741748262138486,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "fin_de_semana",
+          "tipo": "categórica",
+          "prueba": "Distancia de Jensen-Shannon",
+          "estadistico": 0.0008832909980530313,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "capacidad",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.001819586668355589,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "riesgo",
+          "tipo": "categórica",
+          "prueba": "Distancia de Jensen-Shannon",
+          "estadistico": 0.0198650415628927,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "probabilidad",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.07297721504523219,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "prediccion",
+          "tipo": "categórica",
+          "prueba": "Distancia de Jensen-Shannon",
+          "estadistico": 0.018289899144195532,
+          "umbral": 0.1,
+          "deriva": false
+        }
+      ]
+    },
+    "estacional": {
+      "descripcion": "Referencia contra prueba de 2025",
+      "filas_referencia": 2339422,
+      "filas_actual": 536089,
+      "columnas": 16,
+      "columnas_con_deriva": 0,
+      "proporcion_con_deriva": 0.0,
+      "deriva_del_conjunto": false,
+      "detalle": [
+        {
+          "columna": "salidas_h0",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.03684262129303706,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "llegadas_h0",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.033595395307579975,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "salidas_h1",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.036881176337440244,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "llegadas_h1",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.03360503199538262,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "salidas_h2",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.03685359066460632,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "llegadas_h2",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.03355108561340088,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "neto_3h",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.05799142626633544,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "neto_futuro_semana_anterior",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.03164974889932176,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "riesgo_semana_anterior",
+          "tipo": "categórica",
+          "prueba": "Distancia de Jensen-Shannon",
+          "estadistico": 0.011367630699625427,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "hora_dia",
+          "tipo": "categórica",
+          "prueba": "Distancia de Jensen-Shannon",
+          "estadistico": 0.001867843117639968,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "dia_semana",
+          "tipo": "categórica",
+          "prueba": "Distancia de Jensen-Shannon",
+          "estadistico": 0.018356595251313636,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "fin_de_semana",
+          "tipo": "categórica",
+          "prueba": "Distancia de Jensen-Shannon",
+          "estadistico": 0.0076644965451294475,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "capacidad",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.003427300359294676,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "riesgo",
+          "tipo": "categórica",
+          "prueba": "Distancia de Jensen-Shannon",
+          "estadistico": 0.016056871724758313,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "probabilidad",
+          "tipo": "numérica",
+          "prueba": "Distancia de Wasserstein normalizada",
+          "estadistico": 0.04805098107032354,
+          "umbral": 0.1,
+          "deriva": false
+        },
+        {
+          "columna": "prediccion",
+          "tipo": "categórica",
+          "prueba": "Distancia de Jensen-Shannon",
+          "estadistico": 0.010428808208911117,
+          "umbral": 0.1,
+          "deriva": false
+        }
+      ]
+    }
+  },
+  "mensual": {
+    "2026-01": {
+      "columnas_con_deriva": 0,
+      "proporcion_con_deriva": 0.0,
+      "deriva_del_conjunto": false,
+      "con_deriva": [],
+      "estadisticos": {
+        "salidas_h0": 0.05362305218348869,
+        "llegadas_h0": 0.04830516177417319,
+        "salidas_h1": 0.053662802117925255,
+        "llegadas_h1": 0.04834345782978954,
+        "salidas_h2": 0.05383685761051914,
+        "llegadas_h2": 0.04853449490737011,
+        "neto_3h": 0.07373863975699993,
+        "neto_futuro_semana_anterior": 0.09509866266813286,
+        "riesgo_semana_anterior": 0.024826909176319367,
+        "hora_dia": 0.000491327113127093,
+        "dia_semana": 0.03879530118837111,
+        "fin_de_semana": 0.003246845450677301,
+        "capacidad": 0.003057335695979166,
+        "riesgo": 0.019430593614452617,
+        "probabilidad": 0.08804787309365421,
+        "prediccion": 0.021879615877718066
+      }
+    },
+    "2026-02": {
+      "columnas_con_deriva": 0,
+      "proporcion_con_deriva": 0.0,
+      "deriva_del_conjunto": false,
+      "con_deriva": [],
+      "estadisticos": {
+        "salidas_h0": 0.0446753592546128,
+        "llegadas_h0": 0.03932597838174538,
+        "salidas_h1": 0.04466171431391646,
+        "llegadas_h1": 0.03933108394511676,
+        "salidas_h2": 0.04459252367499472,
+        "llegadas_h2": 0.03925645459743615,
+        "neto_3h": 0.07266947286490033,
+        "neto_futuro_semana_anterior": 0.041157703942096224,
+        "riesgo_semana_anterior": 0.013895309496367836,
+        "hora_dia": 0.000491327113127093,
+        "dia_semana": 0.0010855747848324021,
+        "fin_de_semana": 0.00035108588680600987,
+        "capacidad": 0.003057335695979166,
+        "riesgo": 0.016783229406824102,
+        "probabilidad": 0.04991785350782874,
+        "prediccion": 0.013315084224750143
+      }
+    },
+    "2026-03": {
+      "columnas_con_deriva": 0,
+      "proporcion_con_deriva": 0.0,
+      "deriva_del_conjunto": false,
+      "con_deriva": [],
+      "estadisticos": {
+        "salidas_h0": 0.029027580128195073,
+        "llegadas_h0": 0.023418048862006203,
+        "salidas_h1": 0.028979412785684083,
+        "llegadas_h1": 0.023369186639768606,
+        "salidas_h2": 0.028914299793563598,
+        "llegadas_h2": 0.023336702717800674,
+        "neto_3h": 0.05632892485697588,
+        "neto_futuro_semana_anterior": 0.06980581365391364,
+        "riesgo_semana_anterior": 0.01792391026346402,
+        "hora_dia": 0.000491327113127093,
+        "dia_semana": 0.03901451863980594,
+        "fin_de_semana": 0.003246845450677301,
+        "capacidad": 0.003057335695979166,
+        "riesgo": 0.01583499738613626,
+        "probabilidad": 0.05032602507105479,
+        "prediccion": 0.015416331109674554
+      }
+    },
+    "2026-04": {
+      "columnas_con_deriva": 0,
+      "proporcion_con_deriva": 0.0,
+      "deriva_del_conjunto": false,
+      "con_deriva": [],
+      "estadisticos": {
+        "salidas_h0": 0.04634022642374748,
+        "llegadas_h0": 0.03958761781565322,
+        "salidas_h1": 0.04643819223838446,
+        "llegadas_h1": 0.039679305878523696,
+        "salidas_h2": 0.0465403607016652,
+        "llegadas_h2": 0.039755151179019795,
+        "neto_3h": 0.06226194303560834,
+        "neto_futuro_semana_anterior": 0.05756895660632062,
+        "riesgo_semana_anterior": 0.01599227531470643,
+        "hora_dia": 0.000491327113127093,
+        "dia_semana": 0.03708416899426645,
+        "fin_de_semana": 0.015414047018072238,
+        "capacidad": 0.003057335695979166,
+        "riesgo": 0.015175316151638864,
+        "probabilidad": 0.057728380632171256,
+        "prediccion": 0.013283684884858982
+      }
+    },
+    "2026-05": {
+      "columnas_con_deriva": 8,
+      "proporcion_con_deriva": 0.5,
+      "deriva_del_conjunto": true,
+      "con_deriva": [
+        "salidas_h0",
+        "llegadas_h0",
+        "salidas_h1",
+        "llegadas_h1",
+        "salidas_h2",
+        "llegadas_h2",
+        "neto_3h",
+        "probabilidad"
+      ],
+      "estadisticos": {
+        "salidas_h0": 0.11329537791228624,
+        "llegadas_h0": 0.10575017381674018,
+        "salidas_h1": 0.1130179924540685,
+        "llegadas_h1": 0.1054604003120746,
+        "salidas_h2": 0.11253426011294419,
+        "llegadas_h2": 0.10497666630535511,
+        "neto_3h": 0.10561989502648406,
+        "neto_futuro_semana_anterior": 0.0879376388839942,
+        "riesgo_semana_anterior": 0.02475326181775537,
+        "hora_dia": 0.0004859847127986665,
+        "dia_semana": 0.03881811119847503,
+        "fin_de_semana": 0.02800566271731006,
+        "capacidad": 0.002939112013263927,
+        "riesgo": 0.02780787147940362,
+        "probabilidad": 0.11801887935063535,
+        "prediccion": 0.024770393502032872
+      }
+    },
+    "2026-06": {
+      "columnas_con_deriva": 3,
+      "proporcion_con_deriva": 0.1875,
+      "deriva_del_conjunto": false,
+      "con_deriva": [
+        "neto_3h",
+        "neto_futuro_semana_anterior",
+        "probabilidad"
+      ],
+      "estadisticos": {
+        "salidas_h0": 0.07954770740146018,
+        "llegadas_h0": 0.07409790767816772,
+        "salidas_h1": 0.0800391680096682,
+        "llegadas_h1": 0.07459787561812431,
+        "salidas_h2": 0.08068227063479626,
+        "llegadas_h2": 0.07512660875286176,
+        "neto_3h": 0.1213209436277245,
+        "neto_futuro_semana_anterior": 0.11184436112105631,
+        "riesgo_semana_anterior": 0.0259529515269968,
+        "hora_dia": 0.00047049038158076644,
+        "dia_semana": 0.03605465079214508,
+        "fin_de_semana": 0.014053571451320883,
+        "capacidad": 0.027661607350871063,
+        "riesgo": 0.027251336732118686,
+        "probabilidad": 0.1087379018526034,
+        "prediccion": 0.023903751494615284
+      }
+    },
+    "2026-07": {
+      "columnas_con_deriva": 3,
+      "proporcion_con_deriva": 0.1875,
+      "deriva_del_conjunto": false,
+      "con_deriva": [
+        "neto_3h",
+        "neto_futuro_semana_anterior",
+        "probabilidad"
+      ],
+      "estadisticos": {
+        "salidas_h0": 0.09649881025515951,
+        "llegadas_h0": 0.0897019305077993,
+        "salidas_h1": 0.09617205702500195,
+        "llegadas_h1": 0.08939042567280556,
+        "salidas_h2": 0.09573585338469795,
+        "llegadas_h2": 0.08907067786259547,
+        "neto_3h": 0.12081862718657577,
+        "neto_futuro_semana_anterior": 0.1115404589111708,
+        "riesgo_semana_anterior": 0.027974430026309345,
+        "hora_dia": 0.0004396108626586187,
+        "dia_semana": 0.03975211776189165,
+        "fin_de_semana": 0.022685660731568098,
+        "capacidad": 0.07659374568065752,
+        "riesgo": 0.028831211939539848,
+        "probabilidad": 0.13031491029811554,
+        "prediccion": 0.025646179791849147
+      }
+    },
+    "2026-08": {
+      "columnas_con_deriva": 9,
+      "proporcion_con_deriva": 0.5625,
+      "deriva_del_conjunto": true,
+      "con_deriva": [
+        "salidas_h0",
+        "llegadas_h0",
+        "salidas_h1",
+        "llegadas_h1",
+        "salidas_h2",
+        "llegadas_h2",
+        "neto_3h",
+        "neto_futuro_semana_anterior",
+        "probabilidad"
+      ],
+      "estadisticos": {
+        "salidas_h0": 0.11765845669263354,
+        "llegadas_h0": 0.11001289561365649,
+        "salidas_h1": 0.11747207227426221,
+        "llegadas_h1": 0.10982056450427116,
+        "salidas_h2": 0.11724345983705053,
+        "llegadas_h2": 0.10962128527860546,
+        "neto_3h": 0.1130667014404959,
+        "neto_futuro_semana_anterior": 0.11912462522145595,
+        "riesgo_semana_anterior": 0.02820613943028899,
+        "hora_dia": 0.000483730824234999,
+        "dia_semana": 0.0382529770531407,
+        "fin_de_semana": 0.027517889842642737,
+        "capacidad": 0.09887849024446382,
+        "riesgo": 0.025417452782456818,
+        "probabilidad": 0.16135902353064238,
+        "prediccion": 0.02537339053046251
+      }
+    },
+    "2026-09": {
+      "columnas_con_deriva": 1,
+      "proporcion_con_deriva": 0.0625,
+      "deriva_del_conjunto": false,
+      "con_deriva": [
+        "capacidad"
+      ],
+      "estadisticos": {
+        "salidas_h0": 0.02423820790965993,
+        "llegadas_h0": 0.023691735303040685,
+        "salidas_h1": 0.02425823602575372,
+        "llegadas_h1": 0.02372976342160445,
+        "salidas_h2": 0.024382158553749974,
+        "llegadas_h2": 0.023886939740686692,
+        "neto_3h": 0.07979350605412132,
+        "neto_futuro_semana_anterior": 0.08021381414127687,
+        "riesgo_semana_anterior": 0.019262307070071816,
+        "hora_dia": 0.000491327113127093,
+        "dia_semana": 0.037316513910506166,
+        "fin_de_semana": 0.015414047018072238,
+        "capacidad": 0.1048029346542282,
+        "riesgo": 0.01752141468057746,
+        "probabilidad": 0.045221932252699285,
+        "prediccion": 0.013398573973384903
+      }
+    },
+    "2026-10": {
+      "columnas_con_deriva": 7,
+      "proporcion_con_deriva": 0.4375,
+      "deriva_del_conjunto": false,
+      "con_deriva": [
+        "salidas_h0",
+        "llegadas_h0",
+        "salidas_h1",
+        "llegadas_h1",
+        "salidas_h2",
+        "llegadas_h2",
+        "capacidad"
+      ],
+      "estadisticos": {
+        "salidas_h0": 0.1453054095790171,
+        "llegadas_h0": 0.13670169974210328,
+        "salidas_h1": 0.1446169698914669,
+        "llegadas_h1": 0.1360207340042356,
+        "salidas_h2": 0.1441415916838605,
+        "llegadas_h2": 0.13562441451674034,
+        "neto_3h": 0.04301097430040385,
+        "neto_futuro_semana_anterior": 0.03892544261699147,
+        "riesgo_semana_anterior": 0.011206509672380925,
+        "hora_dia": 0.0031166852520836587,
+        "dia_semana": 0.037414467418287765,
+        "fin_de_semana": 0.0009847503381140994,
+        "capacidad": 0.10460618552092642,
+        "riesgo": 0.01073736699362616,
+        "probabilidad": 0.05524992495646726,
+        "prediccion": 0.0023534814148206996
+      }
+    }
+  },
+  "primer_mes_con_deriva_del_conjunto": "2026-05",
+  "tasas_por_mes": [
+    {
+      "mes": "2025-01",
+      "filas": 208870,
+      "tasa_riesgo": 0.020314070953224492,
+      "tasa_alertas": 0.01893522286589745,
+      "conjunto": "referencia"
+    },
+    {
+      "mes": "2025-02",
+      "filas": 246624,
+      "tasa_riesgo": 0.020233229531594656,
+      "tasa_alertas": 0.02015213442325159,
+      "conjunto": "referencia"
+    },
+    {
+      "mes": "2025-03",
+      "filas": 273048,
+      "tasa_riesgo": 0.020018458293047377,
+      "tasa_alertas": 0.020417655503794204,
+      "conjunto": "referencia"
+    },
+    {
+      "mes": "2025-04",
+      "filas": 264240,
+      "tasa_riesgo": 0.018782167726309414,
+      "tasa_alertas": 0.01952391765062065,
+      "conjunto": "referencia"
+    },
+    {
+      "mes": "2025-05",
+      "filas": 273048,
+      "tasa_riesgo": 0.01902595880577774,
+      "tasa_alertas": 0.020110017286337933,
+      "conjunto": "referencia"
+    },
+    {
+      "mes": "2025-06",
+      "filas": 263990,
+      "tasa_riesgo": 0.015936209704913065,
+      "tasa_alertas": 0.017644607750293573,
+      "conjunto": "referencia"
+    },
+    {
+      "mes": "2025-07",
+      "filas": 273048,
+      "tasa_riesgo": 0.017352260408426357,
+      "tasa_alertas": 0.01835574697489086,
+      "conjunto": "referencia"
+    },
+    {
+      "mes": "2025-08",
+      "filas": 273048,
+      "tasa_riesgo": 0.01598620022853125,
+      "tasa_alertas": 0.01685784184465735,
+      "conjunto": "referencia"
+    },
+    {
+      "mes": "2025-09",
+      "filas": 263506,
+      "tasa_riesgo": 0.015787116801894454,
+      "tasa_alertas": 0.01681176140201741,
+      "conjunto": "referencia"
+    },
+    {
+      "mes": "2025-10",
+      "filas": 272496,
+      "tasa_riesgo": 0.018308525629734014,
+      "tasa_alertas": 0.01936175209911338,
+      "conjunto": "validacion_2025"
+    },
+    {
+      "mes": "2025-11",
+      "filas": 264240,
+      "tasa_riesgo": 0.014456554647290343,
+      "tasa_alertas": 0.01611792310021193,
+      "conjunto": "prueba_2025"
+    },
+    {
+      "mes": "2025-12",
+      "filas": 271849,
+      "tasa_riesgo": 0.010660329815449017,
+      "tasa_alertas": 0.01382017222796479,
+      "conjunto": "prueba_2025"
+    },
+    {
+      "mes": "2026-01",
+      "filas": 275280,
+      "tasa_riesgo": 0.011486486486486487,
+      "tasa_alertas": 0.01126126126126126,
+      "conjunto": "actual"
+    },
+    {
+      "mes": "2026-02",
+      "filas": 248640,
+      "tasa_riesgo": 0.012302927927927927,
+      "tasa_alertas": 0.0139760296010296,
+      "conjunto": "actual"
+    },
+    {
+      "mes": "2026-03",
+      "filas": 275280,
+      "tasa_riesgo": 0.01260171461784365,
+      "tasa_alertas": 0.013284655623365301,
+      "conjunto": "actual"
+    },
+    {
+      "mes": "2026-04",
+      "filas": 266400,
+      "tasa_riesgo": 0.012811561561561562,
+      "tasa_alertas": 0.013986486486486486,
+      "conjunto": "actual"
+    },
+    {
+      "mes": "2026-05",
+      "filas": 275409,
+      "tasa_riesgo": 0.00907377754539612,
+      "tasa_alertas": 0.010406341114487907,
+      "conjunto": "actual"
+    },
+    {
+      "mes": "2026-06",
+      "filas": 281160,
+      "tasa_riesgo": 0.009226063451415564,
+      "tasa_alertas": 0.010659411011523687,
+      "conjunto": "actual"
+    },
+    {
+      "mes": "2026-07",
+      "filas": 321370,
+      "tasa_riesgo": 0.008796714067896817,
+      "tasa_alertas": 0.010153405731711113,
+      "conjunto": "evaluacion"
+    },
+    {
+      "mes": "2026-08",
+      "filas": 342752,
+      "tasa_riesgo": 0.009735902343385304,
+      "tasa_alertas": 0.010231887778918869,
+      "conjunto": "evaluacion"
+    },
+    {
+      "mes": "2026-09",
+      "filas": 336960,
+      "tasa_riesgo": 0.012072649572649573,
+      "tasa_alertas": 0.013948243114909782,
+      "conjunto": "evaluacion"
+    },
+    {
+      "mes": "2026-10",
+      "filas": 346775,
+      "tasa_riesgo": 0.014265734265734267,
+      "tasa_alertas": 0.017853074760291254,
+      "conjunto": "confirmacion"
+    }
+  ],
+  "calidad": {
+    "referencia": {
+      "conjunto": {
+        "filas": 2339422,
+        "filas_duplicadas": 1036050,
+        "columnas_duplicadas": 0,
+        "columnas_casi_constantes": 3,
+        "filas_vacias": 0,
+        "columnas_constantes": 0,
+        "valores_faltantes": 0
+      },
+      "columnas": {
+        "salidas_h0": {
+          "faltantes": 0,
+          "minimo": 0.0,
+          "maximo": 205.0,
+          "media": 1.386962652206421,
+          "desviacion": 2.489389419555664
+        },
+        "llegadas_h0": {
+          "faltantes": 0,
+          "minimo": 0.0,
+          "maximo": 210.0,
+          "media": 1.3869494199752808,
+          "desviacion": 2.644902467727661
+        },
+        "salidas_h1": {
+          "faltantes": 0,
+          "minimo": 0.0,
+          "maximo": 205.0,
+          "media": 1.3868707418441772,
+          "desviacion": 2.4893529415130615
+        },
+        "llegadas_h1": {
+          "faltantes": 0,
+          "minimo": 0.0,
+          "maximo": 210.0,
+          "media": 1.386847734451294,
+          "desviacion": 2.6448357105255127
+        },
+        "salidas_h2": {
+          "faltantes": 0,
+          "minimo": 0.0,
+          "maximo": 205.0,
+          "media": 1.3866685628890991,
+          "desviacion": 2.489222526550293
+        },
+        "llegadas_h2": {
+          "faltantes": 0,
+          "minimo": 0.0,
+          "maximo": 210.0,
+          "media": 1.3866437673568726,
+          "desviacion": 2.644670009613037
+        },
+        "neto_3h": {
+          "faltantes": 0,
+          "minimo": -117.0,
+          "maximo": 166.0,
+          "media": -6.112620758358389e-05,
+          "desviacion": 4.144829273223877
+        },
+        "neto_futuro_semana_anterior": {
+          "faltantes": 0,
+          "minimo": -101.0,
+          "maximo": 132.0,
+          "media": 4.70201621283195e-06,
+          "desviacion": 3.129432201385498
+        },
+        "riesgo_semana_anterior": {
+          "faltantes": 0,
+          "valores": 2,
+          "media": 0.017990341203938408
+        },
+        "hora_dia": {
+          "faltantes": 0,
+          "valores": 24
+        },
+        "dia_semana": {
+          "faltantes": 0,
+          "valores": 7
+        },
+        "fin_de_semana": {
+          "faltantes": 0,
+          "valores": 2,
+          "media": 0.28616299239726734
+        },
+        "capacidad": {
+          "faltantes": 0,
+          "minimo": 11.0,
+          "maximo": 39.0,
+          "media": 16.937061309814453,
+          "desviacion": 4.165384292602539
+        },
+        "riesgo": {
+          "faltantes": 0,
+          "valores": 2,
+          "media": 0.018092930646971775
+        },
+        "probabilidad": {
+          "faltantes": 0,
+          "minimo": 2.530283396943361e-295,
+          "maximo": 1.0,
+          "media": 0.19960145204892524,
+          "desviacion": 0.2770970078895836
+        },
+        "prediccion": {
+          "faltantes": 0,
+          "valores": 2,
+          "media": 0.018745228522258916
+        }
+      }
+    },
+    "actual": {
+      "conjunto": {
+        "filas": 1622169,
+        "filas_duplicadas": 745259,
+        "columnas_duplicadas": 0,
+        "columnas_casi_constantes": 3,
+        "filas_vacias": 0,
+        "columnas_constantes": 0,
+        "valores_faltantes": 0
+      },
+      "columnas": {
+        "salidas_h0": {
+          "faltantes": 0,
+          "minimo": 0.0,
+          "maximo": 147.0,
+          "media": 1.2401421070098877,
+          "desviacion": 2.36971378326416
+        },
+        "llegadas_h0": {
+          "faltantes": 0,
+          "minimo": 0.0,
+          "maximo": 151.0,
+          "media": 1.2403233051300049,
+          "desviacion": 2.426647186279297
+        },
+        "salidas_h1": {
+          "faltantes": 0,
+          "minimo": 0.0,
+          "maximo": 147.0,
+          "media": 1.2399263381958008,
+          "desviacion": 2.3695709705352783
+        },
+        "llegadas_h1": {
+          "faltantes": 0,
+          "minimo": 0.0,
+          "maximo": 151.0,
+          "media": 1.2400890588760376,
+          "desviacion": 2.426572799682617
+        },
+        "salidas_h2": {
+          "faltantes": 0,
+          "minimo": 0.0,
+          "maximo": 147.0,
+          "media": 1.2395976781845093,
+          "desviacion": 2.369321823120117
+        },
+        "llegadas_h2": {
+          "faltantes": 0,
+          "minimo": 0.0,
+          "maximo": 151.0,
+          "media": 1.2397962808609009,
+          "desviacion": 2.4263272285461426
+        },
+        "neto_3h": {
+          "faltantes": 0,
+          "minimo": -140.0,
+          "maximo": 106.0,
+          "media": 0.0005424835253506899,
+          "desviacion": 3.507573127746582
+        },
+        "neto_futuro_semana_anterior": {
+          "faltantes": 0,
+          "minimo": -119.0,
+          "maximo": 86.0,
+          "media": -8.383836393477395e-05,
+          "desviacion": 2.6771535873413086
+        },
+        "riesgo_semana_anterior": {
+          "faltantes": 0,
+          "valores": 2,
+          "media": 0.011061732778767194
+        },
+        "hora_dia": {
+          "faltantes": 0,
+          "valores": 24
+        },
+        "dia_semana": {
+          "faltantes": 0,
+          "valores": 7
+        },
+        "fin_de_semana": {
+          "faltantes": 0,
+          "valores": 2,
+          "media": 0.2874071690434227
+        },
+        "capacidad": {
+          "faltantes": 0,
+          "minimo": 11.0,
+          "maximo": 39.0,
+          "media": 16.93979835510254,
+          "desviacion": 4.13979434967041
+        },
+        "riesgo": {
+          "faltantes": 0,
+          "valores": 2,
+          "media": 0.011217080341197495
+        },
+        "probabilidad": {
+          "faltantes": 0,
+          "minimo": 5.897822561453329e-295,
+          "maximo": 1.0,
+          "media": 0.17757314163309038,
+          "desviacion": 0.26005441188578715
+        },
+        "prediccion": {
+          "faltantes": 0,
+          "valores": 2,
+          "media": 0.012218825535440512
+        }
+      }
+    },
+    "crudos": {
+      "referencia": {
+        "meses": 12,
+        "registros_crudos": 4532032,
+        "viajes_validos": 4414800,
+        "duplicados": 0,
+        "sin_fecha_o_estacion": 0,
+        "duracion_negativa": 0,
+        "duracion_menor_1_min": 117226,
+        "duracion_mayor_24_h": 6,
+        "estaciones_con_viajes": 371,
+        "viajes_con_estacion_fuera_de_nomenclatura": 0,
+        "codificaciones": [
+          "latin-1",
+          "utf-8"
+        ]
+      },
+      "actual": {
+        "meses": 10,
+        "registros_crudos": 3997597,
+        "viajes_validos": 3840981,
+        "duplicados": 758,
+        "sin_fecha_o_estacion": 0,
+        "duracion_negativa": 0,
+        "duracion_menor_1_min": 155845,
+        "duracion_mayor_24_h": 13,
+        "estaciones_con_viajes": 472,
+        "viajes_con_estacion_fuera_de_nomenclatura": 3869,
+        "codificaciones": [
+          "latin-1",
+          "utf-8"
+        ]
+      },
+      "por_mes": [
+        {
+          "mes": "2026-01",
+          "codificacion": "latin-1",
+          "registros_crudos": 357180,
+          "viajes_validos": 346645,
+          "duplicados": 0,
+          "duracion_menor_1_min": 10535,
+          "duracion_mayor_24_h": 0
+        },
+        {
+          "mes": "2026-02",
+          "codificacion": "utf-8",
+          "registros_crudos": 333756,
+          "viajes_validos": 319059,
+          "duplicados": 0,
+          "duracion_menor_1_min": 14696,
+          "duracion_mayor_24_h": 1
+        },
+        {
+          "mes": "2026-03",
+          "codificacion": "utf-8",
+          "registros_crudos": 376243,
+          "viajes_validos": 364815,
+          "duplicados": 0,
+          "duracion_menor_1_min": 11427,
+          "duracion_mayor_24_h": 1
+        },
+        {
+          "mes": "2026-04",
+          "codificacion": "utf-8",
+          "registros_crudos": 351851,
+          "viajes_validos": 341716,
+          "duplicados": 0,
+          "duracion_menor_1_min": 10135,
+          "duracion_mayor_24_h": 0
+        },
+        {
+          "mes": "2026-05",
+          "codificacion": "utf-8",
+          "registros_crudos": 315895,
+          "viajes_validos": 305117,
+          "duplicados": 0,
+          "duracion_menor_1_min": 10777,
+          "duracion_mayor_24_h": 1
+        },
+        {
+          "mes": "2026-06",
+          "codificacion": "utf-8",
+          "registros_crudos": 355303,
+          "viajes_validos": 337572,
+          "duplicados": 0,
+          "duracion_menor_1_min": 17725,
+          "duracion_mayor_24_h": 6
+        },
+        {
+          "mes": "2026-07",
+          "codificacion": "utf-8",
+          "registros_crudos": 388257,
+          "viajes_validos": 371629,
+          "duplicados": 0,
+          "duracion_menor_1_min": 16627,
+          "duracion_mayor_24_h": 1
+        },
+        {
+          "mes": "2026-08",
+          "codificacion": "utf-8",
+          "registros_crudos": 393524,
+          "viajes_validos": 376321,
+          "duplicados": 0,
+          "duracion_menor_1_min": 17203,
+          "duracion_mayor_24_h": 0
+        },
+        {
+          "mes": "2026-09",
+          "codificacion": "utf-8",
+          "registros_crudos": 490056,
+          "viajes_validos": 470348,
+          "duplicados": 758,
+          "duracion_menor_1_min": 18949,
+          "duracion_mayor_24_h": 1
+        },
+        {
+          "mes": "2026-10",
+          "codificacion": "utf-8",
+          "registros_crudos": 635532,
+          "viajes_validos": 607759,
+          "duplicados": 0,
+          "duracion_menor_1_min": 27771,
+          "duracion_mayor_24_h": 2
+        }
+      ]
+    },
+    "estaciones": {
+      "estaciones_referencia": 369,
+      "estaciones_actual": 412,
+      "estaciones_nuevas": 44,
+      "estaciones_sin_actividad": 1,
+      "filas_de_estaciones_nuevas": 23577,
+      "proporcion_de_filas": 0.014534243965949293,
+      "tasa_riesgo_estaciones_nuevas": 0.0018662255588073123,
+      "tasa_riesgo_estaciones_conocidas": 0.01135499239330611
+    }
+  }
+}
