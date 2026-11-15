@@ -53,7 +53,7 @@ def _lineas_de_texto(ruta):
 
 
 def _permitida(ruta, linea, cadena):
-    if ruta == "data/manifiesto.json":
+    if ruta in ("data/manifiesto.json", "data/manifiesto_actual.json"):
         return "\"sha256\"" in linea and HEXADECIMAL_64.fullmatch(cadena) is not None
     if ruta.endswith(".ipynb"):
         return cadena.startswith("iVBORw0KGgo")

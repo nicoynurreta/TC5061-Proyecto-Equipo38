@@ -22,6 +22,7 @@ PATRONES = {
 }
 HEXADECIMAL_64 = re.compile(r"[0-9a-f]{64}")
 ZLIB_BASE64 = re.compile(r"e[AFJN]")
+MANIFIESTOS = ("data/manifiesto.json", "data/manifiesto_actual.json")
 
 
 def leer_argumentos():
@@ -39,7 +40,7 @@ def ejecutar(git, *argumentos):
 
 def lista_blanca(ruta, linea, cadena):
     """Motivo por el que una cadena larga se acepta; None cuando no hay motivo."""
-    if ruta == "data/manifiesto.json" and "\"sha256\"" in linea and HEXADECIMAL_64.fullmatch(cadena):
+    if ruta in MANIFIESTOS and "\"sha256\"" in linea and HEXADECIMAL_64.fullmatch(cadena):
         return "sumas SHA-256 del manifiesto de datos"
     if ruta.endswith(".ipynb") and cadena.startswith("iVBORw0KGgo"):
         return "imágenes PNG de las salidas de la libreta"
