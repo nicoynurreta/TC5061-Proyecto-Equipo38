@@ -1,0 +1,626 @@
+{
+  "por_mes": [
+    {
+      "mes": "2026-07",
+      "conjunto": "evaluacion",
+      "a": {
+        "filas": 321370,
+        "positivos": 2827,
+        "tasa_riesgo": 0.008796714067896817,
+        "alertas": 3263,
+        "tasa_alertas": 0.010153405731711113,
+        "recall": 0.3682348779625044,
+        "precision": 0.31903156604351823,
+        "f1": 0.341871921182266,
+        "falsos_positivos": 2222,
+        "falsos_negativos": 1786,
+        "costo": 11152,
+        "costo_por_mil": 34.701434483617014,
+        "costo_relativo": 0.7889635656172621
+      },
+      "b": {
+        "filas": 321370,
+        "positivos": 2827,
+        "tasa_riesgo": 0.008796714067896817,
+        "alertas": 2287,
+        "tasa_alertas": 0.00711640787876902,
+        "recall": 0.33286169083834455,
+        "precision": 0.4114560559685177,
+        "f1": 0.36800938599921784,
+        "falsos_positivos": 1346,
+        "falsos_negativos": 1886,
+        "costo": 10776,
+        "costo_por_mil": 33.53144350748359,
+        "costo_relativo": 0.7623629288998939
+      }
+    },
+    {
+      "mes": "2026-08",
+      "conjunto": "evaluacion",
+      "a": {
+        "filas": 342752,
+        "positivos": 3337,
+        "tasa_riesgo": 0.009735902343385304,
+        "alertas": 3507,
+        "tasa_alertas": 0.010231887778918869,
+        "recall": 0.3617021276595745,
+        "precision": 0.34416880524664956,
+        "f1": 0.3527177089421391,
+        "falsos_positivos": 2300,
+        "falsos_negativos": 2130,
+        "costo": 12950,
+        "costo_por_mil": 37.78241994211558,
+        "costo_relativo": 0.7761462391369494
+      },
+      "b": {
+        "filas": 342752,
+        "positivos": 3337,
+        "tasa_riesgo": 0.009735902343385304,
+        "alertas": 2544,
+        "tasa_alertas": 0.007422276164690505,
+        "recall": 0.3221456397962241,
+        "precision": 0.422562893081761,
+        "f1": 0.36558408433939804,
+        "falsos_positivos": 1469,
+        "falsos_negativos": 2262,
+        "costo": 12779,
+        "costo_por_mil": 37.283516945196524,
+        "costo_relativo": 0.7658975127359904
+      }
+    },
+    {
+      "mes": "2026-09",
+      "conjunto": "evaluacion",
+      "a": {
+        "filas": 336960,
+        "positivos": 4068,
+        "tasa_riesgo": 0.012072649572649573,
+        "alertas": 4700,
+        "tasa_alertas": 0.013948243114909782,
+        "recall": 0.3689773844641101,
+        "precision": 0.3193617021276596,
+        "f1": 0.34238138686131386,
+        "falsos_positivos": 3199,
+        "falsos_negativos": 2567,
+        "costo": 16034,
+        "costo_por_mil": 47.58428300094967,
+        "costo_relativo": 0.788298918387414
+      },
+      "b": {
+        "filas": 336960,
+        "positivos": 4068,
+        "tasa_riesgo": 0.012072649572649573,
+        "alertas": 3353,
+        "tasa_alertas": 0.009950735992402659,
+        "recall": 0.323992133726647,
+        "precision": 0.3930808231434536,
+        "f1": 0.3552081929659075,
+        "falsos_positivos": 2035,
+        "falsos_negativos": 2750,
+        "costo": 15785,
+        "costo_por_mil": 46.84532288698956,
+        "costo_relativo": 0.7760570304818093
+      }
+    },
+    {
+      "mes": "2026-10",
+      "conjunto": "confirmacion",
+      "a": {
+        "filas": 346775,
+        "positivos": 4947,
+        "tasa_riesgo": 0.014265734265734267,
+        "alertas": 6191,
+        "tasa_alertas": 0.017853074760291254,
+        "recall": 0.3798261572670305,
+        "precision": 0.3035050880310128,
+        "f1": 0.3374034835697612,
+        "falsos_positivos": 4312,
+        "falsos_negativos": 3068,
+        "costo": 19652,
+        "costo_por_mil": 56.67075192848389,
+        "costo_relativo": 0.7945017182130584
+      },
+      "b": {
+        "filas": 346775,
+        "positivos": 4947,
+        "tasa_riesgo": 0.014265734265734267,
+        "alertas": 4214,
+        "tasa_alertas": 0.012151971739600606,
+        "recall": 0.32565191024863555,
+        "precision": 0.382297104888467,
+        "f1": 0.3517083287850671,
+        "falsos_positivos": 2603,
+        "falsos_negativos": 3336,
+        "costo": 19283,
+        "costo_por_mil": 55.60666137985726,
+        "costo_relativo": 0.7795835860117243
+      }
+    }
+  ],
+  "evaluacion": {
+    "filas": 1001082,
+    "dias": 92,
+    "positivos": 10232,
+    "a": {
+      "filas": 1001082,
+      "positivos": 10232,
+      "tasa_riesgo": 0.010220940941900862,
+      "alertas": 11470,
+      "tasa_alertas": 0.011457602873690667,
+      "recall": 0.36639953088350274,
+      "precision": 0.32685265911072364,
+      "f1": 0.3454981107732007,
+      "falsos_positivos": 7721,
+      "falsos_negativos": 6483,
+      "costo": 40136,
+      "costo_por_mil": 40.09261978539221,
+      "costo_relativo": 0.7845191555903049,
+      "pr_auc": 0.333761518683362
+    },
+    "b": {
+      "filas": 1001082,
+      "positivos": 10232,
+      "tasa_riesgo": 0.010220940941900862,
+      "alertas": 8184,
+      "tasa_alertas": 0.008175154482849556,
+      "recall": 0.32584050039093043,
+      "precision": 0.40738025415444773,
+      "f1": 0.36207645525629895,
+      "falsos_positivos": 4850,
+      "falsos_negativos": 6898,
+      "costo": 39340,
+      "costo_por_mil": 39.297480126503125,
+      "costo_relativo": 0.7689601250977326,
+      "pr_auc": 0.3473662684508075
+    },
+    "diferencia": {
+      "recall": -0.04055903049257231,
+      "precision": 0.08052759504372409,
+      "f1": 0.01657834448309825,
+      "pr_auc": 0.013604749767445468,
+      "alertas": -3286,
+      "falsos_positivos": -2871,
+      "falsos_negativos": 415,
+      "costo": -796,
+      "costo_por_mil": -0.7951396588890844,
+      "costo_relativo": -0.015559030492572345
+    },
+    "intervalos": {
+      "recall": {
+        "inferior": -0.04479446020450619,
+        "superior": -0.03583569782755194
+      },
+      "precision": {
+        "inferior": 0.07395354420387967,
+        "superior": 0.08709705551300431
+      },
+      "f1": {
+        "inferior": 0.011697992410879625,
+        "superior": 0.02139756712134743
+      },
+      "costo_por_mil": {
+        "inferior": -1.0804046360380253,
+        "superior": -0.5109916211718979
+      }
+    },
+    "coinciden": 0.9959763535854206,
+    "mcnemar": {
+      "todas": {
+        "solo_acierta_a": 786,
+        "solo_acierta_b": 3242,
+        "estadistico": 1496.28227408143,
+        "p_valor": 0.0,
+        "prueba": "ji cuadrada con corrección de continuidad"
+      },
+      "en_riesgo": {
+        "solo_acierta_a": 509,
+        "solo_acierta_b": 94,
+        "estadistico": 284.23880597014926,
+        "p_valor": 8.951816653968375e-64,
+        "prueba": "ji cuadrada con corrección de continuidad"
+      },
+      "sin_riesgo": {
+        "solo_acierta_a": 277,
+        "solo_acierta_b": 3148,
+        "estadistico": 2404.934306569343,
+        "p_valor": 0.0,
+        "prueba": "ji cuadrada con corrección de continuidad"
+      }
+    }
+  },
+  "trafico": {
+    "proporcion_b": 0.5,
+    "semilla": 42,
+    "a": {
+      "filas": 500340,
+      "positivos": 5154,
+      "tasa_riesgo": 0.010300995323180238,
+      "alertas": 5764,
+      "tasa_alertas": 0.011520166286924892,
+      "recall": 0.3622429181218471,
+      "precision": 0.3239070090215128,
+      "f1": 0.3420040300421322,
+      "falsos_positivos": 3897,
+      "falsos_negativos": 3287,
+      "costo": 20332,
+      "costo_por_mil": 40.63636727025622,
+      "costo_relativo": 0.7889794334497477
+    },
+    "b": {
+      "filas": 500742,
+      "positivos": 5078,
+      "tasa_riesgo": 0.010140950828969809,
+      "alertas": 4089,
+      "tasa_alertas": 0.008165881831362258,
+      "recall": 0.32788499409216226,
+      "precision": 0.40719002201027144,
+      "f1": 0.36325951783571503,
+      "falsos_positivos": 2424,
+      "falsos_negativos": 3413,
+      "costo": 19489,
+      "costo_por_mil": 38.92024236033726,
+      "costo_relativo": 0.7675856636471051
+    },
+    "diferencia": {
+      "recall": -0.03435792402968485,
+      "precision": 0.08328301298875862,
+      "f1": 0.021255487793582828,
+      "costo_por_mil": -1.7161249099189604
+    },
+    "intervalos": {
+      "recall": {
+        "inferior": -0.05050069242408807,
+        "superior": -0.01863543467431907
+      },
+      "precision": {
+        "inferior": 0.06654436532894181,
+        "superior": 0.0994913110928663
+      },
+      "f1": {
+        "inferior": 0.006119851913856481,
+        "superior": 0.03533778791043448
+      },
+      "costo_por_mil": {
+        "inferior": -3.309821981321444,
+        "superior": -0.17584011040897157
+      }
+    }
+  },
+  "a_igual_recall": {
+    "umbral_b": 0.9279018143367045,
+    "evaluacion": {
+      "filas": 1001082,
+      "dias": 92,
+      "positivos": 10232,
+      "a": {
+        "filas": 1001082,
+        "positivos": 10232,
+        "tasa_riesgo": 0.010220940941900862,
+        "alertas": 11470,
+        "tasa_alertas": 0.011457602873690667,
+        "recall": 0.36639953088350274,
+        "precision": 0.32685265911072364,
+        "f1": 0.3454981107732007,
+        "falsos_positivos": 7721,
+        "falsos_negativos": 6483,
+        "costo": 40136,
+        "costo_por_mil": 40.09261978539221,
+        "costo_relativo": 0.7845191555903049,
+        "pr_auc": 0.333761518683362
+      },
+      "b": {
+        "filas": 1001082,
+        "positivos": 10232,
+        "tasa_riesgo": 0.010220940941900862,
+        "alertas": 10682,
+        "tasa_alertas": 0.010670454568157253,
+        "recall": 0.36639953088350274,
+        "precision": 0.3509642389065718,
+        "f1": 0.3585158267189442,
+        "falsos_positivos": 6933,
+        "falsos_negativos": 6483,
+        "costo": 39348,
+        "costo_por_mil": 39.305471479858795,
+        "costo_relativo": 0.7691164972634871,
+        "pr_auc": 0.3473662684508075
+      },
+      "diferencia": {
+        "recall": 0.0,
+        "precision": 0.02411157979584816,
+        "f1": 0.013017715945743524,
+        "pr_auc": 0.013604749767445468,
+        "alertas": -788,
+        "falsos_positivos": -788,
+        "falsos_negativos": 0,
+        "costo": -788,
+        "costo_por_mil": -0.7871483055334139,
+        "costo_relativo": -0.015402658326817864
+      },
+      "intervalos": {
+        "recall": {
+          "inferior": -0.00359685067042593,
+          "superior": 0.0042273309153775555
+        },
+        "precision": {
+          "inferior": 0.020316820690832973,
+          "superior": 0.02802718004034328
+        },
+        "f1": {
+          "inferior": 0.009650422747767597,
+          "superior": 0.016580314594374958
+        },
+        "costo_por_mil": {
+          "inferior": -1.0284937281772883,
+          "superior": -0.5622444100933351
+        }
+      },
+      "coinciden": 0.9969113419280339,
+      "mcnemar": {
+        "todas": {
+          "solo_acierta_a": 1152,
+          "solo_acierta_b": 1940,
+          "estadistico": 200.3133893919793,
+          "p_valor": 1.784200182126564e-45,
+          "prueba": "ji cuadrada con corrección de continuidad"
+        },
+        "en_riesgo": {
+          "solo_acierta_a": 242,
+          "solo_acierta_b": 242,
+          "estadistico": 0.002066115702479339,
+          "p_valor": 0.963745004895627,
+          "prueba": "ji cuadrada con corrección de continuidad"
+        },
+        "sin_riesgo": {
+          "solo_acierta_a": 910,
+          "solo_acierta_b": 1698,
+          "estadistico": 237.48811349693253,
+          "p_valor": 1.3880997636387717e-53,
+          "prueba": "ji cuadrada con corrección de continuidad"
+        }
+      }
+    },
+    "confirmacion": {
+      "filas": 346775,
+      "dias": 31,
+      "positivos": 4947,
+      "a": {
+        "filas": 346775,
+        "positivos": 4947,
+        "tasa_riesgo": 0.014265734265734267,
+        "alertas": 6191,
+        "tasa_alertas": 0.017853074760291254,
+        "recall": 0.3798261572670305,
+        "precision": 0.3035050880310128,
+        "f1": 0.3374034835697612,
+        "falsos_positivos": 4312,
+        "falsos_negativos": 3068,
+        "costo": 19652,
+        "costo_por_mil": 56.67075192848389,
+        "costo_relativo": 0.7945017182130584,
+        "pr_auc": 0.3288000897256906
+      },
+      "b": {
+        "filas": 346775,
+        "positivos": 4947,
+        "tasa_riesgo": 0.014265734265734267,
+        "alertas": 5654,
+        "tasa_alertas": 0.016304520222045996,
+        "recall": 0.37234687689508794,
+        "precision": 0.32578705341351255,
+        "f1": 0.3475143854353363,
+        "falsos_positivos": 3812,
+        "falsos_negativos": 3105,
+        "costo": 19337,
+        "costo_por_mil": 55.76238194794896,
+        "costo_relativo": 0.7817667273094805,
+        "pr_auc": 0.33874468425020615
+      },
+      "diferencia": {
+        "recall": -0.007479280371942565,
+        "precision": 0.02228196538249977,
+        "f1": 0.010110901865575117,
+        "pr_auc": 0.009944594524515571,
+        "alertas": -537,
+        "falsos_positivos": -500,
+        "falsos_negativos": 37,
+        "costo": -315,
+        "costo_por_mil": -0.9083699805349283,
+        "costo_relativo": -0.01273499090357788
+      },
+      "intervalos": {
+        "recall": {
+          "inferior": -0.013845675364410722,
+          "superior": -0.0006418834971044013
+        },
+        "precision": {
+          "inferior": 0.01628257276859774,
+          "superior": 0.02809115209557352
+        },
+        "f1": {
+          "inferior": 0.004377669830275562,
+          "superior": 0.01579661075325547
+        },
+        "costo_por_mil": {
+          "inferior": -1.4390049168274968,
+          "superior": -0.3924689188345046
+        }
+      },
+      "coinciden": 0.9944776872611925,
+      "mcnemar": {
+        "todas": {
+          "solo_acierta_a": 726,
+          "solo_acierta_b": 1189,
+          "estadistico": 111.45900783289817,
+          "p_valor": 4.694115296202047e-26,
+          "prueba": "ji cuadrada con corrección de continuidad"
+        },
+        "en_riesgo": {
+          "solo_acierta_a": 153,
+          "solo_acierta_b": 116,
+          "estadistico": 4.817843866171004,
+          "p_valor": 0.028166557648176146,
+          "prueba": "ji cuadrada con corrección de continuidad"
+        },
+        "sin_riesgo": {
+          "solo_acierta_a": 573,
+          "solo_acierta_b": 1073,
+          "estadistico": 151.2764277035237,
+          "p_valor": 9.119491722261013e-35,
+          "prueba": "ji cuadrada con corrección de continuidad"
+        }
+      }
+    }
+  },
+  "confirmacion": {
+    "filas": 346775,
+    "dias": 31,
+    "positivos": 4947,
+    "a": {
+      "filas": 346775,
+      "positivos": 4947,
+      "tasa_riesgo": 0.014265734265734267,
+      "alertas": 6191,
+      "tasa_alertas": 0.017853074760291254,
+      "recall": 0.3798261572670305,
+      "precision": 0.3035050880310128,
+      "f1": 0.3374034835697612,
+      "falsos_positivos": 4312,
+      "falsos_negativos": 3068,
+      "costo": 19652,
+      "costo_por_mil": 56.67075192848389,
+      "costo_relativo": 0.7945017182130584,
+      "pr_auc": 0.3288000897256906
+    },
+    "b": {
+      "filas": 346775,
+      "positivos": 4947,
+      "tasa_riesgo": 0.014265734265734267,
+      "alertas": 4214,
+      "tasa_alertas": 0.012151971739600606,
+      "recall": 0.32565191024863555,
+      "precision": 0.382297104888467,
+      "f1": 0.3517083287850671,
+      "falsos_positivos": 2603,
+      "falsos_negativos": 3336,
+      "costo": 19283,
+      "costo_por_mil": 55.60666137985726,
+      "costo_relativo": 0.7795835860117243,
+      "pr_auc": 0.33874468425020615
+    },
+    "diferencia": {
+      "recall": -0.05417424701839496,
+      "precision": 0.07879201685745424,
+      "f1": 0.014304845215305895,
+      "pr_auc": 0.009944594524515571,
+      "alertas": -1977,
+      "falsos_positivos": -1709,
+      "falsos_negativos": 268,
+      "costo": -369,
+      "costo_por_mil": -1.0640905486266306,
+      "costo_relativo": -0.014918132201334089
+    },
+    "intervalos": {
+      "recall": {
+        "inferior": -0.06380208502838637,
+        "superior": -0.04393575227666607
+      },
+      "precision": {
+        "inferior": 0.06912068350816614,
+        "superior": 0.0879792320503422
+      },
+      "f1": {
+        "inferior": 0.0056823389751622,
+        "superior": 0.022220233875769924
+      },
+      "costo_por_mil": {
+        "inferior": -1.7433249589988007,
+        "superior": -0.40703548610797147
+      }
+    },
+    "coinciden": 0.9928974118664841,
+    "mcnemar": {
+      "todas": {
+        "solo_acierta_a": 511,
+        "solo_acierta_b": 1952,
+        "estadistico": 841.9001218026797,
+        "p_valor": 4.1928260170798735e-185,
+        "prueba": "ji cuadrada con corrección de continuidad"
+      },
+      "en_riesgo": {
+        "solo_acierta_a": 314,
+        "solo_acierta_b": 46,
+        "estadistico": 198.025,
+        "p_valor": 5.63419083817462e-45,
+        "prueba": "ji cuadrada con corrección de continuidad"
+      },
+      "sin_riesgo": {
+        "solo_acierta_a": 197,
+        "solo_acierta_b": 1906,
+        "estadistico": 1387.1916310033287,
+        "p_valor": 1.2756278005731075e-303,
+        "prueba": "ji cuadrada con corrección de continuidad"
+      }
+    }
+  },
+  "decision": {
+    "costo_menor": true,
+    "recall_no_inferior": false,
+    "promover": false
+  },
+  "generado": "2026-11-15T08:57:15",
+  "modelo": "mibici-equipo38-p2-riesgo",
+  "versiones": {
+    "a": {
+      "version": "1",
+      "alias": "champion",
+      "run_id": "59bb5baa6e9f45d1b35a99646fd44986",
+      "corrida": "p2_hgb_mejor",
+      "umbral": 0.92,
+      "version_datos": "7aa5e436d887",
+      "periodo_entrenamiento": "2025-01-01 a 2025-09-30",
+      "commit_git": "bf9e9a3"
+    },
+    "b": {
+      "version": "3",
+      "alias": "challenger",
+      "run_id": "d504bab23035431e94f0bd1cf3482693",
+      "corrida": "p2_hgb_reentrenado",
+      "umbral": 0.94,
+      "version_datos": "7aa5e436d887+f396cd21ea7d",
+      "periodo_entrenamiento": "2025-01-01 a 2026-05-31",
+      "commit_git": "6b5fdbf"
+    }
+  },
+  "ventanas": {
+    "referencia": [
+      "2025-01-01",
+      "2025-09-30"
+    ],
+    "validacion_2025": [
+      "2025-10-01",
+      "2025-10-31"
+    ],
+    "prueba_2025": [
+      "2025-11-01",
+      "2025-12-31"
+    ],
+    "actual": [
+      "2026-01-01",
+      "2026-06-30"
+    ],
+    "evaluacion": [
+      "2026-07-01",
+      "2026-09-30"
+    ],
+    "confirmacion": [
+      "2026-10-01",
+      "2026-10-31"
+    ]
+  },
+  "regla": "La versión B se promueve a champion solo si, sobre el conjunto de evaluación, se cumplen las dos condiciones: (1) el intervalo de confianza de 95 % de la diferencia de costo por mil horas-estación (B menos A), calculado por bootstrap de bloques de un día sobre la comparación pareada, queda completo por debajo de cero; y (2) el límite inferior del intervalo de 95 % de la diferencia de recall (B menos A) no baja de -0.01. Si alguna falla, el alias champion no se mueve y la versión B conserva el alias challenger.",
+  "replicas": 2000,
+  "semilla": 42,
+  "confianza": 0.95,
+  "margen_recall": 0.01,
+  "accion": "El alias champion se queda en la versión 1 y la versión 3 conserva el alias challenger."
+}
