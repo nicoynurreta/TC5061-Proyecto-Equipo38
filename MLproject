@@ -21,3 +21,25 @@ entry_points:
       model: {type: string}
       run_name: {type: string, default: ""}
     command: "python -m mibici.modeling.search --pregunta {question} --modelo {model} --nombre_corrida {run_name}"
+
+  ingest_actual:
+    parameters:
+      months: {type: string, default: ""}
+    command: "python -m mibici.monitoreo.datos --ingerir --meses {months}"
+
+  monitor:
+    parameters:
+      version: {type: string, default: ""}
+    command: "python -m mibici.monitoreo.datos --exportar --version {version} && python -m mibici.monitoreo.drift --registrar && python -m mibici.monitoreo.desempeno"
+
+  reentrenar:
+    parameters:
+      run_name: {type: string, default: ""}
+    command: "python -m mibici.modeling.reentrenar --nombre_corrida {run_name}"
+
+  abtest:
+    parameters:
+      version_a: {type: string, default: ""}
+      version_b: {type: string, default: ""}
+      promote: {type: string, default: ""}
+    command: "python -m mibici.modeling.abtest --version_a {version_a} --version_b {version_b} --promover {promote}"

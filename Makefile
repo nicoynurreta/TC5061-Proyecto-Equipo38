@@ -133,6 +133,30 @@ registry:
 	$(PYTHON_INTERPRETER) -m mibici.modeling.registry --verificar
 
 
+## Ingesta del periodo actual (enero a octubre de 2026) en archivos aparte de los de 2025
+.PHONY: ingest-actual
+ingest-actual:
+	$(MLFLOW_RUN) -e ingest_actual
+
+
+## Monitoreo de P2: tabla de los dos periodos con la predicción del champion, reporte de drift con Evidently y desempeño mensual
+.PHONY: monitor
+monitor:
+	$(MLFLOW_RUN) -e monitor
+
+
+## Reentrena P2 con la receta del champion sobre 2025 más el periodo actual y registra la versión como challenger
+.PHONY: reentrenar
+reentrenar:
+	$(MLFLOW_RUN) -e reentrenar
+
+
+## A/B testing de champion contra challenger en el conjunto de evaluación; con PROMOVER=1 mueve el alias si la regla se cumple
+.PHONY: abtest
+abtest:
+	$(MLFLOW_RUN) -e abtest $(if $(PROMOVER),-P promote=1,)
+
+
 ## Chequeos de datos y seguridad: tablas de data/interim, suites de DeepChecks (entorno .venv-deepchecks), bandit, pip-audit y búsqueda de secretos
 .PHONY: chequeos
 chequeos:
