@@ -1,0 +1,782 @@
+{
+  "generado": "2026-11-15T02:53:02",
+  "modelo": {
+    "nombre": "mibici-equipo38-p2-riesgo",
+    "version": "1",
+    "uri": "models:/mibici-equipo38-p2-riesgo@champion",
+    "run_id": "59bb5baa6e9f45d1b35a99646fd44986",
+    "corrida": "p2_hgb_mejor",
+    "umbral": 0.92
+  },
+  "costo_falso_negativo": 5,
+  "ventanas": {
+    "referencia": [
+      "2025-01-01",
+      "2025-09-30"
+    ],
+    "validacion_2025": [
+      "2025-10-01",
+      "2025-10-31"
+    ],
+    "prueba_2025": [
+      "2025-11-01",
+      "2025-12-31"
+    ],
+    "actual": [
+      "2026-01-01",
+      "2026-06-30"
+    ],
+    "evaluacion": [
+      "2026-07-01",
+      "2026-09-30"
+    ],
+    "confirmacion": [
+      "2026-10-01",
+      "2026-10-31"
+    ]
+  },
+  "base": "prueba_2025",
+  "por_conjunto": {
+    "referencia": {
+      "filas": 2339422,
+      "positivos": 42327,
+      "tasa_riesgo": 0.018092930646971775,
+      "alertas": 43853,
+      "tasa_alertas": 0.018745228522258916,
+      "recall": 0.38805018073570063,
+      "precision": 0.3745467812920439,
+      "f1": 0.3811789278254816,
+      "falsos_positivos": 27428,
+      "falsos_negativos": 25902,
+      "costo": 156938,
+      "costo_por_mil": 67.08409171154243,
+      "costo_relativo": 0.7415503106764004,
+      "pr_auc": 0.37456661579979383
+    },
+    "validacion_2025": {
+      "filas": 272496,
+      "positivos": 4989,
+      "tasa_riesgo": 0.018308525629734014,
+      "alertas": 5276,
+      "tasa_alertas": 0.01936175209911338,
+      "recall": 0.39747444377630786,
+      "precision": 0.3758529188779378,
+      "f1": 0.3863614223088164,
+      "falsos_positivos": 3293,
+      "falsos_negativos": 3006,
+      "costo": 18323,
+      "costo_por_mil": 67.24135400152663,
+      "costo_relativo": 0.7345359791541392,
+      "pr_auc": 0.38110800558613916
+    },
+    "prueba_2025": {
+      "filas": 536089,
+      "positivos": 6718,
+      "tasa_riesgo": 0.01253150129922457,
+      "alertas": 8016,
+      "tasa_alertas": 0.01495274105605599,
+      "recall": 0.37645132479904736,
+      "precision": 0.31549401197604793,
+      "f1": 0.34328763404370843,
+      "falsos_positivos": 5487,
+      "falsos_negativos": 4189,
+      "costo": 26432,
+      "costo_por_mil": 49.3052459572944,
+      "costo_relativo": 0.7869008633521881,
+      "pr_auc": 0.333897827720547
+    },
+    "actual": {
+      "filas": 1622169,
+      "positivos": 18196,
+      "tasa_riesgo": 0.011217080341197495,
+      "alertas": 19821,
+      "tasa_alertas": 0.012218825535440512,
+      "recall": 0.35408881072763243,
+      "precision": 0.3250592805610211,
+      "f1": 0.3389536260094168,
+      "falsos_positivos": 13378,
+      "falsos_negativos": 11753,
+      "costo": 72143,
+      "costo_por_mil": 44.47317141432243,
+      "costo_relativo": 0.792954495493515,
+      "pr_auc": 0.3111564793966115
+    },
+    "evaluacion": {
+      "filas": 1001082,
+      "positivos": 10232,
+      "tasa_riesgo": 0.010220940941900862,
+      "alertas": 11470,
+      "tasa_alertas": 0.011457602873690667,
+      "recall": 0.36639953088350274,
+      "precision": 0.32685265911072364,
+      "f1": 0.3454981107732007,
+      "falsos_positivos": 7721,
+      "falsos_negativos": 6483,
+      "costo": 40136,
+      "costo_por_mil": 40.09261978539221,
+      "costo_relativo": 0.7845191555903049,
+      "pr_auc": 0.333761518683362
+    },
+    "confirmacion": {
+      "filas": 346775,
+      "positivos": 4947,
+      "tasa_riesgo": 0.014265734265734267,
+      "alertas": 6191,
+      "tasa_alertas": 0.017853074760291254,
+      "recall": 0.3798261572670305,
+      "precision": 0.3035050880310128,
+      "f1": 0.3374034835697612,
+      "falsos_positivos": 4312,
+      "falsos_negativos": 3068,
+      "costo": 19652,
+      "costo_por_mil": 56.67075192848389,
+      "costo_relativo": 0.7945017182130584,
+      "pr_auc": 0.3288000897256906
+    }
+  },
+  "por_mes": [
+    {
+      "mes": "2025-10",
+      "conjunto": "validacion_2025",
+      "filas": 272496,
+      "positivos": 4989,
+      "tasa_riesgo": 0.018308525629734014,
+      "alertas": 5276,
+      "tasa_alertas": 0.01936175209911338,
+      "recall": 0.39747444377630786,
+      "precision": 0.3758529188779378,
+      "f1": 0.3863614223088164,
+      "falsos_positivos": 3293,
+      "falsos_negativos": 3006,
+      "costo": 18323,
+      "costo_por_mil": 67.24135400152663,
+      "costo_relativo": 0.7345359791541392,
+      "pr_auc": 0.38110800558613916
+    },
+    {
+      "mes": "2025-11",
+      "conjunto": "prueba_2025",
+      "filas": 264240,
+      "positivos": 3820,
+      "tasa_riesgo": 0.014456554647290343,
+      "alertas": 4259,
+      "tasa_alertas": 0.01611792310021193,
+      "recall": 0.37277486910994767,
+      "precision": 0.3343507865696173,
+      "f1": 0.35251887609852706,
+      "falsos_positivos": 2835,
+      "falsos_negativos": 2396,
+      "costo": 14815,
+      "costo_por_mil": 56.06645473811686,
+      "costo_relativo": 0.7756544502617801,
+      "pr_auc": 0.33958133811129754
+    },
+    {
+      "mes": "2025-12",
+      "conjunto": "prueba_2025",
+      "filas": 271849,
+      "positivos": 2898,
+      "tasa_riesgo": 0.010660329815449017,
+      "alertas": 3757,
+      "tasa_alertas": 0.01382017222796479,
+      "recall": 0.3812974465148378,
+      "precision": 0.29411764705882354,
+      "f1": 0.33208114199849736,
+      "falsos_positivos": 2652,
+      "falsos_negativos": 1793,
+      "costo": 11617,
+      "costo_por_mil": 42.73328207938966,
+      "costo_relativo": 0.8017253278122843,
+      "pr_auc": 0.3293938360017247
+    },
+    {
+      "mes": "2026-01",
+      "conjunto": "actual",
+      "filas": 275280,
+      "positivos": 3162,
+      "tasa_riesgo": 0.011486486486486487,
+      "alertas": 3100,
+      "tasa_alertas": 0.01126126126126126,
+      "recall": 0.33206831119544594,
+      "precision": 0.3387096774193548,
+      "f1": 0.33535611625678696,
+      "falsos_positivos": 2050,
+      "falsos_negativos": 2112,
+      "costo": 12610,
+      "costo_por_mil": 45.80790467887242,
+      "costo_relativo": 0.7975964579380139,
+      "pr_auc": 0.3169282544169235
+    },
+    {
+      "mes": "2026-02",
+      "conjunto": "actual",
+      "filas": 248640,
+      "positivos": 3059,
+      "tasa_riesgo": 0.012302927927927927,
+      "alertas": 3475,
+      "tasa_alertas": 0.0139760296010296,
+      "recall": 0.36809414841451454,
+      "precision": 0.32402877697841725,
+      "f1": 0.34465870829507195,
+      "falsos_positivos": 2349,
+      "falsos_negativos": 1933,
+      "costo": 12014,
+      "costo_por_mil": 48.31885456885457,
+      "costo_relativo": 0.7854854527623406,
+      "pr_auc": 0.3126406173995923
+    },
+    {
+      "mes": "2026-03",
+      "conjunto": "actual",
+      "filas": 275280,
+      "positivos": 3469,
+      "tasa_riesgo": 0.01260171461784365,
+      "alertas": 3657,
+      "tasa_alertas": 0.013284655623365301,
+      "recall": 0.35975785528970883,
+      "precision": 0.3412633305988515,
+      "f1": 0.3502666292450182,
+      "falsos_positivos": 2409,
+      "falsos_negativos": 2221,
+      "costo": 13514,
+      "costo_por_mil": 49.09183376925312,
+      "costo_relativo": 0.7791294321130009,
+      "pr_auc": 0.32109211731107506
+    },
+    {
+      "mes": "2026-04",
+      "conjunto": "actual",
+      "filas": 266400,
+      "positivos": 3413,
+      "tasa_riesgo": 0.012811561561561562,
+      "alertas": 3726,
+      "tasa_alertas": 0.013986486486486486,
+      "recall": 0.3841195429241137,
+      "precision": 0.35185185185185186,
+      "f1": 0.3672783302983611,
+      "falsos_positivos": 2415,
+      "falsos_negativos": 2102,
+      "costo": 12925,
+      "costo_por_mil": 48.517267267267265,
+      "costo_relativo": 0.7573981834163492,
+      "pr_auc": 0.34038889657229504
+    },
+    {
+      "mes": "2026-05",
+      "conjunto": "actual",
+      "filas": 275409,
+      "positivos": 2499,
+      "tasa_riesgo": 0.00907377754539612,
+      "alertas": 2866,
+      "tasa_alertas": 0.010406341114487907,
+      "recall": 0.3701480592236895,
+      "precision": 0.32274947662247033,
+      "f1": 0.3448275862068966,
+      "falsos_positivos": 1941,
+      "falsos_negativos": 1574,
+      "costo": 9811,
+      "costo_por_mil": 35.623381951933304,
+      "costo_relativo": 0.7851940776310524,
+      "pr_auc": 0.3281998682973194
+    },
+    {
+      "mes": "2026-06",
+      "conjunto": "actual",
+      "filas": 281160,
+      "positivos": 2594,
+      "tasa_riesgo": 0.009226063451415564,
+      "alertas": 2997,
+      "tasa_alertas": 0.010659411011523687,
+      "recall": 0.3018504240555127,
+      "precision": 0.26126126126126126,
+      "f1": 0.2800930066177786,
+      "falsos_positivos": 2214,
+      "falsos_negativos": 1811,
+      "costo": 11269,
+      "costo_por_mil": 40.08038127756438,
+      "costo_relativo": 0.8688511950655359,
+      "pr_auc": 0.24485367339463945
+    },
+    {
+      "mes": "2026-07",
+      "conjunto": "evaluacion",
+      "filas": 321370,
+      "positivos": 2827,
+      "tasa_riesgo": 0.008796714067896817,
+      "alertas": 3263,
+      "tasa_alertas": 0.010153405731711113,
+      "recall": 0.3682348779625044,
+      "precision": 0.31903156604351823,
+      "f1": 0.341871921182266,
+      "falsos_positivos": 2222,
+      "falsos_negativos": 1786,
+      "costo": 11152,
+      "costo_por_mil": 34.701434483617014,
+      "costo_relativo": 0.7889635656172621,
+      "pr_auc": 0.3412624905300962
+    },
+    {
+      "mes": "2026-08",
+      "conjunto": "evaluacion",
+      "filas": 342752,
+      "positivos": 3337,
+      "tasa_riesgo": 0.009735902343385304,
+      "alertas": 3507,
+      "tasa_alertas": 0.010231887778918869,
+      "recall": 0.3617021276595745,
+      "precision": 0.34416880524664956,
+      "f1": 0.3527177089421391,
+      "falsos_positivos": 2300,
+      "falsos_negativos": 2130,
+      "costo": 12950,
+      "costo_por_mil": 37.78241994211558,
+      "costo_relativo": 0.7761462391369494,
+      "pr_auc": 0.33593952739013844
+    },
+    {
+      "mes": "2026-09",
+      "conjunto": "evaluacion",
+      "filas": 336960,
+      "positivos": 4068,
+      "tasa_riesgo": 0.012072649572649573,
+      "alertas": 4700,
+      "tasa_alertas": 0.013948243114909782,
+      "recall": 0.3689773844641101,
+      "precision": 0.3193617021276596,
+      "f1": 0.34238138686131386,
+      "falsos_positivos": 3199,
+      "falsos_negativos": 2567,
+      "costo": 16034,
+      "costo_por_mil": 47.58428300094967,
+      "costo_relativo": 0.788298918387414,
+      "pr_auc": 0.3270632492669152
+    },
+    {
+      "mes": "2026-10",
+      "conjunto": "confirmacion",
+      "filas": 346775,
+      "positivos": 4947,
+      "tasa_riesgo": 0.014265734265734267,
+      "alertas": 6191,
+      "tasa_alertas": 0.017853074760291254,
+      "recall": 0.3798261572670305,
+      "precision": 0.3035050880310128,
+      "f1": 0.3374034835697612,
+      "falsos_positivos": 4312,
+      "falsos_negativos": 3068,
+      "costo": 19652,
+      "costo_por_mil": 56.67075192848389,
+      "costo_relativo": 0.7945017182130584,
+      "pr_auc": 0.3288000897256906
+    }
+  ],
+  "descomposicion": {
+    "actual": {
+      "tasa_base": 0.01253150129922457,
+      "tasa_periodo": 0.011217080341197495,
+      "cambio": -0.0013144209580270745,
+      "efecto_mezcla": -0.0012409373404195002,
+      "efecto_condicional": -7.348361760757251e-05,
+      "estratos": [
+        {
+          "estrato": "0.0 a 0.1",
+          "peso_base": 0.6114134033714551,
+          "peso_periodo": 0.6239004690633343,
+          "tasa_base": 0.00030814102485874327,
+          "tasa_periodo": 0.00027863630255554943,
+          "parte_de_positivos_base": 0.015034236379874963,
+          "parte_de_positivos_periodo": 0.015497911628929434
+        },
+        {
+          "estrato": "0.1 a 0.2",
+          "peso_base": 0.09423435287797362,
+          "peso_periodo": 0.09376951476695708,
+          "tasa_base": 0.0028306742151312406,
+          "tasa_periodo": 0.00241272763131944,
+          "parte_de_positivos_base": 0.021286097052694256,
+          "parte_de_positivos_periodo": 0.020169267970982632
+        },
+        {
+          "estrato": "0.2 a 0.3",
+          "peso_base": 0.057307648543432156,
+          "peso_periodo": 0.05654158105598122,
+          "tasa_base": 0.004947594557645986,
+          "tasa_periodo": 0.005058874836458787,
+          "parte_de_positivos_base": 0.022625781482584102,
+          "parte_de_positivos_periodo": 0.02550010991426687
+        },
+        {
+          "estrato": "0.3 a 0.4",
+          "peso_base": 0.045108181663865515,
+          "peso_periodo": 0.04446515745276849,
+          "tasa_base": 0.007774377636258374,
+          "tasa_periodo": 0.007999445445723,
+          "parte_de_positivos_base": 0.027984519202143496,
+          "parte_de_positivos_periodo": 0.03171026599252583
+        },
+        {
+          "estrato": "0.4 a 0.5",
+          "peso_base": 0.035870909494505575,
+          "peso_periodo": 0.03474360562925318,
+          "tasa_base": 0.012792511700468018,
+          "tasa_periodo": 0.012047551454932576,
+          "parte_de_positivos_base": 0.03661804108365585,
+          "parte_de_positivos_periodo": 0.03731589360298967
+        },
+        {
+          "estrato": "0.5 a 0.6",
+          "peso_base": 0.03435063953933022,
+          "peso_periodo": 0.03314451206995079,
+          "tasa_base": 0.015204995927233234,
+          "tasa_periodo": 0.017650559833351932,
+          "parte_de_positivos_base": 0.041679071152128606,
+          "parte_de_positivos_periodo": 0.05215431963068806
+        },
+        {
+          "estrato": "0.6 a 0.7",
+          "peso_base": 0.032322991145127024,
+          "peso_periodo": 0.031187256075045203,
+          "tasa_base": 0.025565558633425668,
+          "tasa_periodo": 0.026309027297345376,
+          "parte_de_positivos_base": 0.0659422447156892,
+          "parte_de_positivos_periodo": 0.0731479446032095
+        },
+        {
+          "estrato": "0.7 a 0.8",
+          "peso_base": 0.03232112578321883,
+          "peso_periodo": 0.03135801510200232,
+          "tasa_base": 0.043515900040399375,
+          "tasa_periodo": 0.04130298026264056,
+          "parte_de_positivos_base": 0.1122357844596606,
+          "parte_de_positivos_periodo": 0.11546493734886788
+        },
+        {
+          "estrato": "0.8 a 0.9",
+          "peso_base": 0.03555752869392955,
+          "peso_periodo": 0.03304341286265488,
+          "tasa_base": 0.07653971251704962,
+          "tasa_periodo": 0.07279579120182082,
+          "parte_de_positivos_base": 0.21717773146769873,
+          "parte_de_positivos_periodo": 0.21444273466695976
+        },
+        {
+          "estrato": "0.9 a 1.0",
+          "peso_base": 0.021513218887162393,
+          "peso_periodo": 0.01784647592205251,
+          "tasa_base": 0.25596115494667476,
+          "tasa_periodo": 0.26058721934369605,
+          "parte_de_positivos_base": 0.4394164930038702,
+          "parte_de_positivos_periodo": 0.41459661464058034
+        }
+      ]
+    },
+    "evaluacion": {
+      "tasa_base": 0.01253150129922457,
+      "tasa_periodo": 0.010220940941900862,
+      "cambio": -0.0023105603573237068,
+      "efecto_mezcla": -0.00173405720090052,
+      "efecto_condicional": -0.0005765031564231853,
+      "estratos": [
+        {
+          "estrato": "0.0 a 0.1",
+          "peso_base": 0.6114134033714551,
+          "peso_periodo": 0.6458332084684372,
+          "tasa_base": 0.00030814102485874327,
+          "tasa_periodo": 0.00020725965613457647,
+          "parte_de_positivos_base": 0.015034236379874963,
+          "parte_de_positivos_periodo": 0.013096168881939015
+        },
+        {
+          "estrato": "0.1 a 0.2",
+          "peso_base": 0.09423435287797362,
+          "peso_periodo": 0.08957607868286514,
+          "tasa_base": 0.0028306742151312406,
+          "tasa_periodo": 0.002196870852988079,
+          "parte_de_positivos_base": 0.021286097052694256,
+          "parte_de_positivos_periodo": 0.01925332290852228
+        },
+        {
+          "estrato": "0.2 a 0.3",
+          "peso_base": 0.057307648543432156,
+          "peso_periodo": 0.0528538121752264,
+          "tasa_base": 0.004947594557645986,
+          "tasa_periodo": 0.0043847215134849085,
+          "parte_de_positivos_base": 0.022625781482584102,
+          "parte_de_positivos_periodo": 0.022673964034401875
+        },
+        {
+          "estrato": "0.3 a 0.4",
+          "peso_base": 0.045108181663865515,
+          "peso_periodo": 0.04070895291294819,
+          "tasa_base": 0.007774377636258374,
+          "tasa_periodo": 0.006772507545456776,
+          "parte_de_positivos_base": 0.027984519202143496,
+          "parte_de_positivos_periodo": 0.02697419859265051
+        },
+        {
+          "estrato": "0.4 a 0.5",
+          "peso_base": 0.035870909494505575,
+          "peso_periodo": 0.032229128083413744,
+          "tasa_base": 0.012792511700468018,
+          "tasa_periodo": 0.009639226382345649,
+          "parte_de_positivos_base": 0.03661804108365585,
+          "parte_de_positivos_periodo": 0.030394839718530103
+        },
+        {
+          "estrato": "0.5 a 0.6",
+          "peso_base": 0.03435063953933022,
+          "peso_periodo": 0.030715765541683898,
+          "tasa_base": 0.015204995927233234,
+          "tasa_periodo": 0.015870434810888158,
+          "parte_de_positivos_base": 0.041679071152128606,
+          "parte_de_positivos_periodo": 0.04769351055512119
+        },
+        {
+          "estrato": "0.6 a 0.7",
+          "peso_base": 0.032322991145127024,
+          "peso_periodo": 0.02910051324466927,
+          "tasa_base": 0.025565558633425668,
+          "tasa_periodo": 0.023307702869696554,
+          "parte_de_positivos_base": 0.0659422447156892,
+          "parte_de_positivos_periodo": 0.06636043784206411
+        },
+        {
+          "estrato": "0.7 a 0.8",
+          "peso_base": 0.03232112578321883,
+          "peso_periodo": 0.029538039840892153,
+          "tasa_base": 0.043515900040399375,
+          "tasa_periodo": 0.03838349678728441,
+          "parte_de_positivos_base": 0.1122357844596606,
+          "parte_de_positivos_periodo": 0.11092650508209538
+        },
+        {
+          "estrato": "0.8 a 0.9",
+          "peso_base": 0.03555752869392955,
+          "peso_periodo": 0.032313037293648275,
+          "tasa_base": 0.07653971251704962,
+          "tasa_periodo": 0.07255471744775566,
+          "parte_de_positivos_base": 0.21717773146769873,
+          "parte_de_positivos_periodo": 0.22937842064112587
+        },
+        {
+          "estrato": "0.9 a 1.0",
+          "peso_base": 0.021513218887162393,
+          "peso_periodo": 0.017131463756215774,
+          "tasa_base": 0.25596115494667476,
+          "tasa_periodo": 0.25848396501457727,
+          "parte_de_positivos_base": 0.4394164930038702,
+          "parte_de_positivos_periodo": 0.43324863174354966
+        }
+      ]
+    },
+    "confirmacion": {
+      "tasa_base": 0.01253150129922457,
+      "tasa_periodo": 0.014265734265734267,
+      "cambio": 0.0017342329665096974,
+      "efecto_mezcla": 0.0029982003743172702,
+      "efecto_condicional": -0.0012639674078075728,
+      "estratos": [
+        {
+          "estrato": "0.0 a 0.1",
+          "peso_base": 0.6114134033714551,
+          "peso_periodo": 0.5759296373729363,
+          "tasa_base": 0.00030814102485874327,
+          "tasa_periodo": 0.000385543616499264,
+          "parte_de_positivos_base": 0.015034236379874963,
+          "parte_de_positivos_periodo": 0.015564988882150799
+        },
+        {
+          "estrato": "0.1 a 0.2",
+          "peso_base": 0.09423435287797362,
+          "peso_periodo": 0.08994881407252542,
+          "tasa_base": 0.0028306742151312406,
+          "tasa_periodo": 0.0023082841754295974,
+          "parte_de_positivos_base": 0.021286097052694256,
+          "parte_de_positivos_periodo": 0.014554275318374773
+        },
+        {
+          "estrato": "0.2 a 0.3",
+          "peso_base": 0.057307648543432156,
+          "peso_periodo": 0.05626991565135895,
+          "tasa_base": 0.004947594557645986,
+          "tasa_periodo": 0.00450981397017373,
+          "parte_de_positivos_base": 0.022625781482584102,
+          "parte_de_positivos_periodo": 0.017788558722458055
+        },
+        {
+          "estrato": "0.3 a 0.4",
+          "peso_base": 0.045108181663865515,
+          "peso_periodo": 0.046078869584024226,
+          "tasa_base": 0.007774377636258374,
+          "tasa_periodo": 0.006946617435383941,
+          "parte_de_positivos_base": 0.027984519202143496,
+          "parte_de_positivos_periodo": 0.022437841115827774
+        },
+        {
+          "estrato": "0.4 a 0.5",
+          "peso_base": 0.035870909494505575,
+          "peso_periodo": 0.03922428087376541,
+          "tasa_base": 0.012792511700468018,
+          "tasa_periodo": 0.010366122629025143,
+          "parte_de_positivos_base": 0.03661804108365585,
+          "parte_de_positivos_periodo": 0.02850212249848393
+        },
+        {
+          "estrato": "0.5 a 0.6",
+          "peso_base": 0.03435063953933022,
+          "peso_periodo": 0.03845721289020258,
+          "tasa_base": 0.015204995927233234,
+          "tasa_periodo": 0.014847030593881224,
+          "parte_de_positivos_base": 0.041679071152128606,
+          "parte_de_positivos_periodo": 0.04002425712553062
+        },
+        {
+          "estrato": "0.6 a 0.7",
+          "peso_base": 0.032322991145127024,
+          "peso_periodo": 0.038713863456131495,
+          "tasa_base": 0.025565558633425668,
+          "tasa_periodo": 0.025623836126629423,
+          "parte_de_positivos_base": 0.0659422447156892,
+          "parte_de_positivos_periodo": 0.06953709318779058
+        },
+        {
+          "estrato": "0.7 a 0.8",
+          "peso_base": 0.03232112578321883,
+          "peso_periodo": 0.04032009227885516,
+          "tasa_base": 0.043515900040399375,
+          "tasa_periodo": 0.034472893720497784,
+          "parte_de_positivos_base": 0.1122357844596606,
+          "parte_de_positivos_periodo": 0.0974327875480089
+        },
+        {
+          "estrato": "0.8 a 0.9",
+          "peso_base": 0.03555752869392955,
+          "peso_periodo": 0.04782928411794391,
+          "tasa_base": 0.07653971251704962,
+          "tasa_periodo": 0.07060171228747136,
+          "parte_de_positivos_base": 0.21717773146769873,
+          "parte_de_positivos_periodo": 0.23670911663634525
+        },
+        {
+          "estrato": "0.9 a 1.0",
+          "peso_base": 0.021513218887162393,
+          "peso_periodo": 0.027228029702256507,
+          "tasa_base": 0.25596115494667476,
+          "tasa_periodo": 0.2396737979241686,
+          "parte_de_positivos_base": 0.4394164930038702,
+          "parte_de_positivos_periodo": 0.4574489589650293
+        }
+      ]
+    }
+  },
+  "por_antiguedad": {
+    "actual": {
+      "Estaciones de la referencia": {
+        "estaciones": 368,
+        "filas": 1598592,
+        "positivos": 18152,
+        "tasa_riesgo": 0.01135499239330611,
+        "alertas": 19768,
+        "tasa_alertas": 0.012365881976139002,
+        "recall": 0.35450639048038785,
+        "precision": 0.32552610279239175,
+        "f1": 0.33939873417721517,
+        "falsos_positivos": 13333,
+        "falsos_negativos": 11717,
+        "costo": 71918,
+        "costo_por_mil": 44.988339738970296,
+        "costo_relativo": 0.7923975319524019,
+        "pr_auc": 0.3119309670065942
+      },
+      "Estaciones nuevas": {
+        "estaciones": 44,
+        "filas": 23577,
+        "positivos": 44,
+        "tasa_riesgo": 0.0018662255588073123,
+        "alertas": 53,
+        "tasa_alertas": 0.002247953514017899,
+        "recall": 0.18181818181818182,
+        "precision": 0.1509433962264151,
+        "f1": 0.16494845360824742,
+        "falsos_positivos": 45,
+        "falsos_negativos": 36,
+        "costo": 225,
+        "costo_por_mil": 9.543198880264665,
+        "costo_relativo": 1.0227272727272727,
+        "pr_auc": 0.08993136540355454
+      }
+    },
+    "evaluacion": {
+      "Estaciones de la referencia": {
+        "estaciones": 368,
+        "filas": 811717,
+        "positivos": 9908,
+        "tasa_riesgo": 0.012206224583198332,
+        "alertas": 11116,
+        "tasa_alertas": 0.01369442798413733,
+        "recall": 0.3678845377472749,
+        "precision": 0.32790572148254765,
+        "f1": 0.3467465753424657,
+        "falsos_positivos": 7471,
+        "falsos_negativos": 6263,
+        "costo": 38786,
+        "costo_por_mil": 47.78266316955293,
+        "costo_relativo": 0.7829228905934599,
+        "pr_auc": 0.3382324335091572
+      },
+      "Estaciones nuevas": {
+        "estaciones": 101,
+        "filas": 189365,
+        "positivos": 324,
+        "tasa_riesgo": 0.001710981437963721,
+        "alertas": 354,
+        "tasa_alertas": 0.001869405645182584,
+        "recall": 0.32098765432098764,
+        "precision": 0.2937853107344633,
+        "f1": 0.30678466076696165,
+        "falsos_positivos": 250,
+        "falsos_negativos": 220,
+        "costo": 1350,
+        "costo_por_mil": 7.129089324848837,
+        "costo_relativo": 0.8333333333333334,
+        "pr_auc": 0.19681315576352787
+      }
+    },
+    "confirmacion": {
+      "Estaciones de la referencia": {
+        "estaciones": 367,
+        "filas": 272013,
+        "positivos": 4628,
+        "tasa_riesgo": 0.017013892718362726,
+        "alertas": 5802,
+        "tasa_alertas": 0.021329862910963813,
+        "recall": 0.3811581676750216,
+        "precision": 0.30403309203722856,
+        "f1": 0.338255033557047,
+        "falsos_positivos": 4038,
+        "falsos_negativos": 2864,
+        "costo": 18358,
+        "costo_por_mil": 67.48942146147427,
+        "costo_relativo": 0.7933448573898012,
+        "pr_auc": 0.3345079906613791
+      },
+      "Estaciones nuevas": {
+        "estaciones": 102,
+        "filas": 74762,
+        "positivos": 319,
+        "tasa_riesgo": 0.004266873545384018,
+        "alertas": 389,
+        "tasa_alertas": 0.005203178085123459,
+        "recall": 0.3605015673981191,
+        "precision": 0.29562982005141386,
+        "f1": 0.3248587570621469,
+        "falsos_positivos": 274,
+        "falsos_negativos": 204,
+        "costo": 1294,
+        "costo_por_mil": 17.308258206040502,
+        "costo_relativo": 0.8112852664576803,
+        "pr_auc": 0.22951647362761976
+      }
+    }
+  }
+}
