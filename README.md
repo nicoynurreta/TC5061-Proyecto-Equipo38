@@ -6,7 +6,7 @@ Repositorio: https://github.com/nicoynurreta/TC5061-Proyecto-Equipo38
 
 ## Propósito
 
-El proyecto responde tres preguntas sobre la operación de MiBici con un modelo de regresión, uno de clasificación y uno de *clustering*. La primera entrega dejó la base: ingesta reproducible y versionada de los viajes, módulo de *features*, experimento base en MLflow y flujo de trabajo con ramas y *Pull Requests*. La segunda entrega convierte el repositorio en un [MLflow Project](https://mlflow.org/docs/latest/ml/projects/) que se ejecuta con un solo comando, compara varias candidatas por pregunta contra ese experimento base (con una búsqueda de hiperparámetros organizada como *nested runs*), guarda en cada corrida los artefactos que respaldan su resultado y deja el mejor modelo de cada pregunta registrado y en producción en el [Model Registry](https://mlflow.org/docs/latest/ml/model-registry/). La tercera entrega agrega la capa de calidad del repositorio: pruebas unitarias con pytest para cada módulo, con casos límite y una prueba de reproducibilidad del entrenamiento, validación de los datos con DeepChecks, chequeos de seguridad con su evidencia y un solo comando, `make verificar`, que corre todo. La cuarta entrega despliega el modelo en producción de P2 como un servicio REST con FastAPI y Pydantic, cargado por nombre y alias desde el Model Registry y empaquetado en una imagen OCI con `Containerfile`, con sus pruebas, las capturas del contenedor respondiendo y la documentación para construir la imagen, levantar el contenedor y consumir la API (sección Servicio de predicción).
+El proyecto responde tres preguntas sobre la operación de MiBici con un modelo de regresión, uno de clasificación y uno de *clustering*. La primera entrega dejó la base: ingesta reproducible y versionada de los viajes, módulo de *features*, experimento base en MLflow y flujo de trabajo con ramas y *Pull Requests*. La segunda entrega convierte el repositorio en un [MLflow Project](https://mlflow.org/docs/latest/ml/projects/) que se ejecuta con un solo comando, compara varias candidatas por pregunta contra ese experimento base (con una búsqueda de hiperparámetros organizada como *nested runs*), guarda en cada corrida los artefactos que respaldan su resultado y deja el mejor modelo de cada pregunta registrado y en producción en el [Model Registry](https://mlflow.org/docs/latest/ml/model-registry/). La tercera entrega agrega la capa de calidad del repositorio: pruebas unitarias con pytest para cada módulo, con casos límite y una prueba de reproducibilidad del entrenamiento, validación de los datos con DeepChecks, chequeos de seguridad con su evidencia y un solo comando, `make verificar`, que corre todo. La cuarta entrega despliega el modelo en producción de P2 como un servicio REST con FastAPI y Pydantic, cargado por nombre y alias desde el Model Registry y empaquetado en una imagen OCI con `Containerfile`, con sus pruebas, las capturas del contenedor respondiendo y la documentación para construir la imagen, levantar el contenedor y consumir la API (sección Servicio de predicción). La quinta entrega vigila ese modelo en producción: compara con Evidently los datos de su entrenamiento contra los de 2026, mide su desempeño mes a mes, registra una versión reentrenada, decide entre las dos con un *A/B testing* de regla escrita de antemano y propone cuándo reentrenar (sección Monitoreo y drift).
 
 ## Las tres preguntas
 
@@ -43,8 +43,8 @@ Todas las corridas registran además `tiempo_entrenamiento_s`, `tiempo_inferenci
 Generada con [Cookiecutter Data Science](https://cookiecutter-data-science.drivendata.org/) (`ccds`, con `include_code_scaffold` en Yes).
 
 ```
-├── Makefile           <- make server, ingest, baselines, candidatas, busquedas, corridas, registry, test, chequeos, verificar, api, imagen, contenedor, probar-api, exportar-modelo
-├── MLproject          <- puntos de entrada ingest, train y search para mlflow run
+├── Makefile           <- make server, ingest, baselines, candidatas, busquedas, corridas, registry, test, chequeos, verificar, api, imagen, contenedor, probar-api, exportar-modelo, ingest-actual, monitor, reentrenar, abtest
+├── MLproject          <- puntos de entrada ingest, train, search, ingest_actual, monitor, reentrenar y abtest para mlflow run
 ├── python_env.yaml    <- versión de Python y dependencias con versión fija para mlflow run
 ├── pytest.ini         <- configuración de pytest (carpeta de pruebas y marcador lento)
 ├── README.md
@@ -66,7 +66,8 @@ Generada con [Cookiecutter Data Science](https://cookiecutter-data-science.drive
 │   ├── validar_datos.py <- suites de DeepChecks sobre las tablas de data/interim (entorno .venv-deepchecks)
 │   └── secretos.py      <- búsqueda de secretos en el historial de Git y en los archivos versionados
 ├── data
-│   ├── manifiesto.json <- versión de los datos (único archivo de data/ que se versiona)
+│   ├── manifiesto.json <- versión de los datos de 2025
+│   ├── manifiesto_actual.json <- versión de los datos del periodo actual (los dos manifiestos son lo único de data/ que se versiona)
 │   ├── external
 │   ├── interim        <- tablas que exporta mibici.validacion para DeepChecks
 │   ├── processed      <- viajes.parquet y estaciones.parquet
@@ -76,14 +77,16 @@ Generada con [Cookiecutter Data Science](https://cookiecutter-data-science.drive
 ├── references         <- ML Canvas y diagrama de arquitectura
 ├── reports
 │   ├── deepchecks     <- JSON de cada suite y resumen.md con los hallazgos (los HTML quedan fuera de Git)
-│   ├── figures        <- capturas de la ejecución de las pruebas y los chequeos
+│   ├── figures        <- capturas de la ejecución de las pruebas y los chequeos, y figuras del monitoreo y del A/B
+│   ├── monitoreo      <- reportes de drift, de desempeño mensual y del A/B (los HTML de Evidently quedan fuera de Git)
 │   └── seguridad      <- salidas fechadas de bandit, pip-audit y la búsqueda de secretos
 ├── tests              <- pruebas con pytest: un archivo por módulo, más reproducibilidad y seguridad
 │   ├── test_dataset.py, test_features.py, test_artefactos.py, test_train.py, test_search.py, test_predict.py, test_registry.py
 │   ├── test_reproducibilidad.py <- mismas predicciones y métricas con la misma semilla en P1, P2 y P3
 │   ├── test_seguridad.py        <- .gitignore, .env.example y ausencia de secretos en los archivos versionados
 │   ├── conftest.py              <- cliente de la API con un modelo mínimo inyectado
-│   └── test_api.py, test_api_ejemplos.py <- servicio de predicción: validación, endpoints, ejemplos y registry real
+│   ├── test_api.py, test_api_ejemplos.py <- servicio de predicción: validación, endpoints, ejemplos y registry real
+│   └── test_monitoreo.py, test_reentrenar.py, test_abtest.py <- monitoreo, versión alternativa y A/B con datos sintéticos
 └── mibici
     ├── __init__.py
     ├── config.py      <- rutas, URL, rango de fechas, partición, umbrales, semilla, experimento, hiperparámetros y rejillas
@@ -91,15 +94,18 @@ Generada con [Cookiecutter Data Science](https://cookiecutter-data-science.drive
     ├── features.py    <- features por pregunta y partición temporal
     ├── plots.py       <- gráficas que se registran como artefactos
     ├── validacion.py  <- exporta a data/interim las particiones, el perfil y un mes de viajes crudos para DeepChecks
+    ├── monitoreo      <- datos.py, drift.py, desempeno.py, costos.py, graficas.py y formato.py (sección Monitoreo y drift)
     └── modeling
         ├── artefactos.py <- artefactos de cada corrida: plots/, data/, config/, log_input y modelo con firma
         ├── train.py      <- baseline o candidata de una pregunta, con sus métricas y artefactos
         ├── search.py     <- búsqueda de hiperparámetros con nested runs
         ├── registry.py   <- registro en el Model Registry con linaje y alias
-        └── predict.py    <- predicción con el modelo en producción (models:/<nombre>@champion)
+        ├── predict.py    <- predicción con el modelo en producción (models:/<nombre>@champion)
+        ├── reentrenar.py <- versión alternativa de P2 con la receta del champion y más datos
+        └── abtest.py     <- A/B testing de dos versiones registradas y regla de decisión
 ```
 
-`data/raw/`, `data/interim/`, `data/processed/`, `models/`, `mlruns/`, `mlartifacts/`, `mlflow.db`, los archivos `.env`, el entorno `.venv-deepchecks/` y los HTML de `reports/deepchecks/` están en `.gitignore`: ni datos, ni base de datos de MLflow, ni modelos serializados, ni credenciales entran al historial.
+`data/raw/`, `data/interim/`, `data/processed/`, `models/`, `mlruns/`, `mlartifacts/`, `mlflow.db`, los archivos `.env`, el entorno `.venv-deepchecks/` y los HTML de `reports/deepchecks/` y de `reports/monitoreo/` están en `.gitignore`: ni datos, ni base de datos de MLflow, ni modelos serializados, ni credenciales entran al historial.
 
 ## Instalación
 
@@ -111,7 +117,7 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-En Linux o macOS el entorno se activa con `source venv/bin/activate`. `requirements.txt` fija la versión de cada dependencia (incluidas FastAPI, uvicorn, Pydantic y httpx2, que usan el servicio de predicción y sus pruebas) e instala el módulo `mibici` en modo editable. Las pruebas se corren con `python -m pytest -q tests` o `make test`; la sección Pruebas y chequeos describe la suite, el entorno aparte de DeepChecks y los chequeos de seguridad.
+En Linux o macOS el entorno se activa con `source venv/bin/activate`. `requirements.txt` fija la versión de cada dependencia (incluidas FastAPI, uvicorn, Pydantic y httpx2, que usan el servicio de predicción y sus pruebas, y Evidently 0.7.23, que usa el monitoreo) e instala el módulo `mibici` en modo editable. Las pruebas se corren con `python -m pytest -q tests` o `make test`; la sección Pruebas y chequeos describe la suite, el entorno aparte de DeepChecks y los chequeos de seguridad.
 
 ## Servidor de tracking
 
@@ -131,13 +137,17 @@ set MLFLOW_TRACKING_URI=http://127.0.0.1:5000
 
 ## MLflow Project
 
-`MLproject` declara el entorno (`python_env.yaml`, con las mismas versiones fijas de `requirements.txt`) y tres puntos de entrada. Los valores por defecto de rutas, fechas, semilla, umbrales e hiperparámetros viven solo en `config.py`: los parámetros del proyecto que llegan vacíos los toma de ahí.
+`MLproject` declara el entorno (`python_env.yaml`, con las mismas versiones fijas de `requirements.txt`) y siete puntos de entrada: los tres de las corridas de modelado y los cuatro del monitoreo (sección Monitoreo y drift). Los valores por defecto de rutas, fechas, semilla, umbrales e hiperparámetros viven solo en `config.py`: los parámetros del proyecto que llegan vacíos los toma de ahí.
 
 | Punto de entrada | Comando | Parámetros |
 |---|---|---|
 | `ingest` | `python -m mibici.dataset` | `months`: meses `AAAA-MM` separados por comas; vacío ingiere los doce meses de `config.MESES` |
 | `train` | `python -m mibici.modeling.train` | `question` (`p1`, `p2` o `p3`) y `model`, obligatorios; `run_name` (por defecto `pregunta_modelo`); los hiperparámetros se pasan como parámetros adicionales con el mismo `-P` (`n_estimators`, `learning_rate`, `max_depth`, `min_samples_leaf`, `C`, `max_iter`, `alpha`, `k`, `componentes` y `threshold`) y los que no se pasan toman los valores de `config.HIPERPARAMETROS` (`max_depth=sin_limite` quita el límite; `threshold` se elige en validación si no se pasa) |
 | `search` | `python -m mibici.modeling.search` | `question` y `model`, obligatorios (`hgb` en P1 y P2, `kmeans` en P3); `run_name` (por defecto `pregunta_busqueda_modelo`). La rejilla vive en `config.BUSQUEDAS` |
+| `ingest_actual` | `python -m mibici.monitoreo.datos --ingerir` | `months`: meses `AAAA-MM` del periodo actual separados por comas; vacío ingiere `config.MESES_ACTUAL` (enero a octubre de 2026) |
+| `monitor` | `python -m mibici.monitoreo.datos --exportar`, `mibici.monitoreo.drift --registrar` y `mibici.monitoreo.desempeno` | `version`: versión registrada de P2 con que se predice; vacío usa el alias `champion` |
+| `reentrenar` | `python -m mibici.modeling.reentrenar` | `run_name` (por defecto `p2_hgb_reentrenado`) |
+| `abtest` | `python -m mibici.modeling.abtest` | `version_a` y `version_b` (vacíos usan `champion` y `challenger`) y `promote` (`1` mueve el alias si la regla se cumple) |
 
 Todas las corridas se lanzan con `mlflow run` desde la raíz, con `--experiment-name mibici-equipo38` (el experimento del proyecto, el mismo de la primera entrega) y un gestor de entornos:
 
@@ -269,7 +279,7 @@ mlflow run . -e train -P question=p3 -P model=kmeans_pca -P k=4 -P run_name=p3_k
 
 ## Pruebas y chequeos
 
-La tercera entrega agregó al repositorio una capa de calidad que se ejecuta con un solo comando: pruebas con pytest (una fila por módulo de `mibici/`, con casos normales y límite y una prueba de reproducibilidad del entrenamiento), la validación de los datos con DeepChecks (integridad de las tablas y deriva entre entrenamiento y prueba) y los chequeos de seguridad (`.gitignore`, variables de entorno, bandit, pip-audit y búsqueda de secretos en el historial), con la evidencia versionada en `reports/`. Con las pruebas del servicio de predicción de la cuarta entrega la suite tiene 78 pruebas.
+La tercera entrega agregó al repositorio una capa de calidad que se ejecuta con un solo comando: pruebas con pytest (una fila por módulo de `mibici/`, con casos normales y límite y una prueba de reproducibilidad del entrenamiento), la validación de los datos con DeepChecks (integridad de las tablas y deriva entre entrenamiento y prueba) y los chequeos de seguridad (`.gitignore`, variables de entorno, bandit, pip-audit y búsqueda de secretos en el historial), con la evidencia versionada en `reports/`. Con las pruebas del servicio de predicción de la cuarta entrega y las del monitoreo, la versión alternativa y el *A/B testing* de la quinta, la suite tiene 105 pruebas.
 
 ### Los dos entornos
 
@@ -295,7 +305,7 @@ El orden es `make ingest` (una sola vez, genera `data/processed/`), `make test` 
 
 | Comando | Qué hace | Equivalente sin `make` |
 |---|---|---|
-| `make test` | Las 78 pruebas. No necesita datos, servidor de MLflow ni el entorno de DeepChecks, así que corre desde un clon limpio (ahí se omiten solas las dos pruebas `lento`, que piden los datos reales y el registry del equipo) | `python -m pytest -q tests` |
+| `make test` | Las 105 pruebas. No necesita datos, servidor de MLflow ni el entorno de DeepChecks, así que corre desde un clon limpio (ahí se omiten solas las dos pruebas `lento`, que piden los datos reales y el registry del equipo) | `python -m pytest -q tests` |
 | `make chequeos` | Exporta a `data/interim/` las tablas que valida DeepChecks, corre las seis suites, bandit (reporte completo y compuerta) sobre `mibici/`, `api/` y `scripts/`, pip-audit sobre los dos archivos de requisitos y la búsqueda de secretos | `python -m mibici.validacion --exportar`, `.venv-deepchecks\Scripts\python.exe chequeos\validar_datos.py`, `python -m bandit -c pyproject.toml -r mibici api scripts -f txt --exit-zero`, `python -m bandit -c pyproject.toml -r mibici api scripts -q --severity-level medium`, `python -m pip_audit -r requirements.txt`, `python -m pip_audit -r requirements-api.txt` y `python chequeos\secretos.py` |
 | `make verificar` | `make test` seguido de `make chequeos` | Los dos renglones anteriores en ese orden |
 | `make api` | El servicio de predicción sin contenedor, con uvicorn en `127.0.0.1:8000`, para desarrollar | `python -m uvicorn api.main:app --host 127.0.0.1 --port 8000` |
@@ -303,6 +313,7 @@ El orden es `make ingest` (una sola vez, genera `data/processed/`), `make test` 
 | `make contenedor` | Levanta el contenedor `mibici-api` en el puerto 8000 apuntando al servidor de tracking del anfitrión | `docker run --rm -d --name mibici-api -p 8000:8000 --add-host=host.docker.internal:host-gateway -e MLFLOW_TRACKING_URI=http://host.docker.internal:5000 mibici-api:1.0` |
 | `make probar-api` | Manda `api/ejemplos/peticion_p2.json` al servicio y muestra la respuesta | `python scripts\probar_api.py` |
 | `make exportar-modelo` | Descarga el `champion` de P2 a `models/api/` para arrancar el servicio sin registry (`RUTA_MODELO`) | `python -m mlflow artifacts download -u models:/mibici-equipo38-p2-riesgo@champion -d models/api` |
+| `make ingest-actual`, `make monitor`, `make reentrenar` y `make abtest` | Ingesta del periodo actual, reporte de *drift* y desempeño mensual, versión alternativa y *A/B testing* (sección Monitoreo y drift) | `mlflow run . -e ingest_actual`, `-e monitor`, `-e reentrenar` y `-e abtest` con `--experiment-name mibici-equipo38 --env-manager local` |
 
 - Variables del Makefile: `PYTHON_INTERPRETER` (por defecto `python`) y `PYTHON_DEEPCHECKS` (`.venv-deepchecks/Scripts/python.exe` en Windows y `.venv-deepchecks/bin/python` en Linux o macOS), por ejemplo `make chequeos PYTHON_INTERPRETER=venv/Scripts/python.exe`.
 - `make chequeos` usa `chequeos/secretos.py` y la evidencia de `reports/seguridad/`, que llegan con la rama `feat/chequeos-seguridad`, y la suite incluye los casos límite de `tests/test_dataset.py` y `tests/test_features.py` de la rama `test/casos-limite-datos-features`, así que `make verificar` completo corresponde a `main` con las tres ramas de la tercera entrega integradas.
@@ -329,6 +340,9 @@ Cada módulo de `mibici/` tiene su archivo en `tests/`, más `test_reproducibili
 | seguridad | `tests/test_seguridad.py` | 5 | Entradas de `.gitignore` para datos, modelos, MLflow y `.env`; `git check-ignore` sobre ocho rutas de muestra; `.env.example` define `MLFLOW_TRACKING_URI`; ningún CSV, Parquet, modelo, base de datos ni `.env` versionado; ningún archivo versionado con patrones de secretos | | `feat/chequeos-seguridad` |
 | servicio de predicción (`api`) | `tests/test_api.py` | 23 | 200 con el ejemplo y la respuesta completa (clase, probabilidad, umbral y modelo); `estacion_id` opcional; el orden de los campos del JSON no cambia la predicción; lote en el mismo orden; `/health` y `/metadata` con las columnas de la firma; los campos del esquema son `features.COLUMNAS_P2`; prueba `lento` contra el `champion` real del registry | 422 por campo faltante, por campo de más, por nueve valores fuera de rango o de tipo y por variables derivadas incoherentes; lote con un elemento inválido y lote vacío; 503 en los tres endpoints sin modelo; firma distinta al esquema rechazada; `registered_model_meta` ausente o de otro modelo | `feat/api-pruebas-ejemplos` |
 | ejemplos del servicio | `tests/test_api_ejemplos.py` | 4 | La petición de ejemplo es la del esquema y responde 200; el lote responde una predicción por estación; la respuesta guardada tiene la forma del esquema y el modelo del registry; los ejemplos no traen campos fuera del esquema | | `feat/api-pruebas-ejemplos` |
+| monitoreo (`monitoreo.datos`, `drift`, `desempeno` y `costos`) | `tests/test_monitoreo.py` | 15 | Ventanas consecutivas de los dos periodos; `armar_tabla` conserva la partición de 2025 y agrega el periodo actual; la ingesta escribe archivos aparte con el portal simulado y deja intactos los de 2025; el reporte de Evidently marca la columna desplazada con la prueba de su tipo; `analizar` deja el HTML, los JSON, el resumen y las figuras, con el mes de alerta; métricas y costo; desempeño por mes sin el entrenamiento; puntos de entrada del `MLproject` | Horas exactamente en los cortes de cada conjunto; mes que el portal no publica; exportar sin datos procesados; ninguna columna deriva cuando nada cambia; conjunto sin horas en riesgo; descomposición de la tasa con solo mezcla y con solo efecto condicional; estación que no existía en la referencia | `feat/monitoreo-herramientas` |
+| versión alternativa (`reentrenar`) | `tests/test_reentrenar.py` | 4 | Entrenamiento, validación y evaluación con las fechas de `config`; `main` lee la receta del `champion` de un registry temporal, entrena y registra la versión 3 como `challenger` con sus etiquetas, los dos manifiestos entre los artefactos y el umbral dentro del modelo | Horas cuya etiqueta mira al bloque siguiente quedan fuera de entrenamiento y validación; la confirmación no entra a ningún conjunto; la versión que tenía el alias queda anotada y sin alias | `feat/ab-testing-versiones` |
+| A/B testing (`abtest`) | `tests/test_abtest.py` | 8 | Conteos por día y métricas por réplica; bootstrap pareado y reproducible con la misma semilla; `comparar` con diferencias, intervalos y McNemar; tráfico dividido que solo cuenta el brazo asignado; `evaluar` con dos modelos, reporte y figura; `main` contra un registry temporal, con la corrida en MLflow y las versiones anotadas | McNemar sin pares discordantes, exacta con pocos pares y con ji cuadrada; versiones idénticas (intervalos en cero, la regla no promueve); las cuatro combinaciones de la regla y el margen exacto de recall; todo el tráfico a un brazo; tabla sin conjunto de evaluación; el alias solo se mueve con la regla cumplida y `--promover` | `feat/ab-testing-versiones` |
 
 La prueba de reproducibilidad compara dos ejecuciones completas de `entrenar_p1`, `entrenar_p2` y `entrenar_p3` con la misma semilla y exige igualdad exacta (`numpy.array_equal` e igualdad de los diccionarios de métricas), no cercanía; en conjuntos pequeños dos semillas distintas pueden coincidir por azar, por eso la prueba verifica además que la semilla llega al `HistGradientBoostingRegressor`, al `HistGradientBoostingClassifier` dentro del `FixedThresholdClassifier` y al `KMeans` del `Pipeline`, en lugar de exigir resultados distintos con otra semilla.
 
@@ -551,6 +565,200 @@ bandit sobre `api/` y `scripts/` no reporta hallazgos (194 líneas) y pip-audit 
 
 ![Petición y respuesta desde el contenedor](reports/figures/api_peticion_respuesta.png)
 
+## Monitoreo y drift
+
+La quinta entrega agrega la capa de observabilidad del modelo en producción de P2 (`mibici-equipo38-p2-riesgo`, el que sirve la API): ingesta del periodo posterior al entrenamiento en archivos aparte, reporte de *drift* y de calidad de datos con [Evidently](https://docs.evidentlyai.com/introduction), desempeño del modelo vigente mes a mes, una versión alternativa reentrenada y registrada en el Model Registry, un *A/B testing* entre las dos versiones con la regla de decisión escrita de antemano y una recomendación de *Continuous Training*. Los reportes quedan en `reports/monitoreo/` y las figuras en `reports/figures/`.
+
+### Archivos
+
+```
+├── data
+│   └── manifiesto_actual.json   <- versión de los datos del periodo actual (URL, tamaño y SHA-256 de cada mes, limpieza por mes)
+├── mibici
+│   ├── monitoreo
+│   │   ├── datos.py             <- ingesta del periodo actual y tabla de monitoreo de P2 con la predicción del modelo vigente
+│   │   ├── drift.py             <- reporte de drift y de calidad con Evidently, comparaciones de control, serie mensual y resumen
+│   │   ├── desempeno.py         <- desempeño del modelo vigente por conjunto, por mes y por antigüedad de la estación
+│   │   ├── costos.py            <- métricas y costo de los errores de P2, comunes al desempeño mensual y al A/B
+│   │   ├── graficas.py          <- figuras del drift y del desempeño
+│   │   └── formato.py           <- tablas y números de los reportes en Markdown
+│   └── modeling
+│       ├── reentrenar.py        <- versión alternativa: receta del champion sobre 2025 más el periodo actual, registrada como challenger
+│       └── abtest.py            <- A/B testing de dos versiones registradas, regla de decisión y cambio de alias
+├── reports
+│   ├── monitoreo                <- resumen.md, drift.json y evidently_p2*.json (drift); desempeno.md y .json; abtest.md y .json
+│   └── figures                  <- drift_*.png, evidently_*.png, desempeno_*.png y abtest_costo.png
+└── tests
+    ├── test_monitoreo.py        <- ventanas, ingesta aparte, tabla de monitoreo, reporte de Evidently, desempeño y MLproject
+    ├── test_reentrenar.py       <- cortes del reentrenamiento y registro de la versión como challenger en un registry temporal
+    └── test_abtest.py           <- McNemar, bootstrap por día, tráfico dividido, regla de decisión y cambio de alias
+```
+
+Los HTML interactivos de Evidently (`reports/monitoreo/evidently_p2.html` y `evidently_p2_alerta.html`, 4.7 MB cada uno) quedan fuera de Git, como los de DeepChecks, y se regeneran con un comando; sus métricas (`evidently_p2.json` y `evidently_p2_alerta.json`) y sus capturas sí se versionan.
+
+### Conjuntos y periodos
+
+| Conjunto | Periodo | Horas-estación | Estaciones | Horas en riesgo | Para qué se usa |
+|---|---|---|---|---|---|
+| Referencia | 1 de enero al 30 de septiembre de 2025 | 2,339,422 | 369 | 42,327 (1.81 %) | Conjunto de entrenamiento del `champion` (versión 1); es contra lo que se mide el *drift* |
+| Validación de 2025 | Octubre de 2025 | 272,496 | 368 | 4,989 (1.83 %) | Mes con que el `champion` eligió su umbral de decisión |
+| Prueba de 2025 | Noviembre y diciembre de 2025 | 536,089 | 368 | 6,718 (1.25 %) | Desempeño del `champion` fuera de su entrenamiento, que sirve de base para medir su degradación |
+| Actual | 1 de enero al 30 de junio de 2026 | 1,622,169 | 412 | 18,196 (1.12 %) | Periodo en producción que se compara contra la referencia; con él se reentrena la versión alternativa |
+| Evaluación | 1 de julio al 30 de septiembre de 2026 | 1,001,082 | 469 | 10,232 (1.02 %) | Conjunto del *A/B testing*: ninguna de las dos versiones lo usó para entrenar ni para elegir su umbral |
+| Confirmación | Octubre de 2026 | 346,775 | 469 | 4,947 (1.43 %) | Último mes publicado; no entra en la regla del *A/B* y muestra si el resultado se sostiene |
+
+- La referencia es la partición con que se entrenó el modelo que hoy está en producción: `armar_tabla` la obtiene con `features.conjuntos_p2` sobre los viajes de 2025 y reproduce sus 2,339,422 filas y 42,327 horas en riesgo. Medir el *drift* contra otro periodo diría cuánto cambió la ciudad, no cuánto se alejó la producción de lo que el modelo aprendió.
+- El periodo actual son los seis primeros meses de 2026, lo que el modelo atendió sin reentrenarse. Como esos mismos meses existen en la referencia, una comparación de control con enero a junio de 2025 separa el cambio de un año a otro de la estacionalidad.
+- Julio a septiembre de 2026 queda reservado para el *A/B*: es posterior a todo lo que vieron las dos versiones. Octubre, el último mes que publica el portal, queda fuera de la regla y sirve de confirmación.
+- Las fechas viven en `config.py` (`FECHA_INICIO_ACTUAL`, `FECHA_FIN_ACTUAL`, `FIN_REENTRENAMIENTO`, `FIN_MONITOREO` y `FIN_EVALUACION`). Las filas de 2026 se calculan sobre la serie continua de los dos años, para que la primera semana de enero tenga sus rezagos y la etiqueta de la semana anterior, como ocurre en producción. Cada fila es una estación en una hora con las 13 variables de entrada de P2, la etiqueta de riesgo y la probabilidad y la clase que asigna el `champion`.
+- La ingesta del periodo actual (`python -m mibici.monitoreo.datos --ingerir`) descarga los diez meses de 2026 que publica el portal (3,997,597 registros en 347.0 MB), aplica la misma `limpiar_viajes` y escribe `data/processed/viajes_actual.parquet` (3,840,981 viajes válidos) y `data/manifiesto_actual.json` (`version_datos` `f396cd21ea7d`). No toca `viajes.parquet` ni `data/manifiesto.json` de 2025, y usa la misma nomenclatura de estaciones para que la capacidad de cada estación sea la que vio el modelo.
+
+### Comandos
+
+Con el servidor de tracking levantado y `MLFLOW_TRACKING_URI` apuntando a él (sección Servidor de tracking), en este orden:
+
+```
+mlflow run . -e ingest_actual --experiment-name mibici-equipo38 --env-manager local
+mlflow run . -e monitor -P version=1 --experiment-name mibici-equipo38 --env-manager local
+mlflow run . -e reentrenar --experiment-name mibici-equipo38 --env-manager local
+mlflow run . -e abtest -P promote=1 --experiment-name mibici-equipo38 --env-manager local
+```
+
+| Objetivo de `make` | Punto de entrada | Comando directo | Qué deja |
+|---|---|---|---|
+| `make ingest-actual` | `ingest_actual` | `python -m mibici.monitoreo.datos --ingerir` | `data/processed/viajes_actual.parquet` y `data/manifiesto_actual.json` |
+| `make monitor` | `monitor` | `python -m mibici.monitoreo.datos --exportar`, `python -m mibici.monitoreo.drift --registrar` y `python -m mibici.monitoreo.desempeno` | `data/interim/monitoreo_p2.parquet`; `reports/monitoreo/resumen.md`, `drift.json`, `evidently_p2.html` y `.json`, `evidently_p2_alerta.html` y `.json`; `desempeno.md` y `.json`; figuras `drift_*.png` y `desempeno_*.png`; corrida `p2_monitoreo_drift` |
+| `make reentrenar` | `reentrenar` | `python -m mibici.modeling.reentrenar` | Corrida `p2_hgb_reentrenado` y versión nueva de `mibici-equipo38-p2-riesgo` con alias `challenger` |
+| `make abtest` (`make abtest PROMOVER=1`) | `abtest` | `python -m mibici.modeling.abtest` (`--promover`) | `reports/monitoreo/abtest.md` y `.json`, `reports/figures/abtest_costo.png` y corrida `p2_abtest_v<A>_v<B>`; con `--promover`, el alias `champion` se mueve solo si la regla se cumple |
+
+`monitor` predice con el alias `champion`; `-P version=1` (o `--version 1`) fija la versión, que es lo que reproduce las cifras de esta entrega aunque el alias cambie después. `abtest` compara por defecto `champion` contra `challenger` y acepta `-P version_a=1 -P version_b=3`. El reporte de *drift* tarda unos ocho minutos con los 2.3 millones de filas de la referencia y la tabla de monitoreo, dos; el reentrenamiento, tres y medio; el *A/B*, uno.
+
+### Reporte de drift con Evidently
+
+`mibici/monitoreo/drift.py` usa la API actual de Evidently 0.7.23 (`from evidently import Report`, `from evidently.presets import DataDriftPreset, DataSummaryPreset` y `Report([...]).run(actual, referencia)`) sobre 16 columnas: las 13 variables de entrada, la etiqueta `riesgo` (objetivo) y la probabilidad y la clase que asigna el modelo (predicción). Las pruebas se fijan en el código para que no dependan del tamaño de la muestra: distancia de Wasserstein normalizada en las diez columnas numéricas y distancia de Jensen-Shannon en las seis categóricas, con deriva cuando el estadístico alcanza 0.1 y deriva del conjunto cuando deriva al menos la mitad de las columnas. Con millones de filas una prueba de hipótesis rechazaría la igualdad en todas las columnas; una distancia con umbral mide si el cambio es grande, no si existe.
+
+| Comparación | Columnas con deriva | Estadísticos mayores |
+|---|---|---|
+| Referencia contra actual (reporte principal) | 0 de 16 | `neto_3h` 0.082, `probabilidad` 0.079, `neto_futuro_semana_anterior` 0.078, salidas 0.061, llegadas 0.055 |
+| Mismos meses un año después (enero a junio de 2025 contra enero a junio de 2026) | 0 de 16 | `neto_3h` 0.088, `probabilidad` 0.085, salidas 0.070 |
+| Solo estaciones de la referencia | 0 de 16 | `neto_3h` 0.079, `probabilidad` 0.073, salidas 0.057 |
+| Referencia contra prueba de 2025 (solo cambio de temporada) | 0 de 16 | `neto_3h` 0.058, `probabilidad` 0.048, salidas 0.037 |
+
+En el semestre completo ninguna columna alcanza el umbral, pero el cambio de un año a otro es mayor que el que produce la temporada (0.061 contra 0.037 en las salidas) y no desaparece al quitar las estaciones nuevas ni al comparar los mismos meses. El promedio del semestre esconde lo que pasa mes a mes:
+
+| Mes de 2026 | Ene | Feb | Mar | Abr | May | Jun | Jul | Ago | Sep | Oct |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Columnas con deriva (de 16) | 0 | 0 | 0 | 0 | 8 | 3 | 3 | 9 | 1 | 7 |
+| `salidas_h0` | 0.05 | 0.04 | 0.03 | 0.05 | 0.11 | 0.08 | 0.10 | 0.12 | 0.02 | 0.15 |
+| `neto_3h` | 0.07 | 0.07 | 0.06 | 0.06 | 0.11 | 0.12 | 0.12 | 0.11 | 0.08 | 0.04 |
+| `capacidad` | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.03 | 0.08 | 0.10 | 0.10 | 0.10 |
+| `probabilidad` | 0.09 | 0.05 | 0.05 | 0.06 | 0.12 | 0.11 | 0.13 | 0.16 | 0.05 | 0.06 |
+
+Mayo de 2026 es el primer mes con deriva del conjunto según la regla de Evidently (8 de 16 columnas: las seis de salidas y llegadas, `neto_3h` y `probabilidad`); agosto la repite con 9 y octubre queda en 7. `reports/monitoreo/resumen.md` trae la prueba, el estadístico, el umbral y el veredicto de las 16 columnas en cada comparación y en cada mes, y `evidently_p2_alerta.html` es el reporte de mayo contra la referencia.
+
+![Reporte de Evidently, referencia contra actual](reports/figures/evidently_resumen_actual.png)
+
+![Reporte de Evidently, referencia contra mayo de 2026](reports/figures/evidently_resumen_mayo.png)
+
+![Drift mensual por columna](reports/figures/drift_mensual.png)
+
+![Drift por columna y comparaciones de control](reports/figures/drift_puntuaciones.png)
+
+### Calidad de los datos
+
+- Resumen de Evidently (`DataSummaryPreset`) sobre las mismas 16 columnas: ni la referencia ni el periodo actual tienen valores faltantes, filas vacías o columnas constantes; las tres columnas casi constantes son las binarias raras (`riesgo`, `prediccion` y `riesgo_semana_anterior`), y 44 % de las filas de la referencia y 46 % de las del periodo actual son idénticas a otra en las 16 columnas, horas sin movimiento que se repiten en cualquier mes. Los rangos se conservan (capacidad de 11 a 39 anclajes en los dos periodos; salidas por hora de 0 a 205 en la referencia y de 0 a 147 en el actual).
+- Archivos crudos del portal, con los conteos de los dos manifiestos: los viajes de menos de un minuto pasan de 2.59 % de los registros en 2025 a 3.90 % en 2026 (4.99 % en junio); septiembre de 2026 trae 758 `viaje_id` duplicados, que en 2025 no existían; 3,869 viajes (0.10 %) usan una estación que no está en la nomenclatura; y las estaciones con viajes pasan de 371 a 472. La limpieza descarta los dos primeros y la tabla de monitoreo solo incluye estaciones con capacidad registrada.
+- El volumen crece al final del periodo: 470,348 viajes válidos en septiembre y 607,759 en octubre, contra 305,117 a 376,321 en los ocho meses anteriores.
+
+![Reporte de Evidently, calidad de los datos](reports/figures/evidently_calidad_actual.png)
+
+### Interpretación: qué deriva y qué implica para el modelo
+
+Variables de entrada. Las seis de flujo (salidas y llegadas de la hora y de las dos anteriores) bajan 10.6 % en promedio, de 1.387 a 1.240 viajes por estación y hora, y arrastran a las dos derivadas (`neto_3h` y `neto_futuro_semana_anterior`). `capacidad` no se mueve en el semestre (0.006) y cruza el umbral desde septiembre, cuando el sistema ya opera con 469 estaciones contra las 369 de la referencia. Las de calendario no derivan.
+
+Objetivo y predicción. La tasa de horas en riesgo cae de 1.81 % a 1.12 % (38.0 % menos): con la tasa de la referencia se esperarían 29,350 horas en riesgo en el periodo actual y ocurren 18,196. Evidently mide esa deriva en 0.020 porque la distancia de Jensen-Shannon de una clase rara queda pequeña aunque su frecuencia cambie mucho, así que el objetivo se vigila con la tasa y no solo con el veredicto. El modelo acompaña el cambio: su tasa de alertas baja de 1.87 % a 1.22 % y la probabilidad media de 0.200 a 0.178.
+
+![Deriva del objetivo y de la predicción](reports/figures/drift_objetivo.png)
+
+Efecto medido en el `champion` (`reports/monitoreo/desempeno.md` trae la tabla mes a mes). El costo cuenta un falso positivo como 1 y un falso negativo como 5; como el costo por mil horas-estación baja solo porque hay menos horas en riesgo, se reporta además frente a no alertar (el costo dividido entre lo que costaría no emitir ninguna alerta: 1 significa que el modelo no aporta nada).
+
+| Conjunto | Recall | Precisión | PR-AUC | Costo por mil horas-estación | Costo frente a no alertar |
+|---|---|---|---|---|---|
+| Prueba de 2025 | 0.376 | 0.315 | 0.334 | 49.31 | 0.787 |
+| Actual (enero a junio de 2026) | 0.354 | 0.325 | 0.311 | 44.47 | 0.793 |
+| Evaluación (julio a septiembre de 2026) | 0.366 | 0.327 | 0.334 | 40.09 | 0.785 |
+| Confirmación (octubre de 2026) | 0.380 | 0.304 | 0.329 | 56.67 | 0.795 |
+
+El modelo resiste: fuera de junio, ningún mes de 2026 se aleja más de 4 % del costo frente a no alertar de la prueba (enero pierde 11.8 % de recall, pero con mejor precisión y casi el mismo costo). Junio de 2026 es la excepción: recall 0.302 (19.8 % menos), precisión 0.261, PR-AUC 0.245 y costo frente a no alertar 0.869 (10.4 % más), un mes después de que el reporte mensual marcara la deriva del conjunto.
+
+![Desempeño mensual del modelo vigente](reports/figures/desempeno_mensual.png)
+
+*Data drift* o *concept drift*. Con las horas agrupadas por estratos de 0.1 de la probabilidad que asigna el modelo, el cambio de la tasa de riesgo frente a la prueba de 2025 se parte en lo que se explica porque las horas caen en otros estratos (cambian las entradas) y lo que se explica porque dentro del mismo estrato la frecuencia de riesgo es otra (cambia la relación entre entradas y objetivo). En el periodo actual la tasa baja 0.131 puntos y 94 % es mezcla (0.124 contra 0.007): es *data drift* que el modelo absorbe, porque la misma probabilidad sigue correspondiendo a la misma frecuencia de riesgo (25.6 % en el estrato más alto en la prueba y 26.1 % en el actual). En la evaluación el efecto condicional sube a 25 % del cambio, y en octubre los dos efectos van en sentidos opuestos (0.300 de mezcla contra -0.126 condicional): hay más horas en zonas de probabilidad alta, pero con menos riesgo que antes a igual probabilidad, y la precisión baja a 0.304. Ese es el indicio de *concept drift* que hay que seguir.
+
+Estaciones nuevas. De enero a junio las 44 estaciones que no existían en la referencia aportan 1.45 % de las filas y casi ningún riesgo (0.19 % de sus horas, contra 1.14 % en las de la referencia), y ahí el modelo cuesta más que no alertar (1.023). De julio a septiembre ya son 101 estaciones y 18.9 % de las filas, con recall 0.321 y costo frente a no alertar 0.833, contra 0.368 y 0.783 en las estaciones que el modelo conoce. La expansión del sistema es la fuente de deriva que más crece.
+
+![Modelo vigente por antigüedad de la estación](reports/figures/desempeno_estaciones.png)
+
+### Versión alternativa en el Model Registry
+
+`mibici/modeling/reentrenar.py` lee de la corrida de origen del `champion` su algoritmo y sus hiperparámetros (`HistGradientBoostingClassifier` balanceado, `learning_rate` 0.1, 200 árboles, sin límite de profundidad) y entrena esa misma receta con más datos, de modo que el *A/B* mida el efecto de los datos y no el de otro algoritmo:
+
+| | Versión 1 (`champion`) | Versión 3 (`challenger`) |
+|---|---|---|
+| Corrida | `p2_hgb_mejor` | `p2_hgb_reentrenado` |
+| Entrenamiento | 1 de enero al 30 de septiembre de 2025 (2,339,422 filas) | 1 de enero de 2025 al 31 de mayo de 2026 (4,488,274 filas) |
+| Validación para el umbral | Octubre de 2025 | Junio de 2026 (280,336 filas) |
+| Umbral de decisión | 0.92 | 0.94 |
+| Datos | `7aa5e436d887` | `7aa5e436d887+f396cd21ea7d` |
+
+La versión nueva se registra con `registry.registrar_version` como versión 3 del mismo modelo y recibe el alias `challenger`, con el linaje de siempre (corrida, commit, versión de los datos, `test_costo` y `threshold`) más las etiquetas `entrega`, `origen`, `receta_de_la_version`, `periodo_entrenamiento`, `periodo_validacion` y `periodo_evaluacion`. La versión 2 (`p2_bosque`), que tenía ese alias desde la segunda entrega, lo cede porque un alias apunta a una sola versión: conserva su registro, su corrida y sus artefactos, y queda anotada con `alias_anterior=challenger` y `relevada_por=3`. El alias `champion` no se toca en este paso.
+
+### A/B testing
+
+La regla de decisión está escrita en `mibici/modeling/abtest.py` (`REGLA`, `CONFIANZA` y `MARGEN_RECALL`) y se fijó antes de registrar la versión 3 y de calcular cualquier resultado:
+
+> La versión B se promueve a champion solo si, sobre el conjunto de evaluación, se cumplen las dos condiciones: (1) el intervalo de confianza de 95 % de la diferencia de costo por mil horas-estación (B menos A), calculado por bootstrap de bloques de un día sobre la comparación pareada, queda completo por debajo de cero; y (2) el límite inferior del intervalo de 95 % de la diferencia de recall (B menos A) no baja de -0.01. Si alguna falla, el alias champion no se mueve y la versión B conserva el alias challenger.
+
+Diseño. Las dos versiones se cargan del Model Registry y predicen las mismas 1,001,082 horas-estación de julio a septiembre de 2026 (92 días, 10,232 horas en riesgo), cada una con el umbral que lleva dentro. La comparación es pareada: mismas filas, diferencias con intervalos por bootstrap de 2,000 réplicas que remuestrean días completos con los mismos días para las dos versiones (las horas de un día no son independientes entre sí), y prueba de McNemar sobre los pares discordantes. Aparte se simula el experimento como correría en producción: cada hora-estación se asigna al azar a una versión (50 % a cada una, semilla 42) y solo se cuenta la respuesta de la versión asignada.
+
+| Métrica | A, versión 1 | B, versión 3 | B menos A | IC de 95 % |
+|---|---|---|---|---|
+| Recall | 0.3664 | 0.3258 | -0.0406 | -0.0448 a -0.0358 |
+| Precisión | 0.3269 | 0.4074 | +0.0805 | +0.0740 a +0.0871 |
+| F1 | 0.3455 | 0.3621 | +0.0166 | +0.0117 a +0.0214 |
+| PR-AUC | 0.3338 | 0.3474 | +0.0136 | |
+| Alertas | 11,470 | 8,184 | -3,286 | |
+| Falsos positivos | 7,721 | 4,850 | -2,871 | |
+| Falsos negativos | 6,483 | 6,898 | +415 | |
+| Costo | 40,136 | 39,340 | -796 | |
+| Costo por mil horas-estación | 40.09 | 39.30 | -0.80 | -1.08 a -0.51 |
+| Costo frente a no alertar | 0.7845 | 0.7690 | -0.0156 | |
+
+- McNemar: de las 4,028 horas-estación en que las versiones difieren, B acierta sola en 3,242 y A en 786 (valor p menor que 0.001). Separado por clase, B evita 3,148 falsas alertas de A y agrega 277, pero entre las horas en riesgo A acierta sola en 509 y B en 94.
+- Tráfico dividido: con la mitad de las filas en cada brazo, B cuesta 38.92 por mil horas-estación contra 40.64 de A; la diferencia es -1.72 (IC de 95 % de -3.31 a -0.18), del mismo signo que la comparación pareada y con un intervalo más ancho porque cada brazo ve la mitad de los datos y no las mismas filas.
+- Octubre de 2026, fuera de la regla: la diferencia se sostiene (costo por mil -1.06, IC de -1.74 a -0.41; recall -0.0542, IC de -0.0638 a -0.0439).
+
+Decisión. La condición de costo se cumple (el intervalo queda completo por debajo de cero) y la de recall no (el límite inferior es -0.0448 frente al margen de -0.01): B ahorra 2,871 viajes de camión innecesarios a cambio de dejar sin aviso 415 horas en riesgo más. La regla dice mantener la versión A; el alias `champion` sigue en la versión 1 y la versión 3 conserva el alias `challenger`. `reports/monitoreo/abtest.md` trae las tablas completas y la corrida `p2_abtest_v1_v3` queda en el experimento con sus métricas y artefactos.
+
+Análisis posterior a la decisión, que no la cambia. Para separar lo que aporta el reentrenamiento de lo que cambia el umbral, se busca el umbral con que B alcanza el recall de A en la evaluación (0.9279 en lugar de 0.94) y se repite la comparación: a igual recall B emite 788 alertas menos y cuesta 0.79 menos por mil horas-estación (IC de -1.03 a -0.56), y con ese umbral ya fijo, en octubre, cuesta 0.91 menos (IC de -1.44 a -0.39) con un recall de 0.3723 contra 0.3798. El reentrenamiento sí ordena mejor las horas (PR-AUC 0.3474 contra 0.3338); lo que hizo perder recall a la versión 3 fue elegir su umbral con un solo mes, junio de 2026, que es justo el mes atípico del periodo.
+
+![Costo por mes y diferencia de costo en el A/B](reports/figures/abtest_costo.png)
+
+### Recomendación de Continuous Training
+
+Sí conviene reentrenar de forma continua, pero como candidato programado con promoción condicionada, no como reemplazo automático.
+
+- Decisión de hoy: la versión 1 sigue como `champion`. La versión 3 no se promueve porque no cumple la regla, y queda como `challenger`.
+- Por qué reentrenar: con la misma receta y ocho meses más de datos el modelo ordena mejor (PR-AUC +0.0136) y, a igual recall, reduce 2.0 % el costo de los errores en la evaluación y 1.6 % en octubre. Entrenar cuesta poco (minuto y medio de ajuste con 4.5 millones de filas, tres y medio con el registro, y un modelo de 0.7 MB), así que el costo real del ciclo está en evaluar, no en entrenar.
+- Por qué no promover en automático: el `champion` no se ha degradado de forma sostenida (costo frente a no alertar entre 0.757 y 0.798 en nueve de los diez meses de 2026, contra 0.787 en su prueba) y un reentrenamiento mal calibrado pierde recall, que es lo que la operación protege.
+- Disparadores medidos en esta entrega, revisados cada mes con `make monitor` cuando el portal publica el mes anterior: (1) deriva del conjunto en el reporte mensual de Evidently, al menos 8 de las 16 columnas sobre 0.1 (ocurrió en mayo y en agosto de 2026); (2) costo frente a no alertar del mes más de 5 % por encima del de la prueba (0.826), que solo junio de 2026 rebasa (0.869); el recall solo no basta, porque enero perdió 11.8 % con el costo casi intacto; (3) estaciones que el modelo no vio en su entrenamiento con más de 5 % de las horas-estación del mes (1.45 % de enero a junio y 18.9 % de julio a septiembre). La tasa de riesgo sola no sirve de disparador: cayó 38 % sin que el modelo perdiera desempeño.
+- Ciclo propuesto: cualquier disparador lanza `make reentrenar`; el candidato entra como `challenger` y se compara con `make abtest` sobre los meses siguientes; solo la regla mueve el alias, y la versión anterior conserva su registro para revertir con un comando. La etiqueta de P2 se conoce dos horas después de cada predicción, así que el desempeño se puede vigilar sin esperar al cierre del mes.
+- Cambio para el siguiente candidato: elegir el umbral con una ventana de validación de tres meses y no de uno, que es lo que el análisis posterior señala como causa de la pérdida de recall.
+
+### Pruebas del monitoreo
+
+Las tres suites nuevas usan datos sintéticos y un registry temporal en SQLite, de modo que no dependen del portal ni del registry del equipo: `tests/test_monitoreo.py` (15 pruebas: ventanas sin huecos ni traslapes, ingesta en archivos aparte con el portal simulado, tabla de monitoreo que conserva la partición de 2025, reporte de Evidently con la prueba de cada tipo de columna, mes de alerta, descomposición de la tasa, desempeño por mes y por antigüedad de la estación, y puntos de entrada del `MLproject`), `tests/test_reentrenar.py` (4 pruebas: cortes del reentrenamiento, receta leída del `champion`, versión 3 como `challenger` y versión 2 anotada) y `tests/test_abtest.py` (8 pruebas: McNemar exacta y con ji cuadrada, bootstrap pareado y reproducible, tráfico dividido, las cuatro combinaciones de la regla y el cambio de alias). Con ellas la suite completa tiene 105 pruebas.
+
 ## Flujo de trabajo con Git y GitHub
 
 - GitHub Flow: `main` siempre está en estado entregable. Cada cambio nace en una rama corta creada desde `main`, se publica en GitHub, se abre un *Pull Request*, otro integrante lo revisa, se integra y la rama se borra.
@@ -563,17 +771,18 @@ bandit sobre `api/` y `scripts/` no reporta hallazgos (194 líneas) y pip-audit 
 - Segunda entrega, en el orden en que se integran porque la primera rama consume lo que deja la segunda: `feat/model-registry` (`registry.py`, `predict.py` con carga por alias y `tests/test_registry.py`), `feat/mlflow-project-registry` (`MLproject`, `python_env.yaml`, `Makefile`, `artefactos.py`, `train.py`, `search.py`, pruebas y este README) y `fix/features-particion-perfiles` (corrección de `features.py` señalada en la revisión de la primera entrega: en P2 se excluyen de entrenamiento y validación las horas cuya ventana objetivo cruza el corte siguiente y en P3 los perfiles se alinean sobre la unión de estaciones con salidas y llegadas; entra después de las corridas de esta entrega para que sus `commit_git` reproduzcan exactamente lo que se midió, y se aplica en la siguiente iteración de los modelos).
 - Tercera entrega, en el orden en que se integran: `feat/tests-reproducibilidad-deepchecks` (`pytest.ini`, `tests/test_reproducibilidad.py`, `tests/test_search.py`, `tests/test_predict.py` y los casos límite de `tests/test_train.py`; `mibici/validacion.py`, `chequeos/validar_datos.py`, `requirements-deepchecks.txt` y `reports/deepchecks/`; la corrección de bandit en `train.py`, `[tool.bandit]` en `pyproject.toml` y MLflow 3.17.2 en `requirements.txt` y `python_env.yaml`; `Makefile`, `.gitignore` y este README), `feat/chequeos-seguridad` (`tests/test_seguridad.py`, `.env.example`, `chequeos/secretos.py` y la evidencia de `reports/seguridad/`) y `test/casos-limite-datos-features` (casos límite de `tests/test_dataset.py` y `tests/test_features.py`). Cada rama pasa `python -m pytest -q tests` por separado antes de abrir su *Pull Request*, y la integración cierra con `make verificar` sobre `main`.
 - Cuarta entrega, en el orden en que se integran: `feat/api-rest-contenedor` (`api/`, `.env.example`, `requirements.txt`, las capturas y este README), `feat/api-pruebas-ejemplos` (`tests/conftest.py`, `tests/test_api.py`, `api/ejemplos/` y `tests/test_api_ejemplos.py`) y `feat/api-contenedor-herramientas` (`Containerfile`, `.dockerignore`, `requirements-api.txt`, `scripts/probar_api.py` y los objetivos `api`, `imagen`, `contenedor`, `probar-api` y `exportar-modelo` del `Makefile`). Las dos últimas parten de `main` con la primera integrada, porque sus pruebas, su imagen y su script usan `api/`; cada *Pull Request* lo integra con *merge commit* quien lo revisa, y la integración cierra con `make verificar` sobre `main` y con el contenedor respondiendo a `make probar-api`.
+- Quinta entrega, en el orden en que se integran: `feat/monitoreo-drift` (`mibici/config.py`, `mibici/monitoreo/datos.py`, `drift.py`, `costos.py`, `graficas.py` y `formato.py`, `data/manifiesto_actual.json`, Evidently en `requirements.txt` y `python_env.yaml`, `.gitignore`, la lista blanca del segundo manifiesto en `chequeos/secretos.py` y `tests/test_seguridad.py`, y los reportes y capturas del *drift*), `feat/ab-testing-versiones` (`mibici/modeling/reentrenar.py` y `abtest.py`, `tests/test_reentrenar.py`, `tests/test_abtest.py` y el reporte del *A/B*) y `feat/monitoreo-herramientas` (`mibici/monitoreo/desempeno.py`, los puntos de entrada del `MLproject`, los objetivos del `Makefile`, `tests/test_monitoreo.py`, los reportes de desempeño y este README). Las dos últimas parten de `main` con la primera integrada, porque usan `mibici/monitoreo/`; entre ellas no hay dependencia y se integran en cualquier orden.
 - Nada de datos de MiBici, modelos serializados, carpetas de MLflow ni credenciales en el historial: `.gitignore` los excluye y los *Pull Requests* se revisan también con ese criterio.
 
 ## Integrantes y roles
 
 El trabajo se repartió por etapas del *pipeline*, que es la separación que propone la plantilla: cada integrante es responsable de un módulo con una interfaz definida y revisa el módulo vecino.
 
-| Integrante | Matrícula | Rol en el proyecto | Primera entrega | Segunda entrega | Tercera entrega | Cuarta entrega |
-|---|---|---|---|---|---|---|
-| José Andrés Hernández Guerra | A01840564 | Datos e ingesta; Model Registry; seguridad del repositorio | `mibici/dataset.py`, `data/manifiesto.json` y `tests/test_dataset.py` (rama `feat/ingesta`); revisión del *Pull Request* de *features* | `mibici/modeling/registry.py`, `mibici/modeling/predict.py` y `tests/test_registry.py` (rama `feat/model-registry`); revisión del *Pull Request* del MLflow Project | `tests/test_seguridad.py`, `.env.example`, `chequeos/secretos.py` y la evidencia fechada de `reports/seguridad/` (rama `feat/chequeos-seguridad`); revisión del *Pull Request* de pruebas y DeepChecks | `tests/conftest.py` y `tests/test_api.py` (las 23 pruebas del servicio con `TestClient` y un modelo mínimo), `api/ejemplos/` (petición, lote y respuesta de la corrida real) y `tests/test_api_ejemplos.py` (rama `feat/api-pruebas-ejemplos`); revisión e integración del *Pull Request* del servicio |
-| Miguel Angel Higuera López | A01451684 | *Features* y exploración; casos límite de datos | `mibici/features.py`, `tests/test_features.py` y `notebooks/1.0-mah-exploracion-mibici.ipynb` (rama `feat/features`); revisión del *Pull Request* de ingesta | Corrección de la partición de P2 y de los perfiles de P3 en `mibici/features.py` con sus pruebas (rama `fix/features-particion-perfiles`); revisión del *Pull Request* del Model Registry | Casos límite de `limpiar_viajes` y `normalizar_nombre` en `tests/test_dataset.py` y de `particion_temporal`, `sin_ventana_posterior`, `etiquetar_riesgo` y `perfiles_por_estacion` en `tests/test_features.py` (rama `test/casos-limite-datos-features`); revisión del *Pull Request* de chequeos de seguridad | `Containerfile`, `.dockerignore` y `requirements-api.txt` (la imagen del servicio), `scripts/probar_api.py` y los objetivos `api`, `imagen`, `contenedor`, `probar-api` y `exportar-modelo` del `Makefile` (rama `feat/api-contenedor-herramientas`); revisión e integración del *Pull Request* de pruebas y ejemplos |
-| Nicolás Hernández Ynurreta García | A01284528 | Integración y MLOps | Estructura con `ccds`, configuración, README, experimento base en MLflow, ML Canvas y diagrama, documento de la propuesta, revisión e integración | `MLproject`, `python_env.yaml`, `Makefile`, `artefactos.py`, `train.py`, `search.py` y sus pruebas (rama `feat/mlflow-project-registry`); corridas de la entrega, selección y registro de los modelos, reporte, revisión de los *Pull Requests* del equipo e integración | Prueba de reproducibilidad, `tests/test_search.py`, `tests/test_predict.py` y casos límite de `train`; validación con DeepChecks (`mibici/validacion.py`, `chequeos/validar_datos.py`, `reports/deepchecks/`); corrección de bandit y MLflow 3.17.2; `Makefile`, `.gitignore`, capturas y este README (rama `feat/tests-reproducibilidad-deepchecks`); revisión del *Pull Request* de casos límite e integración | Servicio de predicción (`api/`) con sus esquemas y la carga desde el registry, `.env.example`, `requirements.txt`, imagen y contenedor probados, capturas y este README (rama `feat/api-rest-contenedor`); revisión e integración del *Pull Request* de la imagen y las herramientas |
+| Integrante | Matrícula | Rol en el proyecto | Primera entrega | Segunda entrega | Tercera entrega | Cuarta entrega | Quinta entrega |
+|---|---|---|---|---|---|---|---|
+| José Andrés Hernández Guerra | A01840564 | Datos e ingesta; Model Registry; seguridad del repositorio | `mibici/dataset.py`, `data/manifiesto.json` y `tests/test_dataset.py` (rama `feat/ingesta`); revisión del *Pull Request* de *features* | `mibici/modeling/registry.py`, `mibici/modeling/predict.py` y `tests/test_registry.py` (rama `feat/model-registry`); revisión del *Pull Request* del MLflow Project | `tests/test_seguridad.py`, `.env.example`, `chequeos/secretos.py` y la evidencia fechada de `reports/seguridad/` (rama `feat/chequeos-seguridad`); revisión del *Pull Request* de pruebas y DeepChecks | `tests/conftest.py` y `tests/test_api.py` (las 23 pruebas del servicio con `TestClient` y un modelo mínimo), `api/ejemplos/` (petición, lote y respuesta de la corrida real) y `tests/test_api_ejemplos.py` (rama `feat/api-pruebas-ejemplos`); revisión e integración del *Pull Request* del servicio | `mibici/modeling/reentrenar.py` (versión alternativa con la receta del `champion` y su registro como `challenger`) y `mibici/modeling/abtest.py` (comparación pareada, McNemar, bootstrap por día, tráfico dividido y regla de decisión), con `tests/test_reentrenar.py`, `tests/test_abtest.py` y el reporte del *A/B* en `reports/monitoreo/` (rama `feat/ab-testing-versiones`); revisión e integración del *Pull Request* del monitoreo y el *drift* |
+| Miguel Angel Higuera López | A01451684 | *Features* y exploración; casos límite de datos | `mibici/features.py`, `tests/test_features.py` y `notebooks/1.0-mah-exploracion-mibici.ipynb` (rama `feat/features`); revisión del *Pull Request* de ingesta | Corrección de la partición de P2 y de los perfiles de P3 en `mibici/features.py` con sus pruebas (rama `fix/features-particion-perfiles`); revisión del *Pull Request* del Model Registry | Casos límite de `limpiar_viajes` y `normalizar_nombre` en `tests/test_dataset.py` y de `particion_temporal`, `sin_ventana_posterior`, `etiquetar_riesgo` y `perfiles_por_estacion` en `tests/test_features.py` (rama `test/casos-limite-datos-features`); revisión del *Pull Request* de chequeos de seguridad | `Containerfile`, `.dockerignore` y `requirements-api.txt` (la imagen del servicio), `scripts/probar_api.py` y los objetivos `api`, `imagen`, `contenedor`, `probar-api` y `exportar-modelo` del `Makefile` (rama `feat/api-contenedor-herramientas`); revisión e integración del *Pull Request* de pruebas y ejemplos | `mibici/monitoreo/desempeno.py` (desempeño mensual del modelo vigente, descomposición de la tasa de riesgo y estaciones nuevas), puntos de entrada `ingest_actual`, `monitor`, `reentrenar` y `abtest` del `MLproject`, objetivos del `Makefile`, `tests/test_monitoreo.py`, los reportes de desempeño y la sección Monitoreo y drift de este README (rama `feat/monitoreo-herramientas`); revisión e integración del *Pull Request* de la versión alternativa y el *A/B* |
+| Nicolás Hernández Ynurreta García | A01284528 | Integración y MLOps | Estructura con `ccds`, configuración, README, experimento base en MLflow, ML Canvas y diagrama, documento de la propuesta, revisión e integración | `MLproject`, `python_env.yaml`, `Makefile`, `artefactos.py`, `train.py`, `search.py` y sus pruebas (rama `feat/mlflow-project-registry`); corridas de la entrega, selección y registro de los modelos, reporte, revisión de los *Pull Requests* del equipo e integración | Prueba de reproducibilidad, `tests/test_search.py`, `tests/test_predict.py` y casos límite de `train`; validación con DeepChecks (`mibici/validacion.py`, `chequeos/validar_datos.py`, `reports/deepchecks/`); corrección de bandit y MLflow 3.17.2; `Makefile`, `.gitignore`, capturas y este README (rama `feat/tests-reproducibilidad-deepchecks`); revisión del *Pull Request* de casos límite e integración | Servicio de predicción (`api/`) con sus esquemas y la carga desde el registry, `.env.example`, `requirements.txt`, imagen y contenedor probados, capturas y este README (rama `feat/api-rest-contenedor`); revisión e integración del *Pull Request* de la imagen y las herramientas | Ingesta del periodo actual con su manifiesto, tabla de monitoreo con la predicción del `champion`, reporte de *drift* y de calidad con Evidently, métricas de costo, figuras, reportes y capturas (rama `feat/monitoreo-drift`); corridas de monitoreo, reentrenamiento y *A/B* sobre el registry del equipo; revisión e integración del *Pull Request* del desempeño, los comandos y el README |
 
 El equipo quedó integrado por tres personas: la cuarta inscripción registrada en Canvas está inactiva.
 
@@ -600,3 +809,6 @@ El equipo quedó integrado por tres personas: la cuarta inscripción registrada 
 | Despliegue | El servicio carga el modelo por nombre y alias desde el registry, una sola vez al arrancar, y devuelve en cada respuesta la versión a la que resolvió | `api/modelo.py`, `/metadata` y el campo `modelo` de `RespuestaRiesgo` |
 | Despliegue | Entradas y salidas validadas con esquemas explícitos, campos desconocidos rechazados y el DataFrame reconstruido con el orden y los tipos de la firma | `api/esquemas.py` (`extra="forbid"`, rangos, variables derivadas), `response_model` y `api/modelo.py` |
 | Despliegue | Imagen reproducible con las versiones del entrenamiento, usuario sin privilegios, `HEALTHCHECK` y configuración por variables de entorno; nada de datos ni modelos en el contexto | `Containerfile`, `requirements-api.txt`, `.dockerignore`, `MLFLOW_TRACKING_URI` y `RUTA_MODELO` |
+| Monitoreo | Referencia igual al conjunto de entrenamiento del modelo en producción, periodo actual en archivos aparte y versionado con su propio manifiesto | `mibici/monitoreo/datos.py`, `data/manifiesto_actual.json` y las fechas de `config.py` |
+| Monitoreo | Reporte de *drift* y de calidad reproducible con un comando, con la prueba y el umbral fijos en el código, revisado mes a mes y leído junto con el desempeño del modelo | `mibici/monitoreo/drift.py`, `desempeno.py`, `make monitor` y `reports/monitoreo/` |
+| Monitoreo | Versión alternativa registrada como `challenger` y promovida solo por una regla escrita antes del resultado, sobre un periodo que ninguna versión vio | `mibici/modeling/reentrenar.py`, `abtest.py` (`REGLA`) y `reports/monitoreo/abtest.md` |
