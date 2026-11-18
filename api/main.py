@@ -1,7 +1,9 @@
 import logging
+import os
 from contextlib import asynccontextmanager
 from typing import Annotated
 
+import anyio.to_thread
 from fastapi import Body, Depends, FastAPI, HTTPException
 
 from api import esquemas, modelo
@@ -9,9 +11,19 @@ from api import esquemas, modelo
 registro = logging.getLogger("uvicorn.error")
 
 
+def limitar_hilos():
+    """Con HILOS_PREDICCION mayor que cero fija cuántas peticiones atiende a la vez cada proceso; sin ella quedan los 40 hilos de Starlette."""
+    limitador = anyio.to_thread.current_default_thread_limiter()
+    hilos = int(os.environ.get("HILOS_PREDICCION") or 0)
+    if hilos > 0:
+        limitador.total_tokens = hilos
+    return int(limitador.total_tokens)
+
+
 @asynccontextmanager
 async def ciclo_de_vida(aplicacion):
     """Carga el modelo una sola vez al arrancar; si falla, los endpoints responden 503 hasta reiniciar."""
+    registro.info("peticiones simultáneas por proceso: %s", limitar_hilos())
     try:
         aplicacion.state.modelo = modelo.cargar()
         registro.info("modelo %s versión %s cargado desde %s", modelo.NOMBRE, aplicacion.state.modelo["version"],
