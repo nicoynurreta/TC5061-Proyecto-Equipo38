@@ -1,0 +1,160 @@
+name: mibici
+
+x-imagen-mlflow: &imagen-mlflow
+  image: mibici-mlflow:3.17.2
+  build:
+    context: servicios/mlflow
+    dockerfile: Containerfile
+
+x-imagen-api: &imagen-api
+  image: mibici-api:1.0
+  build:
+    context: .
+    dockerfile: Containerfile
+
+x-registros: &registros
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: "3"
+
+services:
+  registro:
+    <<: *imagen-mlflow
+    profiles: [registro]
+    command: ["python", "/mlflow/importar.py"]
+    volumes:
+      - type: bind
+        source: ./mlflow.db
+        target: /origen/mlflow.db
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./mlartifacts
+        target: /origen/mlartifacts
+        read_only: true
+        bind:
+          create_host_path: false
+      - mlflow_datos:/mlflow/datos
+      - mlflow_artefactos:/mlflow/artefactos
+    network_mode: none
+    healthcheck:
+      disable: true
+    restart: "no"
+
+  mlflow:
+    <<: *imagen-mlflow
+    depends_on:
+      registro:
+        condition: service_completed_successfully
+        required: false
+    environment:
+      MLFLOW_WORKERS: ${MLFLOW_PROCESOS:-1}
+      MLFLOW_SERVER_ENABLE_JOB_EXECUTION: "false"
+    ports:
+      - "127.0.0.1:${MLFLOW_PUERTO:-5000}:5000"
+    volumes:
+      - mlflow_datos:/mlflow/datos
+      - mlflow_artefactos:/mlflow/artefactos
+    networks:
+      - red
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=4)"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
+      start_interval: 3s
+    restart: unless-stopped
+    cpus: ${MLFLOW_CPUS:-1.0}
+    mem_limit: ${MLFLOW_MEMORIA:-768m}
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    logging: *registros
+
+  siembra:
+    <<: *imagen-api
+    profiles: [siembra]
+    command: ["python", "-m", "scripts.sembrar_modelo"]
+    environment:
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      GIT_PYTHON_REFRESH: quiet
+    volumes:
+      - ./scripts:/code/scripts:ro
+    depends_on:
+      mlflow:
+        condition: service_healthy
+    networks:
+      - red
+    healthcheck:
+      disable: true
+    restart: "no"
+
+  api:
+    <<: *imagen-api
+    depends_on:
+      mlflow:
+        condition: service_healthy
+      siembra:
+        condition: service_completed_successfully
+        required: false
+    environment:
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      WEB_CONCURRENCY: ${API_PROCESOS:-1}
+      HILOS_PREDICCION: ${API_HILOS:-1}
+    ports:
+      - "127.0.0.1:${API_PUERTO:-8000}:8000"
+    networks:
+      - red
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=4)"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 120s
+      start_interval: 3s
+    restart: unless-stopped
+    cpus: ${API_CPUS:-1.0}
+    mem_limit: ${API_MEMORIA:-1g}
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    logging: *registros
+
+  locust:
+    profiles: [carga]
+    image: locustio/locust:${LOCUST_VERSION:-2.47.0}
+    working_dir: /mnt
+    command: ["-f", "carga/locustfile.py", "--headless", "--host", "http://api:8000", "--html", "reports/carga/${CARGA_NOMBRE:-carga}.html",
+              "--csv", "reports/carga/${CARGA_NOMBRE:-carga}", "--csv-full-history", "--only-summary", "--exit-code-on-error", "0"]
+    environment:
+      CARGA_ESCALONES: ${CARGA_ESCALONES:-}
+      CARGA_DURACION: ${CARGA_DURACION:-}
+      CARGA_CALENTAMIENTO: ${CARGA_CALENTAMIENTO:-}
+      CARGA_TAMANO_LOTE: ${CARGA_TAMANO_LOTE:-}
+    volumes:
+      - ./carga:/mnt/carga:ro
+      - ./api/ejemplos:/mnt/api/ejemplos:ro
+      - ./reports/carga:/mnt/reports/carga
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - red
+    cpus: ${LOCUST_CPUS:-2.0}
+    mem_limit: ${LOCUST_MEMORIA:-1g}
+
+networks:
+  red:
+    driver: bridge
+
+volumes:
+  mlflow_datos:
+  mlflow_artefactos:

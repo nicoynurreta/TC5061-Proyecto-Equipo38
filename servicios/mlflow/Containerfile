@@ -1,0 +1,30 @@
+FROM python:3.14-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    MLFLOW_BACKEND_STORE_URI=sqlite:////mlflow/datos/mlflow.db \
+    MLFLOW_ARTIFACTS_DESTINATION=/mlflow/artefactos \
+    MLFLOW_HOST=0.0.0.0 \
+    MLFLOW_PORT=5000 \
+    MLFLOW_WORKERS=1 \
+    MLFLOW_SERVER_ALLOWED_HOSTS=mlflow:*,localhost:*,127.0.0.1:*
+
+WORKDIR /mlflow
+
+COPY requirements.txt /mlflow/requirements.txt
+RUN pip install --no-cache-dir -r /mlflow/requirements.txt
+
+COPY importar.py /mlflow/importar.py
+
+RUN useradd --create-home --shell /usr/sbin/nologin registro \
+    && mkdir -p /mlflow/datos /mlflow/artefactos \
+    && chown -R registro:registro /mlflow/datos /mlflow/artefactos
+USER registro
+
+EXPOSE 5000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+    CMD ["python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=4)"]
+
+CMD ["mlflow", "server"]
