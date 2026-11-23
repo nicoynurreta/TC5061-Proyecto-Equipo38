@@ -1,0 +1,50 @@
+{
+  "fecha": "2026-11-18T15:35:35",
+  "cpus": 1.0,
+  "memoria": "1g",
+  "modelo": "mibici-equipo38-p2-riesgo",
+  "version": "1",
+  "segundos": 8,
+  "filas": [
+    {
+      "hilos": 1,
+      "predicciones": 506,
+      "predicciones_s": 62.49,
+      "cpu_ms_por_prediccion": 16.0,
+      "cpu_sistema_pct": 1.7,
+      "periodos_frenados": 37
+    },
+    {
+      "hilos": 2,
+      "predicciones": 240,
+      "predicciones_s": 29.86,
+      "cpu_ms_por_prediccion": 33.52,
+      "cpu_sistema_pct": 21.5,
+      "periodos_frenados": 80
+    },
+    {
+      "hilos": 4,
+      "predicciones": 131,
+      "predicciones_s": 16.27,
+      "cpu_ms_por_prediccion": 61.45,
+      "cpu_sistema_pct": 28.7,
+      "periodos_frenados": 81
+    },
+    {
+      "hilos": 8,
+      "predicciones": 108,
+      "predicciones_s": 12.55,
+      "cpu_ms_por_prediccion": 79.97,
+      "cpu_sistema_pct": 31.5,
+      "periodos_frenados": 86
+    },
+    {
+      "hilos": 16,
+      "predicciones": 106,
+      "predicciones_s": 11.79,
+      "cpu_ms_por_prediccion": 84.77,
+      "cpu_sistema_pct": 31.4,
+      "periodos_frenados": 90
+    }
+  ]
+}
