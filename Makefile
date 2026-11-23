@@ -162,10 +162,11 @@ abtest:
 chequeos:
 	$(PYTHON_INTERPRETER) -m mibici.validacion --exportar
 	$(PYTHON_DEEPCHECKS) chequeos/validar_datos.py
-	$(PYTHON_INTERPRETER) -m bandit -c pyproject.toml -r mibici api scripts -f txt --exit-zero
-	$(PYTHON_INTERPRETER) -m bandit -c pyproject.toml -r mibici api scripts -q --severity-level medium
+	$(PYTHON_INTERPRETER) -m bandit -c pyproject.toml -r mibici api scripts carga servicios -f txt --exit-zero
+	$(PYTHON_INTERPRETER) -m bandit -c pyproject.toml -r mibici api scripts carga servicios -q --severity-level medium
 	$(PYTHON_INTERPRETER) -m pip_audit -r requirements.txt
 	$(PYTHON_INTERPRETER) -m pip_audit -r requirements-api.txt
+	$(PYTHON_INTERPRETER) -m pip_audit -r servicios/mlflow/requirements.txt
 	$(PYTHON_INTERPRETER) chequeos/secretos.py
 
 
@@ -202,6 +203,55 @@ probar-api:
 .PHONY: exportar-modelo
 exportar-modelo:
 	$(PYTHON_INTERPRETER) -m mlflow artifacts download -u models:/mibici-equipo38-p2-riesgo@champion -d models/api
+
+
+## Sistema completo con Docker Compose: servidor de MLflow y servicio de predicción, sanos antes de devolver el control (usa el registry que ya está en los volúmenes)
+.PHONY: sistema
+sistema:
+	$(MOTOR) compose up --build --wait
+
+
+## Como sistema, copiando antes mlflow.db y mlartifacts/ del clon a los volúmenes del servidor de MLflow (el registry del equipo)
+.PHONY: sistema-registro
+sistema-registro:
+	$(MOTOR) compose --profile registro up --build --wait
+
+
+## Como sistema, sembrando antes un modelo de prueba si el registry no tiene champion (clon sin el registry del equipo; es lo que hace el pipeline)
+.PHONY: sistema-prueba
+sistema-prueba:
+	$(MOTOR) compose --profile siembra up --build --wait
+
+
+## Estado de los servicios del sistema, incluidos los pasos de preparación que ya terminaron
+.PHONY: sistema-estado
+sistema-estado:
+	$(MOTOR) compose ps --all
+
+
+## Detiene y elimina los contenedores y la red del sistema; los volúmenes del registry se conservan salvo con BORRAR_VOLUMENES=1
+.PHONY: sistema-abajo
+sistema-abajo:
+	$(MOTOR) compose --profile registro --profile siembra --profile carga down $(if $(BORRAR_VOLUMENES),--volumes,)
+
+
+## Prueba de humo del sistema: salud, metadatos, predicción individual y por lotes, validación y versión del registry que sirve la API
+.PHONY: humo
+humo:
+	$(PYTHON_INTERPRETER) scripts/prueba_humo.py --mlflow http://127.0.0.1:5000
+
+
+## Prueba de carga con Locust por escalones y muestreo de docker stats, y su resumen con gráficas (CORRIDA=un_proceso corre solo esa)
+.PHONY: carga
+carga:
+	$(PYTHON_INTERPRETER) -m carga.correr $(if $(CORRIDA),--solo $(CORRIDA),)
+	$(PYTHON_INTERPRETER) -m carga.resumen
+
+
+## Costo por inferencia con los CSV de reports/carga y el precio de la instancia de referencia: INSTANCIA=nombre:vcpu:memoria_gib:precio_hora
+.PHONY: costo
+costo:
+	$(PYTHON_INTERPRETER) -m mibici.finops.costo --instancia $(INSTANCIA)
 
 
 #################################################################################
