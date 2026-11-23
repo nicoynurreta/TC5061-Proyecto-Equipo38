@@ -1,0 +1,3080 @@
+{
+  "generado": "2026-11-18T18:20:35",
+  "supuestos": {
+    "p95_objetivo_ms": 500,
+    "objetivos_alternos_ms": [
+      250.0,
+      1000.0,
+      2000.0
+    ],
+    "error_maximo": 0.01,
+    "demanda_hora": 472,
+    "descuento_por_compromiso": 0.0,
+    "horas_por_mes": 730,
+    "margen_memoria": 1.3
+  },
+  "instancias": [
+    {
+      "nombre": "t3.small",
+      "vcpu": 2.0,
+      "memoria_gib": 2.0,
+      "precio_hora": 0.0208
+    },
+    {
+      "nombre": "c6a.large",
+      "vcpu": 2.0,
+      "memoria_gib": 4.0,
+      "precio_hora": 0.0765
+    }
+  ],
+  "corridas": [
+    {
+      "corrida": "un_proceso",
+      "procesos": 1,
+      "cpus": 1.0,
+      "hilos": 0,
+      "memoria": "1g",
+      "arranque_s": 42.73,
+      "tamano_lote": 3,
+      "etiquetas": [],
+      "capacidad": {
+        "escalon": 4.0,
+        "usuarios": 8.0,
+        "inicio_s": 190.0,
+        "fin_s": 240.0,
+        "ventana_s": 50.0,
+        "nombre": "Agregado",
+        "peticiones": 400.0,
+        "fallos": 0.0,
+        "tasa_error": 0.0,
+        "rps": 8.0,
+        "predicciones_s": 12.14,
+        "media_ms": 108.78,
+        "p50_ms": 41.56,
+        "p95_ms": 457.65,
+        "p99_ms": 729.22,
+        "max_ms": 905.43,
+        "peticiones_prediccion_s": 7.14
+      },
+      "sensibilidad": [
+        {
+          "p95_objetivo_ms": 250.0,
+          "usuarios": 2.0,
+          "rps": 2.04,
+          "peticiones_prediccion_s": 1.84,
+          "predicciones_s": 2.92
+        },
+        {
+          "p95_objetivo_ms": 500,
+          "usuarios": 8.0,
+          "rps": 8.0,
+          "peticiones_prediccion_s": 7.14,
+          "predicciones_s": 12.14
+        },
+        {
+          "p95_objetivo_ms": 1000.0,
+          "usuarios": 8.0,
+          "rps": 8.0,
+          "peticiones_prediccion_s": 7.14,
+          "predicciones_s": 12.14
+        },
+        {
+          "p95_objetivo_ms": 2000.0,
+          "usuarios": 10.0,
+          "rps": 9.84,
+          "peticiones_prediccion_s": 8.8,
+          "predicciones_s": 14.8
+        }
+      ],
+      "recursos": {
+        "api": {
+          "lecturas": 15,
+          "cpu_media_pct": 39.13,
+          "cpu_max_pct": 99.47,
+          "mem_max_mib": 231.3,
+          "mem_limite_mib": 1024.0
+        },
+        "locust": {
+          "lecturas": 15,
+          "cpu_media_pct": 1.79,
+          "cpu_max_pct": 2.38,
+          "mem_max_mib": 43.17,
+          "mem_limite_mib": 1024.0
+        },
+        "mlflow": {
+          "lecturas": 15,
+          "cpu_media_pct": 8.36,
+          "cpu_max_pct": 46.22,
+          "mem_max_mib": 438.9,
+          "mem_limite_mib": 768.0
+        }
+      }
+    },
+    {
+      "corrida": "un_proceso_r2",
+      "procesos": 1,
+      "cpus": 1.0,
+      "hilos": 0,
+      "memoria": "1g",
+      "arranque_s": 27.54,
+      "tamano_lote": 3,
+      "etiquetas": [],
+      "capacidad": {
+        "escalon": 5.0,
+        "usuarios": 10.0,
+        "inicio_s": 250.0,
+        "fin_s": 300.0,
+        "ventana_s": 50.0,
+        "nombre": "Agregado",
+        "peticiones": 500.0,
+        "fallos": 0.0,
+        "tasa_error": 0.0,
+        "rps": 10.0,
+        "predicciones_s": 15.12,
+        "media_ms": 36.22,
+        "p50_ms": 36.92,
+        "p95_ms": 76.59,
+        "p99_ms": 103.41,
+        "max_ms": 111.1,
+        "peticiones_prediccion_s": 8.96
+      },
+      "sensibilidad": [
+        {
+          "p95_objetivo_ms": 250.0,
+          "usuarios": 10.0,
+          "rps": 10.0,
+          "peticiones_prediccion_s": 8.96,
+          "predicciones_s": 15.12
+        },
+        {
+          "p95_objetivo_ms": 500,
+          "usuarios": 10.0,
+          "rps": 10.0,
+          "peticiones_prediccion_s": 8.96,
+          "predicciones_s": 15.12
+        },
+        {
+          "p95_objetivo_ms": 1000.0,
+          "usuarios": 15.0,
+          "rps": 14.64,
+          "peticiones_prediccion_s": 13.2,
+          "predicciones_s": 22.76
+        },
+        {
+          "p95_objetivo_ms": 2000.0,
+          "usuarios": 20.0,
+          "rps": 18.2,
+          "peticiones_prediccion_s": 16.44,
+          "predicciones_s": 26.32
+        }
+      ],
+      "recursos": {
+        "api": {
+          "lecturas": 15,
+          "cpu_media_pct": 19.86,
+          "cpu_max_pct": 23.73,
+          "mem_max_mib": 217.7,
+          "mem_limite_mib": 1024.0
+        },
+        "locust": {
+          "lecturas": 15,
+          "cpu_media_pct": 1.22,
+          "cpu_max_pct": 1.51,
+          "mem_max_mib": 42.94,
+          "mem_limite_mib": 1024.0
+        },
+        "mlflow": {
+          "lecturas": 15,
+          "cpu_media_pct": 2.27,
+          "cpu_max_pct": 24.1,
+          "mem_max_mib": 439.5,
+          "mem_limite_mib": 768.0
+        }
+      }
+    },
+    {
+      "corrida": "un_proceso_r3",
+      "procesos": 1,
+      "cpus": 1.0,
+      "hilos": 0,
+      "memoria": "1g",
+      "arranque_s": 22.75,
+      "tamano_lote": 3,
+      "etiquetas": [],
+      "capacidad": {
+        "escalon": 6.0,
+        "usuarios": 15.0,
+        "inicio_s": 310.0,
+        "fin_s": 360.0,
+        "ventana_s": 50.0,
+        "nombre": "Agregado",
+        "peticiones": 750.0,
+        "fallos": 0.0,
+        "tasa_error": 0.0,
+        "rps": 15.0,
+        "predicciones_s": 23.22,
+        "media_ms": 103.98,
+        "p50_ms": 65.4,
+        "p95_ms": 270.52,
+        "p99_ms": 615.35,
+        "max_ms": 826.23,
+        "peticiones_prediccion_s": 13.5
+      },
+      "sensibilidad": [
+        {
+          "p95_objetivo_ms": 250.0,
+          "usuarios": 10.0,
+          "rps": 10.0,
+          "peticiones_prediccion_s": 8.96,
+          "predicciones_s": 15.12
+        },
+        {
+          "p95_objetivo_ms": 500,
+          "usuarios": 15.0,
+          "rps": 15.0,
+          "peticiones_prediccion_s": 13.5,
+          "predicciones_s": 23.22
+        },
+        {
+          "p95_objetivo_ms": 1000.0,
+          "usuarios": 15.0,
+          "rps": 15.0,
+          "peticiones_prediccion_s": 13.5,
+          "predicciones_s": 23.22
+        },
+        {
+          "p95_objetivo_ms": 2000.0,
+          "usuarios": 20.0,
+          "rps": 18.48,
+          "peticiones_prediccion_s": 16.66,
+          "predicciones_s": 27.06
+        }
+      ],
+      "recursos": {
+        "api": {
+          "lecturas": 15,
+          "cpu_media_pct": 44.27,
+          "cpu_max_pct": 80.37,
+          "mem_max_mib": 230.2,
+          "mem_limite_mib": 1024.0
+        },
+        "locust": {
+          "lecturas": 15,
+          "cpu_media_pct": 1.64,
+          "cpu_max_pct": 2.62,
+          "mem_max_mib": 43.48,
+          "mem_limite_mib": 1024.0
+        },
+        "mlflow": {
+          "lecturas": 15,
+          "cpu_media_pct": 0.2,
+          "cpu_max_pct": 0.26,
+          "mem_max_mib": 432.4,
+          "mem_limite_mib": 768.0
+        }
+      }
+    },
+    {
+      "corrida": "un_proceso_r4",
+      "procesos": 1,
+      "cpus": 1.0,
+      "hilos": 0,
+      "memoria": "1g",
+      "arranque_s": 17.88,
+      "tamano_lote": 3,
+      "etiquetas": [],
+      "capacidad": {
+        "escalon": 5.0,
+        "usuarios": 10.0,
+        "inicio_s": 250.0,
+        "fin_s": 300.0,
+        "ventana_s": 50.0,
+        "nombre": "Agregado",
+        "peticiones": 500.0,
+        "fallos": 0.0,
+        "tasa_error": 0.0,
+        "rps": 10.0,
+        "predicciones_s": 15.12,
+        "media_ms": 76.96,
+        "p50_ms": 35.19,
+        "p95_ms": 254.55,
+        "p99_ms": 739.12,
+        "max_ms": 931.45,
+        "peticiones_prediccion_s": 8.96
+      },
+      "sensibilidad": [
+        {
+          "p95_objetivo_ms": 250.0,
+          "usuarios": 2.0,
+          "rps": 2.04,
+          "peticiones_prediccion_s": 1.84,
+          "predicciones_s": 2.92
+        },
+        {
+          "p95_objetivo_ms": 500,
+          "usuarios": 10.0,
+          "rps": 10.0,
+          "peticiones_prediccion_s": 8.96,
+          "predicciones_s": 15.12
+        },
+        {
+          "p95_objetivo_ms": 1000.0,
+          "usuarios": 10.0,
+          "rps": 10.0,
+          "peticiones_prediccion_s": 8.96,
+          "predicciones_s": 15.12
+        },
+        {
+          "p95_objetivo_ms": 2000.0,
+          "usuarios": 30.0,
+          "rps": 27.74,
+          "peticiones_prediccion_s": 24.8,
+          "predicciones_s": 42.36
+        }
+      ],
+      "recursos": {
+        "api": {
+          "lecturas": 15,
+          "cpu_media_pct": 33.61,
+          "cpu_max_pct": 100.13,
+          "mem_max_mib": 223.2,
+          "mem_limite_mib": 1024.0
+        },
+        "locust": {
+          "lecturas": 15,
+          "cpu_media_pct": 1.52,
+          "cpu_max_pct": 2.05,
+          "mem_max_mib": 43.61,
+          "mem_limite_mib": 1024.0
+        },
+        "mlflow": {
+          "lecturas": 15,
+          "cpu_media_pct": 2.75,
+          "cpu_max_pct": 37.79,
+          "mem_max_mib": 401.1,
+          "mem_limite_mib": 768.0
+        }
+      }
+    },
+    {
+      "corrida": "un_proceso_r5",
+      "procesos": 1,
+      "cpus": 1.0,
+      "hilos": 0,
+      "memoria": "1g",
+      "arranque_s": 8.53,
+      "tamano_lote": 3,
+      "etiquetas": [],
+      "capacidad": {
+        "escalon": 6.0,
+        "usuarios": 15.0,
+        "inicio_s": 310.0,
+        "fin_s": 360.0,
+        "ventana_s": 50.0,
+        "nombre": "Agregado",
+        "peticiones": 750.0,
+        "fallos": 0.0,
+        "tasa_error": 0.0,
+        "rps": 15.0,
+        "predicciones_s": 23.22,
+        "media_ms": 88.1,
+        "p50_ms": 65.21,
+        "p95_ms": 241.01,
+        "p99_ms": 323.9,
+        "max_ms": 387.4,
+        "peticiones_prediccion_s": 13.5
+      },
+      "sensibilidad": [
+        {
+          "p95_objetivo_ms": 250.0,
+          "usuarios": 15.0,
+          "rps": 15.0,
+          "peticiones_prediccion_s": 13.5,
+          "predicciones_s": 23.22
+        },
+        {
+          "p95_objetivo_ms": 500,
+          "usuarios": 15.0,
+          "rps": 15.0,
+          "peticiones_prediccion_s": 13.5,
+          "predicciones_s": 23.22
+        },
+        {
+          "p95_objetivo_ms": 1000.0,
+          "usuarios": 15.0,
+          "rps": 15.0,
+          "peticiones_prediccion_s": 13.5,
+          "predicciones_s": 23.22
+        },
+        {
+          "p95_objetivo_ms": 2000.0,
+          "usuarios": 30.0,
+          "rps": 22.36,
+          "peticiones_prediccion_s": 19.9,
+          "predicciones_s": 33.94
+        }
+      ],
+      "recursos": {
+        "api": {
+          "lecturas": 15,
+          "cpu_media_pct": 45.95,
+          "cpu_max_pct": 74.02,
+          "mem_max_mib": 235.2,
+          "mem_limite_mib": 1024.0
+        },
+        "locust": {
+          "lecturas": 15,
+          "cpu_media_pct": 1.69,
+          "cpu_max_pct": 2.23,
+          "mem_max_mib": 43.51,
+          "mem_limite_mib": 1024.0
+        },
+        "mlflow": {
+          "lecturas": 15,
+          "cpu_media_pct": 1.22,
+          "cpu_max_pct": 15.45,
+          "mem_max_mib": 403.9,
+          "mem_limite_mib": 768.0
+        }
+      }
+    },
+    {
+      "corrida": "un_proceso_en_serie",
+      "procesos": 1,
+      "cpus": 1.0,
+      "hilos": 1,
+      "memoria": "1g",
+      "arranque_s": 18.42,
+      "tamano_lote": 3,
+      "etiquetas": [],
+      "capacidad": {
+        "escalon": 7.0,
+        "usuarios": 20.0,
+        "inicio_s": 370.0,
+        "fin_s": 420.0,
+        "ventana_s": 50.0,
+        "nombre": "Agregado",
+        "peticiones": 1000.0,
+        "fallos": 0.0,
+        "tasa_error": 0.0,
+        "rps": 20.0,
+        "predicciones_s": 29.24,
+        "media_ms": 58.36,
+        "p50_ms": 52.2,
+        "p95_ms": 107.65,
+        "p99_ms": 173.47,
+        "max_ms": 212.24,
+        "peticiones_prediccion_s": 17.96
+      },
+      "sensibilidad": [
+        {
+          "p95_objetivo_ms": 250.0,
+          "usuarios": 20.0,
+          "rps": 20.0,
+          "peticiones_prediccion_s": 17.96,
+          "predicciones_s": 29.24
+        },
+        {
+          "p95_objetivo_ms": 500,
+          "usuarios": 20.0,
+          "rps": 20.0,
+          "peticiones_prediccion_s": 17.96,
+          "predicciones_s": 29.24
+        },
+        {
+          "p95_objetivo_ms": 1000.0,
+          "usuarios": 20.0,
+          "rps": 20.0,
+          "peticiones_prediccion_s": 17.96,
+          "predicciones_s": 29.24
+        },
+        {
+          "p95_objetivo_ms": 2000.0,
+          "usuarios": 30.0,
+          "rps": 28.76,
+          "peticiones_prediccion_s": 25.84,
+          "predicciones_s": 44.0
+        }
+      ],
+      "recursos": {
+        "api": {
+          "lecturas": 15,
+          "cpu_media_pct": 36.52,
+          "cpu_max_pct": 55.64,
+          "mem_max_mib": 218.5,
+          "mem_limite_mib": 1024.0
+        },
+        "locust": {
+          "lecturas": 15,
+          "cpu_media_pct": 1.68,
+          "cpu_max_pct": 2.09,
+          "mem_max_mib": 44.0,
+          "mem_limite_mib": 1024.0
+        },
+        "mlflow": {
+          "lecturas": 15,
+          "cpu_media_pct": 2.04,
+          "cpu_max_pct": 27.76,
+          "mem_max_mib": 432.9,
+          "mem_limite_mib": 768.0
+        }
+      }
+    },
+    {
+      "corrida": "un_proceso_en_serie_r2",
+      "procesos": 1,
+      "cpus": 1.0,
+      "hilos": 1,
+      "memoria": "1g",
+      "arranque_s": 11.81,
+      "tamano_lote": 3,
+      "etiquetas": [],
+      "capacidad": {
+        "escalon": 8.0,
+        "usuarios": 30.0,
+        "inicio_s": 430.0,
+        "fin_s": 480.0,
+        "ventana_s": 50.0,
+        "nombre": "Agregado",
+        "peticiones": 1500.0,
+        "fallos": 0.0,
+        "tasa_error": 0.0,
+        "rps": 30.0,
+        "predicciones_s": 46.02,
+        "media_ms": 86.33,
+        "p50_ms": 66.75,
+        "p95_ms": 228.38,
+        "p99_ms": 438.72,
+        "max_ms": 538.73,
+        "peticiones_prediccion_s": 26.94
+      },
+      "sensibilidad": [
+        {
+          "p95_objetivo_ms": 250.0,
+          "usuarios": 30.0,
+          "rps": 30.0,
+          "peticiones_prediccion_s": 26.94,
+          "predicciones_s": 46.02
+        },
+        {
+          "p95_objetivo_ms": 500,
+          "usuarios": 30.0,
+          "rps": 30.0,
+          "peticiones_prediccion_s": 26.94,
+          "predicciones_s": 46.02
+        },
+        {
+          "p95_objetivo_ms": 1000.0,
+          "usuarios": 30.0,
+          "rps": 30.0,
+          "peticiones_prediccion_s": 26.94,
+          "predicciones_s": 46.02
+        },
+        {
+          "p95_objetivo_ms": 2000.0,
+          "usuarios": 60.0,
+          "rps": 54.24,
+          "peticiones_prediccion_s": 48.7,
+          "predicciones_s": 82.06
+        }
+      ],
+      "recursos": {
+        "api": {
+          "lecturas": 15,
+          "cpu_media_pct": 41.73,
+          "cpu_max_pct": 75.31,
+          "mem_max_mib": 218.5,
+          "mem_limite_mib": 1024.0
+        },
+        "locust": {
+          "lecturas": 15,
+          "cpu_media_pct": 2.22,
+          "cpu_max_pct": 2.72,
+          "mem_max_mib": 44.32,
+          "mem_limite_mib": 1024.0
+        },
+        "mlflow": {
+          "lecturas": 15,
+          "cpu_media_pct": 0.2,
+          "cpu_max_pct": 0.25,
+          "mem_max_mib": 433.0,
+          "mem_limite_mib": 768.0
+        }
+      }
+    },
+    {
+      "corrida": "un_proceso_en_serie_r3",
+      "procesos": 1,
+      "cpus": 1.0,
+      "hilos": 1,
+      "memoria": "1g",
+      "arranque_s": 22.92,
+      "tamano_lote": 3,
+      "etiquetas": [],
+      "capacidad": {
+        "escalon": 8.0,
+        "usuarios": 30.0,
+        "inicio_s": 430.0,
+        "fin_s": 480.0,
+        "ventana_s": 50.0,
+        "nombre": "Agregado",
+        "peticiones": 1500.0,
+        "fallos": 0.0,
+        "tasa_error": 0.0,
+        "rps": 30.0,
+        "predicciones_s": 46.02,
+        "media_ms": 133.95,
+        "p50_ms": 116.9,
+        "p95_ms": 313.15,
+        "p99_ms": 585.54,
+        "max_ms": 807.91,
+        "peticiones_prediccion_s": 26.94
+      },
+      "sensibilidad": [
+        {
+          "p95_objetivo_ms": 250.0,
+          "usuarios": 6.0,
+          "rps": 6.0,
+          "peticiones_prediccion_s": 5.34,
+          "predicciones_s": 9.46
+        },
+        {
+          "p95_objetivo_ms": 500,
+          "usuarios": 30.0,
+          "rps": 30.0,
+          "peticiones_prediccion_s": 26.94,
+          "predicciones_s": 46.02
+        },
+        {
+          "p95_objetivo_ms": 1000.0,
+          "usuarios": 30.0,
+          "rps": 30.0,
+          "peticiones_prediccion_s": 26.94,
+          "predicciones_s": 46.02
+        },
+        {
+          "p95_objetivo_ms": 2000.0,
+          "usuarios": 60.0,
+          "rps": 45.86,
+          "peticiones_prediccion_s": 41.22,
+          "predicciones_s": 69.18
+        }
+      ],
+      "recursos": {
+        "api": {
+          "lecturas": 15,
+          "cpu_media_pct": 58.48,
+          "cpu_max_pct": 98.09,
+          "mem_max_mib": 228.9,
+          "mem_limite_mib": 1024.0
+        },
+        "locust": {
+          "lecturas": 15,
+          "cpu_media_pct": 2.42,
+          "cpu_max_pct": 3.42,
+          "mem_max_mib": 44.77,
+          "mem_limite_mib": 1024.0
+        },
+        "mlflow": {
+          "lecturas": 15,
+          "cpu_media_pct": 3.59,
+          "cpu_max_pct": 38.01,
+          "mem_max_mib": 411.8,
+          "mem_limite_mib": 768.0
+        }
+      }
+    },
+    {
+      "corrida": "un_proceso_en_serie_r4",
+      "procesos": 1,
+      "cpus": 1.0,
+      "hilos": 1,
+      "memoria": "1g",
+      "arranque_s": 10.25,
+      "tamano_lote": 3,
+      "etiquetas": [],
+      "capacidad": {
+        "escalon": 8.0,
+        "usuarios": 30.0,
+        "inicio_s": 430.0,
+        "fin_s": 480.0,
+        "ventana_s": 50.0,
+        "nombre": "Agregado",
+        "peticiones": 1500.0,
+        "fallos": 0.0,
+        "tasa_error": 0.0,
+        "rps": 30.0,
+        "predicciones_s": 46.02,
+        "media_ms": 95.99,
+        "p50_ms": 84.56,
+        "p95_ms": 202.4,
+        "p99_ms": 226.54,
+        "max_ms": 249.23,
+        "peticiones_prediccion_s": 26.94
+      },
+      "sensibilidad": [
+        {
+          "p95_objetivo_ms": 250.0,
+          "usuarios": 30.0,
+          "rps": 30.0,
+          "peticiones_prediccion_s": 26.94,
+          "predicciones_s": 46.02
+        },
+        {
+          "p95_objetivo_ms": 500,
+          "usuarios": 30.0,
+          "rps": 30.0,
+          "peticiones_prediccion_s": 26.94,
+          "predicciones_s": 46.02
+        },
+        {
+          "p95_objetivo_ms": 1000.0,
+          "usuarios": 30.0,
+          "rps": 30.0,
+          "peticiones_prediccion_s": 26.94,
+          "predicciones_s": 46.02
+        },
+        {
+          "p95_objetivo_ms": 2000.0,
+          "usuarios": 60.0,
+          "rps": 52.1,
+          "peticiones_prediccion_s": 46.86,
+          "predicciones_s": 79.18
+        }
+      ],
+      "recursos": {
+        "api": {
+          "lecturas": 15,
+          "cpu_media_pct": 49.27,
+          "cpu_max_pct": 76.2,
+          "mem_max_mib": 217.6,
+          "mem_limite_mib": 1024.0
+        },
+        "locust": {
+          "lecturas": 15,
+          "cpu_media_pct": 2.13,
+          "cpu_max_pct": 2.56,
+          "mem_max_mib": 44.37,
+          "mem_limite_mib": 1024.0
+        },
+        "mlflow": {
+          "lecturas": 15,
+          "cpu_media_pct": 2.18,
+          "cpu_max_pct": 24.24,
+          "mem_max_mib": 409.0,
+          "mem_limite_mib": 768.0
+        }
+      }
+    },
+    {
+      "corrida": "dos_procesos_un_cpu",
+      "procesos": 2,
+      "cpus": 1.0,
+      "hilos": 0,
+      "memoria": "1g",
+      "arranque_s": 31.41,
+      "tamano_lote": 3,
+      "etiquetas": [],
+      "capacidad": {
+        "escalon": 5.0,
+        "usuarios": 10.0,
+        "inicio_s": 250.0,
+        "fin_s": 300.0,
+        "ventana_s": 50.0,
+        "nombre": "Agregado",
+        "peticiones": 500.0,
+        "fallos": 0.0,
+        "tasa_error": 0.0,
+        "rps": 10.0,
+        "predicciones_s": 15.12,
+        "media_ms": 28.67,
+        "p50_ms": 20.41,
+        "p95_ms": 72.11,
+        "p99_ms": 101.99,
+        "max_ms": 128.83,
+        "peticiones_prediccion_s": 8.96
+      },
+      "sensibilidad": [
+        {
+          "p95_objetivo_ms": 250.0,
+          "usuarios": 10.0,
+          "rps": 10.0,
+          "peticiones_prediccion_s": 8.96,
+          "predicciones_s": 15.12
+        },
+        {
+          "p95_objetivo_ms": 500,
+          "usuarios": 10.0,
+          "rps": 10.0,
+          "peticiones_prediccion_s": 8.96,
+          "predicciones_s": 15.12
+        },
+        {
+          "p95_objetivo_ms": 1000.0,
+          "usuarios": 10.0,
+          "rps": 10.0,
+          "peticiones_prediccion_s": 8.96,
+          "predicciones_s": 15.12
+        },
+        {
+          "p95_objetivo_ms": 2000.0,
+          "usuarios": 20.0,
+          "rps": 17.38,
+          "peticiones_prediccion_s": 15.6,
+          "predicciones_s": 25.76
+        }
+      ],
+      "recursos": {
+        "api": {
+          "lecturas": 15,
+          "cpu_media_pct": 20.28,
+          "cpu_max_pct": 42.72,
+          "mem_max_mib": 450.9,
+          "mem_limite_mib": 1024.0
+        },
+        "locust": {
+          "lecturas": 15,
+          "cpu_media_pct": 1.14,
+          "cpu_max_pct": 1.31,
+          "mem_max_mib": 42.98,
+          "mem_limite_mib": 1024.0
+        },
+        "mlflow": {
+          "lecturas": 15,
+          "cpu_media_pct": 2.47,
+          "cpu_max_pct": 30.0,
+          "mem_max_mib": 435.2,
+          "mem_limite_mib": 768.0
+        }
+      }
+    },
+    {
+      "corrida": "dos_procesos_un_cpu_r2",
+      "procesos": 2,
+      "cpus": 1.0,
+      "hilos": 0,
+      "memoria": "1g",
+      "arranque_s": 21.83,
+      "tamano_lote": 3,
+      "etiquetas": [],
+      "capacidad": {
+        "escalon": 6.0,
+        "usuarios": 15.0,
+        "inicio_s": 310.0,
+        "fin_s": 360.0,
+        "ventana_s": 50.0,
+        "nombre": "Agregado",
+        "peticiones": 753.0,
+        "fallos": 0.0,
+        "tasa_error": 0.0,
+        "rps": 15.06,
+        "predicciones_s": 23.38,
+        "media_ms": 105.85,
+        "p50_ms": 36.23,
+        "p95_ms": 449.82,
+        "p99_ms": 734.55,
+        "max_ms": 923.09,
+        "peticiones_prediccion_s": 13.58
+      },
+      "sensibilidad": [
+        {
+          "p95_objetivo_ms": 250.0,
+          "usuarios": 10.0,
+          "rps": 9.7,
+          "peticiones_prediccion_s": 8.66,
+          "predicciones_s": 14.6
+        },
+        {
+          "p95_objetivo_ms": 500,
+          "usuarios": 15.0,
+          "rps": 15.06,
+          "peticiones_prediccion_s": 13.58,
+          "predicciones_s": 23.38
+        },
+        {
+          "p95_objetivo_ms": 1000.0,
+          "usuarios": 15.0,
+          "rps": 15.06,
+          "peticiones_prediccion_s": 13.58,
+          "predicciones_s": 23.38
+        },
+        {
+          "p95_objetivo_ms": 2000.0,
+          "usuarios": 20.0,
+          "rps": 18.64,
+          "peticiones_prediccion_s": 16.8,
+          "predicciones_s": 27.28
+        }
+      ],
+      "recursos": {
+        "api": {
+          "lecturas": 15,
+          "cpu_media_pct": 47.62,
+          "cpu_max_pct": 86.58,
+          "mem_max_mib": 465.4,
+          "mem_limite_mib": 1024.0
+        },
+        "locust": {
+          "lecturas": 15,
+          "cpu_media_pct": 1.95,
+          "cpu_max_pct": 2.4,
+          "mem_max_mib": 43.44,
+          "mem_limite_mib": 1024.0
+        },
+        "mlflow": {
+          "lecturas": 15,
+          "cpu_media_pct": 2.83,
+          "cpu_max_pct": 39.41,
+          "mem_max_mib": 404.6,
+          "mem_limite_mib": 768.0
+        }
+      }
+    },
+    {
+      "corrida": "dos_procesos",
+      "procesos": 2,
+      "cpus": 2.0,
+      "hilos": 0,
+      "memoria": "1g",
+      "arranque_s": 31.1,
+      "tamano_lote": 3,
+      "etiquetas": [],
+      "capacidad": {
+        "escalon": 6.0,
+        "usuarios": 15.0,
+        "inicio_s": 310.0,
+        "fin_s": 360.0,
+        "ventana_s": 50.0,
+        "nombre": "Agregado",
+        "peticiones": 750.0,
+        "fallos": 0.0,
+        "tasa_error": 0.0,
+        "rps": 15.0,
+        "predicciones_s": 23.28,
+        "media_ms": 54.91,
+        "p50_ms": 33.99,
+        "p95_ms": 147.93,
+        "p99_ms": 282.05,
+        "max_ms": 373.09,
+        "peticiones_prediccion_s": 13.52
+      },
+      "sensibilidad": [
+        {
+          "p95_objetivo_ms": 250.0,
+          "usuarios": 15.0,
+          "rps": 15.0,
+          "peticiones_prediccion_s": 13.52,
+          "predicciones_s": 23.28
+        },
+        {
+          "p95_objetivo_ms": 500,
+          "usuarios": 15.0,
+          "rps": 15.0,
+          "peticiones_prediccion_s": 13.52,
+          "predicciones_s": 23.28
+        },
+        {
+          "p95_objetivo_ms": 1000.0,
+          "usuarios": 15.0,
+          "rps": 15.0,
+          "peticiones_prediccion_s": 13.52,
+          "predicciones_s": 23.28
+        },
+        {
+          "p95_objetivo_ms": 2000.0,
+          "usuarios": 20.0,
+          "rps": 19.16,
+          "peticiones_prediccion_s": 17.3,
+          "predicciones_s": 28.14
+        }
+      ],
+      "recursos": {
+        "api": {
+          "lecturas": 15,
+          "cpu_media_pct": 50.08,
+          "cpu_max_pct": 79.63,
+          "mem_max_mib": 466.7,
+          "mem_limite_mib": 1024.0
+        },
+        "locust": {
+          "lecturas": 15,
+          "cpu_media_pct": 2.06,
+          "cpu_max_pct": 2.97,
+          "mem_max_mib": 43.43,
+          "mem_limite_mib": 1024.0
+        },
+        "mlflow": {
+          "lecturas": 15,
+          "cpu_media_pct": 0.24,
+          "cpu_max_pct": 0.31,
+          "mem_max_mib": 430.3,
+          "mem_limite_mib": 768.0
+        }
+      }
+    },
+    {
+      "corrida": "dos_procesos_r2",
+      "procesos": 2,
+      "cpus": 2.0,
+      "hilos": 0,
+      "memoria": "1g",
+      "arranque_s": 31.72,
+      "tamano_lote": 3,
+      "etiquetas": [],
+      "capacidad": {
+        "escalon": 5.0,
+        "usuarios": 10.0,
+        "inicio_s": 250.0,
+        "fin_s": 300.0,
+        "ventana_s": 50.0,
+        "nombre": "Agregado",
+        "peticiones": 500.0,
+        "fallos": 0.0,
+        "tasa_error": 0.0,
+        "rps": 10.0,
+        "predicciones_s": 15.14,
+        "media_ms": 60.42,
+        "p50_ms": 38.62,
+        "p95_ms": 181.57,
+        "p99_ms": 232.07,
+        "max_ms": 380.42,
+        "peticiones_prediccion_s": 8.98
+      },
+      "sensibilidad": [
+        {
+          "p95_objetivo_ms": 250.0,
+          "usuarios": 10.0,
+          "rps": 10.0,
+          "peticiones_prediccion_s": 8.98,
+          "predicciones_s": 15.14
+        },
+        {
+          "p95_objetivo_ms": 500,
+          "usuarios": 10.0,
+          "rps": 10.0,
+          "peticiones_prediccion_s": 8.98,
+          "predicciones_s": 15.14
+        },
+        {
+          "p95_objetivo_ms": 1000.0,
+          "usuarios": 15.0,
+          "rps": 14.84,
+          "peticiones_prediccion_s": 13.38,
+          "predicciones_s": 22.98
+        },
+        {
+          "p95_objetivo_ms": 2000.0,
+          "usuarios": 30.0,
+          "rps": 26.38,
+          "peticiones_prediccion_s": 23.58,
+          "predicciones_s": 40.34
+        }
+      ],
+      "recursos": {
+        "api": {
+          "lecturas": 15,
+          "cpu_media_pct": 33.83,
+          "cpu_max_pct": 61.09,
+          "mem_max_mib": 452.4,
+          "mem_limite_mib": 1024.0
+        },
+        "locust": {
+          "lecturas": 15,
+          "cpu_media_pct": 1.52,
+          "cpu_max_pct": 2.24,
+          "mem_max_mib": 43.05,
+          "mem_limite_mib": 1024.0
+        },
+        "mlflow": {
+          "lecturas": 15,
+          "cpu_media_pct": 1.01,
+          "cpu_max_pct": 11.59,
+          "mem_max_mib": 432.4,
+          "mem_limite_mib": 768.0
+        }
+      }
+    },
+    {
+      "corrida": "dos_procesos_r3",
+      "procesos": 2,
+      "cpus": 2.0,
+      "hilos": 0,
+      "memoria": "1g",
+      "arranque_s": 11.77,
+      "tamano_lote": 3,
+      "etiquetas": [],
+      "capacidad": {
+        "escalon": 8.0,
+        "usuarios": 30.0,
+        "inicio_s": 430.0,
+        "fin_s": 480.0,
+        "ventana_s": 50.0,
+        "nombre": "Agregado",
+        "peticiones": 1500.0,
+        "fallos": 0.0,
+        "tasa_error": 0.0,
+        "rps": 30.0,
+        "predicciones_s": 46.02,
+        "media_ms": 102.11,
+        "p50_ms": 73.38,
+        "p95_ms": 266.11,
+        "p99_ms": 445.87,
+        "max_ms": 601.12,
+        "peticiones_prediccion_s": 26.94
+      },
+      "sensibilidad": [
+        {
+          "p95_objetivo_ms": 250.0,
+          "usuarios": 20.0,
+          "rps": 20.0,
+          "peticiones_prediccion_s": 17.96,
+          "predicciones_s": 29.24
+        },
+        {
+          "p95_objetivo_ms": 500,
+          "usuarios": 30.0,
+          "rps": 30.0,
+          "peticiones_prediccion_s": 26.94,
+          "predicciones_s": 46.02
+        },
+        {
+          "p95_objetivo_ms": 1000.0,
+          "usuarios": 30.0,
+          "rps": 30.0,
+          "peticiones_prediccion_s": 26.94,
+          "predicciones_s": 46.02
+        },
+        {
+          "p95_objetivo_ms": 2000.0,
+          "usuarios": 30.0,
+          "rps": 30.0,
+          "peticiones_prediccion_s": 26.94,
+          "predicciones_s": 46.02
+        }
+      ],
+      "recursos": {
+        "api": {
+          "lecturas": 16,
+          "cpu_media_pct": 94.54,
+          "cpu_max_pct": 139.1,
+          "mem_max_mib": 458.3,
+          "mem_limite_mib": 1024.0
+        },
+        "locust": {
+          "lecturas": 16,
+          "cpu_media_pct": 2.49,
+          "cpu_max_pct": 3.22,
+          "mem_max_mib": 44.27,
+          "mem_limite_mib": 1024.0
+        },
+        "mlflow": {
+          "lecturas": 16,
+          "cpu_media_pct": 0.19,
+          "cpu_max_pct": 0.24,
+          "mem_max_mib": 404.5,
+          "mem_limite_mib": 768.0
+        }
+      }
+    },
+    {
+      "corrida": "dos_procesos_en_serie",
+      "procesos": 2,
+      "cpus": 2.0,
+      "hilos": 1,
+      "memoria": "1g",
+      "arranque_s": 22.3,
+      "tamano_lote": 3,
+      "etiquetas": [],
+      "capacidad": {
+        "escalon": 8.0,
+        "usuarios": 30.0,
+        "inicio_s": 430.0,
+        "fin_s": 480.0,
+        "ventana_s": 50.0,
+        "nombre": "Agregado",
+        "peticiones": 1500.0,
+        "fallos": 0.0,
+        "tasa_error": 0.0,
+        "rps": 30.0,
+        "predicciones_s": 46.02,
+        "media_ms": 49.87,
+        "p50_ms": 42.27,
+        "p95_ms": 102.38,
+        "p99_ms": 119.45,
+        "max_ms": 126.25,
+        "peticiones_prediccion_s": 26.94
+      },
+      "sensibilidad": [
+        {
+          "p95_objetivo_ms": 250.0,
+          "usuarios": 30.0,
+          "rps": 30.0,
+          "peticiones_prediccion_s": 26.94,
+          "predicciones_s": 46.02
+        },
+        {
+          "p95_objetivo_ms": 500,
+          "usuarios": 30.0,
+          "rps": 30.0,
+          "peticiones_prediccion_s": 26.94,
+          "predicciones_s": 46.02
+        },
+        {
+          "p95_objetivo_ms": 1000.0,
+          "usuarios": 30.0,
+          "rps": 30.0,
+          "peticiones_prediccion_s": 26.94,
+          "predicciones_s": 46.02
+        },
+        {
+          "p95_objetivo_ms": 2000.0,
+          "usuarios": 60.0,
+          "rps": 59.28,
+          "peticiones_prediccion_s": 53.16,
+          "predicciones_s": 89.0
+        }
+      ],
+      "recursos": {
+        "api": {
+          "lecturas": 15,
+          "cpu_media_pct": 45.39,
+          "cpu_max_pct": 92.32,
+          "mem_max_mib": 453.6,
+          "mem_limite_mib": 1024.0
+        },
+        "locust": {
+          "lecturas": 15,
+          "cpu_media_pct": 2.25,
+          "cpu_max_pct": 2.94,
+          "mem_max_mib": 44.23,
+          "mem_limite_mib": 1024.0
+        },
+        "mlflow": {
+          "lecturas": 15,
+          "cpu_media_pct": 0.21,
+          "cpu_max_pct": 0.29,
+          "mem_max_mib": 433.4,
+          "mem_limite_mib": 768.0
+        }
+      }
+    },
+    {
+      "corrida": "dos_procesos_en_serie_r2",
+      "procesos": 2,
+      "cpus": 2.0,
+      "hilos": 1,
+      "memoria": "1g",
+      "arranque_s": 20.74,
+      "tamano_lote": 3,
+      "etiquetas": [],
+      "capacidad": {
+        "escalon": 9.0,
+        "usuarios": 60.0,
+        "inicio_s": 490.0,
+        "fin_s": 540.0,
+        "ventana_s": 50.0,
+        "nombre": "Agregado",
+        "peticiones": 3000.0,
+        "fallos": 0.0,
+        "tasa_error": 0.0,
+        "rps": 60.0,
+        "predicciones_s": 90.38,
+        "media_ms": 203.6,
+        "p50_ms": 214.63,
+        "p95_ms": 390.64,
+        "p99_ms": 553.76,
+        "max_ms": 877.79,
+        "peticiones_prediccion_s": 53.82
+      },
+      "sensibilidad": [
+        {
+          "p95_objetivo_ms": 250.0,
+          "usuarios": 30.0,
+          "rps": 30.0,
+          "peticiones_prediccion_s": 26.94,
+          "predicciones_s": 46.02
+        },
+        {
+          "p95_objetivo_ms": 500,
+          "usuarios": 60.0,
+          "rps": 60.0,
+          "peticiones_prediccion_s": 53.82,
+          "predicciones_s": 90.38
+        },
+        {
+          "p95_objetivo_ms": 1000.0,
+          "usuarios": 60.0,
+          "rps": 60.0,
+          "peticiones_prediccion_s": 53.82,
+          "predicciones_s": 90.38
+        },
+        {
+          "p95_objetivo_ms": 2000.0,
+          "usuarios": 60.0,
+          "rps": 60.0,
+          "peticiones_prediccion_s": 53.82,
+          "predicciones_s": 90.38
+        }
+      ],
+      "recursos": {
+        "api": {
+          "lecturas": 15,
+          "cpu_media_pct": 111.01,
+          "cpu_max_pct": 136.55,
+          "mem_max_mib": 452.8,
+          "mem_limite_mib": 1024.0
+        },
+        "locust": {
+          "lecturas": 15,
+          "cpu_media_pct": 3.91,
+          "cpu_max_pct": 6.6,
+          "mem_max_mib": 46.25,
+          "mem_limite_mib": 1024.0
+        },
+        "mlflow": {
+          "lecturas": 15,
+          "cpu_media_pct": 3.5,
+          "cpu_max_pct": 42.78,
+          "mem_max_mib": 413.0,
+          "mem_limite_mib": 768.0
+        }
+      }
+    },
+    {
+      "corrida": "lote_hora",
+      "procesos": 1,
+      "cpus": 1.0,
+      "hilos": 0,
+      "memoria": "1g",
+      "arranque_s": 18.98,
+      "tamano_lote": 472,
+      "etiquetas": [
+        "lote"
+      ],
+      "capacidad": {
+        "escalon": 3.0,
+        "usuarios": 4.0,
+        "inicio_s": 100.0,
+        "fin_s": 135.0,
+        "ventana_s": 35.0,
+        "nombre": "Agregado",
+        "peticiones": 140.0,
+        "fallos": 0.0,
+        "tasa_error": 0.0,
+        "rps": 4.0,
+        "predicciones_s": 1888.0,
+        "media_ms": 75.43,
+        "p50_ms": 75.73,
+        "p95_ms": 148.64,
+        "p99_ms": 286.69,
+        "max_ms": 293.52,
+        "peticiones_prediccion_s": 4.0
+      },
+      "sensibilidad": [
+        {
+          "p95_objetivo_ms": 250.0,
+          "usuarios": 4.0,
+          "rps": 4.0,
+          "peticiones_prediccion_s": 4.0,
+          "predicciones_s": 1888.0
+        },
+        {
+          "p95_objetivo_ms": 500,
+          "usuarios": 4.0,
+          "rps": 4.0,
+          "peticiones_prediccion_s": 4.0,
+          "predicciones_s": 1888.0
+        },
+        {
+          "p95_objetivo_ms": 1000.0,
+          "usuarios": 4.0,
+          "rps": 4.0,
+          "peticiones_prediccion_s": 4.0,
+          "predicciones_s": 1888.0
+        },
+        {
+          "p95_objetivo_ms": 2000.0,
+          "usuarios": 8.0,
+          "rps": 6.829,
+          "peticiones_prediccion_s": 6.829,
+          "predicciones_s": 3223.086
+        }
+      ],
+      "recursos": {
+        "api": {
+          "lecturas": 10,
+          "cpu_media_pct": 20.2,
+          "cpu_max_pct": 27.87,
+          "mem_max_mib": 218.2,
+          "mem_limite_mib": 1024.0
+        },
+        "locust": {
+          "lecturas": 10,
+          "cpu_media_pct": 1.49,
+          "cpu_max_pct": 1.94,
+          "mem_max_mib": 43.72,
+          "mem_limite_mib": 1024.0
+        },
+        "mlflow": {
+          "lecturas": 10,
+          "cpu_media_pct": 1.44,
+          "cpu_max_pct": 12.26,
+          "mem_max_mib": 431.5,
+          "mem_limite_mib": 768.0
+        }
+      }
+    },
+    {
+      "corrida": "lote_hora_r2",
+      "procesos": 1,
+      "cpus": 1.0,
+      "hilos": 0,
+      "memoria": "1g",
+      "arranque_s": 30.9,
+      "tamano_lote": 472,
+      "etiquetas": [
+        "lote"
+      ],
+      "capacidad": {
+        "escalon": 4.0,
+        "usuarios": 8.0,
+        "inicio_s": 145.0,
+        "fin_s": 180.0,
+        "ventana_s": 35.0,
+        "nombre": "Agregado",
+        "peticiones": 280.0,
+        "fallos": 0.0,
+        "tasa_error": 0.0,
+        "rps": 8.0,
+        "predicciones_s": 3776.0,
+        "media_ms": 86.28,
+        "p50_ms": 47.08,
+        "p95_ms": 319.53,
+        "p99_ms": 656.56,
+        "max_ms": 688.32,
+        "peticiones_prediccion_s": 8.0
+      },
+      "sensibilidad": [
+        {
+          "p95_objetivo_ms": 250.0,
+          "usuarios": 2.0,
+          "rps": 2.0,
+          "peticiones_prediccion_s": 2.0,
+          "predicciones_s": 944.0
+        },
+        {
+          "p95_objetivo_ms": 500,
+          "usuarios": 8.0,
+          "rps": 8.0,
+          "peticiones_prediccion_s": 8.0,
+          "predicciones_s": 3776.0
+        },
+        {
+          "p95_objetivo_ms": 1000.0,
+          "usuarios": 8.0,
+          "rps": 8.0,
+          "peticiones_prediccion_s": 8.0,
+          "predicciones_s": 3776.0
+        },
+        {
+          "p95_objetivo_ms": 2000.0,
+          "usuarios": 12.0,
+          "rps": 8.629,
+          "peticiones_prediccion_s": 8.629,
+          "predicciones_s": 4072.686
+        }
+      ],
+      "recursos": {
+        "api": {
+          "lecturas": 10,
+          "cpu_media_pct": 54.64,
+          "cpu_max_pct": 105.38,
+          "mem_max_mib": 228.5,
+          "mem_limite_mib": 1024.0
+        },
+        "locust": {
+          "lecturas": 10,
+          "cpu_media_pct": 3.54,
+          "cpu_max_pct": 4.27,
+          "mem_max_mib": 44.62,
+          "mem_limite_mib": 1024.0
+        },
+        "mlflow": {
+          "lecturas": 10,
+          "cpu_media_pct": 0.24,
+          "cpu_max_pct": 0.28,
+          "mem_max_mib": 432.3,
+          "mem_limite_mib": 768.0
+        }
+      }
+    },
+    {
+      "corrida": "lote_hora_r3",
+      "procesos": 1,
+      "cpus": 1.0,
+      "hilos": 0,
+      "memoria": "1g",
+      "arranque_s": 13.33,
+      "tamano_lote": 472,
+      "etiquetas": [
+        "lote"
+      ],
+      "capacidad": {
+        "escalon": 4.0,
+        "usuarios": 8.0,
+        "inicio_s": 145.0,
+        "fin_s": 180.0,
+        "ventana_s": 35.0,
+        "nombre": "Agregado",
+        "peticiones": 280.0,
+        "fallos": 0.0,
+        "tasa_error": 0.0,
+        "rps": 8.0,
+        "predicciones_s": 3776.0,
+        "media_ms": 118.02,
+        "p50_ms": 118.67,
+        "p95_ms": 219.14,
+        "p99_ms": 388.47,
+        "max_ms": 403.13,
+        "peticiones_prediccion_s": 8.0
+      },
+      "sensibilidad": [
+        {
+          "p95_objetivo_ms": 250.0,
+          "usuarios": 8.0,
+          "rps": 8.0,
+          "peticiones_prediccion_s": 8.0,
+          "predicciones_s": 3776.0
+        },
+        {
+          "p95_objetivo_ms": 500,
+          "usuarios": 8.0,
+          "rps": 8.0,
+          "peticiones_prediccion_s": 8.0,
+          "predicciones_s": 3776.0
+        },
+        {
+          "p95_objetivo_ms": 1000.0,
+          "usuarios": 12.0,
+          "rps": 12.0,
+          "peticiones_prediccion_s": 12.0,
+          "predicciones_s": 5664.0
+        },
+        {
+          "p95_objetivo_ms": 2000.0,
+          "usuarios": 12.0,
+          "rps": 12.0,
+          "peticiones_prediccion_s": 12.0,
+          "predicciones_s": 5664.0
+        }
+      ],
+      "recursos": {
+        "api": {
+          "lecturas": 11,
+          "cpu_media_pct": 36.95,
+          "cpu_max_pct": 59.17,
+          "mem_max_mib": 235.9,
+          "mem_limite_mib": 1024.0
+        },
+        "locust": {
+          "lecturas": 11,
+          "cpu_media_pct": 2.48,
+          "cpu_max_pct": 3.34,
+          "mem_max_mib": 44.42,
+          "mem_limite_mib": 1024.0
+        },
+        "mlflow": {
+          "lecturas": 11,
+          "cpu_media_pct": 6.56,
+          "cpu_max_pct": 45.05,
+          "mem_max_mib": 403.9,
+          "mem_limite_mib": 768.0
+        }
+      }
+    }
+  ],
+  "costos": [
+    {
+      "corrida": "un_proceso",
+      "instancia": "t3.small",
+      "precio_hora": 0.0208,
+      "cpu_pico_nucleos": 1.481,
+      "memoria_pico_gib": 0.697,
+      "ocupacion_cpu": 0.7403,
+      "ocupacion_memoria": 0.3483,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 25704.0,
+      "predicciones_hora": 43704.0,
+      "costo_por_peticion": 8.092125739184562e-07,
+      "costo_por_prediccion": 4.7592897675269994e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 1.97869101978691e-06,
+        "500": 4.7592897675269994e-07,
+        "1000": 4.7592897675269994e-07,
+        "2000": 3.9039039039039037e-07
+      },
+      "utilizacion_real": 0.010799926780157423,
+      "siempre_encendido": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 81.61,
+        "costo_hora": 0.00047152292147171874,
+        "costo_mes": 0.3442117326743547,
+        "costo_por_prediccion": 9.989892404061839e-07,
+        "ahorro": 0.9773306287753981
+      }
+    },
+    {
+      "corrida": "un_proceso_r2",
+      "instancia": "t3.small",
+      "precio_hora": 0.0208,
+      "cpu_pico_nucleos": 0.493,
+      "memoria_pico_gib": 0.684,
+      "ocupacion_cpu": 0.2467,
+      "ocupacion_memoria": 0.3419,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 32256.000000000004,
+      "predicciones_hora": 54432.0,
+      "costo_por_peticion": 6.448412698412698e-07,
+      "costo_por_prediccion": 3.8212815990593767e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 3.8212815990593767e-07,
+        "500": 3.8212815990593767e-07,
+        "1000": 2.5385666861941027e-07,
+        "2000": 2.1952043228638973e-07
+      },
+      "utilizacion_real": 0.008671369782480894,
+      "siempre_encendido": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 58.76,
+        "costo_hora": 0.0003394844914756026,
+        "costo_mes": 0.2478236787771899,
+        "costo_por_prediccion": 7.192468039737343e-07,
+        "ahorro": 0.9836786302175191
+      }
+    },
+    {
+      "corrida": "un_proceso_r3",
+      "instancia": "t3.small",
+      "precio_hora": 0.0208,
+      "cpu_pico_nucleos": 0.833,
+      "memoria_pico_gib": 0.69,
+      "ocupacion_cpu": 0.4163,
+      "ocupacion_memoria": 0.3448,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 48600.0,
+      "predicciones_hora": 83592.0,
+      "costo_por_peticion": 4.279835390946502e-07,
+      "costo_por_prediccion": 2.4882763900851755e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 3.8212815990593767e-07,
+        "500": 2.4882763900851755e-07,
+        "1000": 2.4882763900851755e-07,
+        "2000": 2.135172866880184e-07
+      },
+      "utilizacion_real": 0.005646473346731745,
+      "siempre_encendido": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 43.08,
+        "costo_hora": 0.0002488910900564647,
+        "costo_mes": 0.18169049574121926,
+        "costo_por_prediccion": 5.273116314755609e-07,
+        "ahorro": 0.9880340822088238
+      }
+    },
+    {
+      "corrida": "un_proceso_r4",
+      "instancia": "t3.small",
+      "precio_hora": 0.0208,
+      "cpu_pico_nucleos": 1.4,
+      "memoria_pico_gib": 0.652,
+      "ocupacion_cpu": 0.6998,
+      "ocupacion_memoria": 0.3261,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 32256.000000000004,
+      "predicciones_hora": 54432.0,
+      "costo_por_peticion": 6.448412698412698e-07,
+      "costo_por_prediccion": 3.8212815990593767e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 1.97869101978691e-06,
+        "500": 3.8212815990593767e-07,
+        "1000": 3.8212815990593767e-07,
+        "2000": 1.3639702024971147e-07
+      },
+      "utilizacion_real": 0.008671369782480894,
+      "siempre_encendido": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 49.1,
+        "costo_hora": 0.00028367115814226923,
+        "costo_mes": 0.20707994544385655,
+        "costo_por_prediccion": 6.009982164031128e-07,
+        "ahorro": 0.9863619635508525
+      }
+    },
+    {
+      "corrida": "un_proceso_r5",
+      "instancia": "t3.small",
+      "precio_hora": 0.0208,
+      "cpu_pico_nucleos": 0.917,
+      "memoria_pico_gib": 0.667,
+      "ocupacion_cpu": 0.4585,
+      "ocupacion_memoria": 0.3333,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 48600.0,
+      "predicciones_hora": 83592.0,
+      "costo_por_peticion": 4.279835390946502e-07,
+      "costo_por_prediccion": 2.4882763900851755e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 2.4882763900851755e-07,
+        "500": 2.4882763900851755e-07,
+        "1000": 2.4882763900851755e-07,
+        "2000": 1.70235055326393e-07
+      },
+      "utilizacion_real": 0.005646473346731745,
+      "siempre_encendido": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 28.86,
+        "costo_hora": 0.00016673109005646474,
+        "costo_mes": 0.12171369574121926,
+        "costo_por_prediccion": 3.532438348653914e-07,
+        "ahorro": 0.9919840822088238
+      }
+    },
+    {
+      "corrida": "un_proceso_en_serie",
+      "instancia": "t3.small",
+      "precio_hora": 0.0208,
+      "cpu_pico_nucleos": 0.855,
+      "memoria_pico_gib": 0.679,
+      "ocupacion_cpu": 0.4275,
+      "ocupacion_memoria": 0.3396,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 64656.0,
+      "predicciones_hora": 105264.0,
+      "costo_por_peticion": 3.217025488740411e-07,
+      "costo_por_prediccion": 1.975984192126463e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 1.975984192126463e-07,
+        "500": 1.975984192126463e-07,
+        "1000": 1.975984192126463e-07,
+        "2000": 1.313131313131313e-07
+      },
+      "utilizacion_real": 0.004483964128286974,
+      "siempre_encendido": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 34.56,
+        "costo_hora": 0.00019969312053503576,
+        "costo_mes": 0.1457759779905761,
+        "costo_por_prediccion": 4.2307864520134694e-07,
+        "ahorro": 0.9903993692050463
+      }
+    },
+    {
+      "corrida": "un_proceso_en_serie_r2",
+      "instancia": "t3.small",
+      "precio_hora": 0.0208,
+      "cpu_pico_nucleos": 0.783,
+      "memoria_pico_gib": 0.68,
+      "ocupacion_cpu": 0.3914,
+      "ocupacion_memoria": 0.3398,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 96984.0,
+      "predicciones_hora": 165672.0,
+      "costo_por_peticion": 2.1446836591602737e-07,
+      "costo_por_prediccion": 1.2554927809165096e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 1.2554927809165096e-07,
+        "500": 1.2554927809165096e-07,
+        "1000": 1.2554927809165096e-07,
+        "2000": 7.040918569068702e-08
+      },
+      "utilizacion_real": 0.002849002849002849,
+      "siempre_encendido": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 22.07,
+        "costo_hora": 0.00012749481481481482,
+        "costo_mes": 0.09307121481481481,
+        "costo_por_prediccion": 2.7011613308223476e-07,
+        "ahorro": 0.9938704415954416
+      }
+    },
+    {
+      "corrida": "un_proceso_en_serie_r3",
+      "instancia": "t3.small",
+      "precio_hora": 0.0208,
+      "cpu_pico_nucleos": 1.395,
+      "memoria_pico_gib": 0.669,
+      "ocupacion_cpu": 0.6976,
+      "ocupacion_memoria": 0.3347,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 96984.0,
+      "predicciones_hora": 165672.0,
+      "costo_por_peticion": 2.1446836591602737e-07,
+      "costo_por_prediccion": 1.2554927809165096e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 6.107587502936339e-07,
+        "500": 1.2554927809165096e-07,
+        "1000": 1.2554927809165096e-07,
+        "2000": 8.351803668369149e-08
+      },
+      "utilizacion_real": 0.002849002849002849,
+      "siempre_encendido": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 33.18,
+        "costo_hora": 0.00019168592592592592,
+        "costo_mes": 0.13993072592592593,
+        "costo_por_prediccion": 4.0611424984306336e-07,
+        "ahorro": 0.9907843304843305
+      }
+    },
+    {
+      "corrida": "un_proceso_en_serie_r4",
+      "instancia": "t3.small",
+      "precio_hora": 0.0208,
+      "cpu_pico_nucleos": 1.03,
+      "memoria_pico_gib": 0.655,
+      "ocupacion_cpu": 0.515,
+      "ocupacion_memoria": 0.3276,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 96984.0,
+      "predicciones_hora": 165672.0,
+      "costo_por_peticion": 2.1446836591602737e-07,
+      "costo_por_prediccion": 1.2554927809165096e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 1.2554927809165096e-07,
+        "500": 1.2554927809165096e-07,
+        "1000": 1.2554927809165096e-07,
+        "2000": 7.297016642811035e-08
+      },
+      "utilizacion_real": 0.002849002849002849,
+      "siempre_encendido": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 20.51,
+        "costo_hora": 0.00011848148148148148,
+        "costo_mes": 0.08649148148148147,
+        "costo_por_prediccion": 2.5102008788449465e-07,
+        "ahorro": 0.994303774928775
+      }
+    },
+    {
+      "corrida": "dos_procesos_un_cpu",
+      "instancia": "t3.small",
+      "precio_hora": 0.0208,
+      "cpu_pico_nucleos": 0.74,
+      "memoria_pico_gib": 0.907,
+      "ocupacion_cpu": 0.3701,
+      "ocupacion_memoria": 0.4537,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 32256.000000000004,
+      "predicciones_hora": 54432.0,
+      "costo_por_peticion": 6.448412698412698e-07,
+      "costo_por_prediccion": 3.8212815990593767e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 3.8212815990593767e-07,
+        "500": 3.8212815990593767e-07,
+        "1000": 3.8212815990593767e-07,
+        "2000": 2.2429261559696343e-07
+      },
+      "utilizacion_real": 0.008671369782480894,
+      "siempre_encendido": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 62.63,
+        "costo_hora": 0.00036184449147560257,
+        "costo_mes": 0.2641464787771899,
+        "costo_por_prediccion": 7.666196853296664e-07,
+        "ahorro": 0.9826036302175191
+      }
+    },
+    {
+      "corrida": "dos_procesos_un_cpu_r2",
+      "instancia": "t3.small",
+      "precio_hora": 0.0208,
+      "cpu_pico_nucleos": 1.284,
+      "memoria_pico_gib": 0.892,
+      "ocupacion_cpu": 0.6419,
+      "ocupacion_memoria": 0.446,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 48888.0,
+      "predicciones_hora": 84168.0,
+      "costo_por_peticion": 4.254622811323842e-07,
+      "costo_por_prediccion": 2.471247980230016e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 3.9573820395738203e-07,
+        "500": 2.471247980230016e-07,
+        "1000": 2.471247980230016e-07,
+        "2000": 2.1179537308569565e-07
+      },
+      "utilizacion_real": 0.005607831955137344,
+      "siempre_encendido": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 42.02,
+        "costo_hora": 0.00024277179355574563,
+        "costo_mes": 0.1772234092956943,
+        "costo_por_prediccion": 5.143470202452238e-07,
+        "ahorro": 0.9883282791559738
+      }
+    },
+    {
+      "corrida": "dos_procesos",
+      "instancia": "t3.small",
+      "precio_hora": 0.0208,
+      "cpu_pico_nucleos": 0.829,
+      "memoria_pico_gib": 0.918,
+      "ocupacion_cpu": 0.4145,
+      "ocupacion_memoria": 0.4592,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 48672.0,
+      "predicciones_hora": 83808.0,
+      "costo_por_peticion": 4.273504273504273e-07,
+      "costo_por_prediccion": 2.4818633066055746e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 2.4818633066055746e-07,
+        "500": 2.4818633066055746e-07,
+        "1000": 2.4818633066055746e-07,
+        "2000": 2.0532259338229487e-07
+      },
+      "utilizacion_real": 0.005631920580374188,
+      "siempre_encendido": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 51.37,
+        "costo_hora": 0.000296832836960672,
+        "costo_mes": 0.21668797098129056,
+        "costo_por_prediccion": 6.288831291539662e-07,
+        "ahorro": 0.9857291905307369
+      }
+    },
+    {
+      "corrida": "dos_procesos_r2",
+      "instancia": "t3.small",
+      "precio_hora": 0.0208,
+      "cpu_pico_nucleos": 0.749,
+      "memoria_pico_gib": 0.906,
+      "ocupacion_cpu": 0.3746,
+      "ocupacion_memoria": 0.4531,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 32328.0,
+      "predicciones_hora": 54504.0,
+      "costo_por_peticion": 6.434050977480822e-07,
+      "costo_por_prediccion": 3.816233670923235e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 3.816233670923235e-07,
+        "500": 3.816233670923235e-07,
+        "1000": 2.514263610869355e-07,
+        "2000": 1.432270148184873e-07
+      },
+      "utilizacion_real": 0.008659914868633494,
+      "siempre_encendido": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 62.9,
+        "costo_hora": 0.00036339734037868775,
+        "costo_mes": 0.26528005847644204,
+        "costo_por_prediccion": 7.699096194463724e-07,
+        "ahorro": 0.9825289740202554
+      }
+    },
+    {
+      "corrida": "dos_procesos_r3",
+      "instancia": "t3.small",
+      "precio_hora": 0.0208,
+      "cpu_pico_nucleos": 1.426,
+      "memoria_pico_gib": 0.886,
+      "ocupacion_cpu": 0.7128,
+      "ocupacion_memoria": 0.4429,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 96984.0,
+      "predicciones_hora": 165672.0,
+      "costo_por_peticion": 2.1446836591602737e-07,
+      "costo_por_prediccion": 1.2554927809165096e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 1.975984192126463e-07,
+        "500": 1.2554927809165096e-07,
+        "1000": 1.2554927809165096e-07,
+        "2000": 1.2554927809165096e-07
+      },
+      "utilizacion_real": 0.002849002849002849,
+      "siempre_encendido": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 22.03,
+        "costo_hora": 0.0001272637037037037,
+        "costo_mes": 0.0929025037037037,
+        "costo_por_prediccion": 2.6962649089767735e-07,
+        "ahorro": 0.9938815527065528
+      }
+    },
+    {
+      "corrida": "dos_procesos_en_serie",
+      "instancia": "t3.small",
+      "precio_hora": 0.0208,
+      "cpu_pico_nucleos": 0.956,
+      "memoria_pico_gib": 0.909,
+      "ocupacion_cpu": 0.4778,
+      "ocupacion_memoria": 0.4547,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 96984.0,
+      "predicciones_hora": 165672.0,
+      "costo_por_peticion": 2.1446836591602737e-07,
+      "costo_por_prediccion": 1.2554927809165096e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 1.2554927809165096e-07,
+        "500": 1.2554927809165096e-07,
+        "1000": 1.2554927809165096e-07,
+        "2000": 6.491885143570536e-08
+      },
+      "utilizacion_real": 0.002849002849002849,
+      "siempre_encendido": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 32.56,
+        "costo_hora": 0.00018810370370370372,
+        "costo_mes": 0.13731570370370372,
+        "costo_por_prediccion": 3.9852479598242314e-07,
+        "ahorro": 0.9909565527065527
+      }
+    },
+    {
+      "corrida": "dos_procesos_en_serie_r2",
+      "instancia": "t3.small",
+      "precio_hora": 0.0208,
+      "cpu_pico_nucleos": 1.859,
+      "memoria_pico_gib": 0.891,
+      "ocupacion_cpu": 0.9297,
+      "ocupacion_memoria": 0.4453,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 193752.0,
+      "predicciones_hora": 325368.0,
+      "costo_por_peticion": 1.0735373054213634e-07,
+      "costo_por_prediccion": 6.39276142706105e-08,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 1.2554927809165096e-07,
+        "500": 6.39276142706105e-08,
+        "1000": 6.39276142706105e-08,
+        "2000": 6.39276142706105e-08
+      },
+      "utilizacion_real": 0.0014506650930638538,
+      "siempre_encendido": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 25.96,
+        "costo_hora": 0.00015000494504683928,
+        "costo_mes": 0.10950360988419268,
+        "costo_por_prediccion": 3.1780708696364257e-07,
+        "ahorro": 0.992788223795825
+      }
+    },
+    {
+      "corrida": "lote_hora",
+      "instancia": "t3.small",
+      "precio_hora": 0.0208,
+      "cpu_pico_nucleos": 0.421,
+      "memoria_pico_gib": 0.677,
+      "ocupacion_cpu": 0.2104,
+      "ocupacion_memoria": 0.3386,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 14400.0,
+      "predicciones_hora": 6796800.0,
+      "costo_por_peticion": 1.4444444444444443e-06,
+      "costo_por_prediccion": 3.0602636534839924e-09,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 3.0602636534839924e-09,
+        "500": 3.0602636534839924e-09,
+        "1000": 3.0602636534839924e-09,
+        "2000": 1.7926229017090383e-09
+      },
+      "utilizacion_real": 6.944444444444444e-05,
+      "siempre_encendido": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 19.23,
+        "costo_hora": 0.00011110666666666667,
+        "costo_mes": 0.08110786666666667,
+        "costo_por_prediccion": 2.353954802259887e-07,
+        "ahorro": 0.9946583333333333
+      }
+    },
+    {
+      "corrida": "lote_hora_r2",
+      "instancia": "t3.small",
+      "precio_hora": 0.0208,
+      "cpu_pico_nucleos": 1.099,
+      "memoria_pico_gib": 0.689,
+      "ocupacion_cpu": 0.5496,
+      "ocupacion_memoria": 0.3444,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 28800.0,
+      "predicciones_hora": 13593600.0,
+      "costo_por_peticion": 7.222222222222221e-07,
+      "costo_por_prediccion": 1.5301318267419962e-09,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 6.120527306967985e-09,
+        "500": 1.5301318267419962e-09,
+        "1000": 1.5301318267419962e-09,
+        "2000": 1.4186651703022963e-09
+      },
+      "utilizacion_real": 3.472222222222222e-05,
+      "siempre_encendido": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 31.02,
+        "costo_hora": 0.00017925555555555552,
+        "costo_mes": 0.13085655555555553,
+        "costo_por_prediccion": 3.7977871939736337e-07,
+        "ahorro": 0.9913819444444445
+      }
+    },
+    {
+      "corrida": "lote_hora_r3",
+      "instancia": "t3.small",
+      "precio_hora": 0.0208,
+      "cpu_pico_nucleos": 1.076,
+      "memoria_pico_gib": 0.668,
+      "ocupacion_cpu": 0.5378,
+      "ocupacion_memoria": 0.3341,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 28800.0,
+      "predicciones_hora": 13593600.0,
+      "costo_por_peticion": 7.222222222222221e-07,
+      "costo_por_prediccion": 1.5301318267419962e-09,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 1.5301318267419962e-09,
+        "500": 1.5301318267419962e-09,
+        "1000": 1.0200878844946641e-09,
+        "2000": 1.0200878844946641e-09
+      },
+      "utilizacion_real": 3.472222222222222e-05,
+      "siempre_encendido": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0208,
+        "costo_mes": 15.184,
+        "costo_por_prediccion": 4.406779661016949e-05
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 13.46,
+        "costo_hora": 7.774e-05,
+        "costo_mes": 0.0567502,
+        "costo_por_prediccion": 1.6470338983050847e-07,
+        "ahorro": 0.9962625
+      }
+    },
+    {
+      "corrida": "un_proceso",
+      "instancia": "c6a.large",
+      "precio_hora": 0.0765,
+      "cpu_pico_nucleos": 1.481,
+      "memoria_pico_gib": 0.697,
+      "ocupacion_cpu": 0.7403,
+      "ocupacion_memoria": 0.1742,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 25704.0,
+      "predicciones_hora": 43704.0,
+      "costo_por_peticion": 2.9761904761904763e-06,
+      "costo_por_prediccion": 1.7504118616144976e-06,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 7.277397260273973e-06,
+        "500": 1.7504118616144976e-06,
+        "1000": 1.7504118616144976e-06,
+        "2000": 1.4358108108108108e-06
+      },
+      "utilizacion_real": 0.010799926780157423,
+      "siempre_encendido": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 81.61,
+        "costo_hora": 0.0017342068986820427,
+        "costo_mes": 1.265971036037891,
+        "costo_por_prediccion": 3.6741671582246666e-06,
+        "ahorro": 0.9773306287753981
+      }
+    },
+    {
+      "corrida": "un_proceso_r2",
+      "instancia": "c6a.large",
+      "precio_hora": 0.0765,
+      "cpu_pico_nucleos": 0.493,
+      "memoria_pico_gib": 0.684,
+      "ocupacion_cpu": 0.2467,
+      "ocupacion_memoria": 0.1709,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 32256.000000000004,
+      "predicciones_hora": 54432.0,
+      "costo_por_peticion": 2.3716517857142855e-06,
+      "costo_por_prediccion": 1.4054232804232805e-06,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 1.4054232804232805e-06,
+        "500": 1.4054232804232805e-06,
+        "1000": 9.336555360281195e-07,
+        "2000": 8.07370820668693e-07
+      },
+      "utilizacion_real": 0.008671369782480894,
+      "siempre_encendido": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 58.76,
+        "costo_hora": 0.0012485847883597883,
+        "costo_mes": 0.9114668955026455,
+        "costo_por_prediccion": 2.6453067549995514e-06,
+        "ahorro": 0.9836786302175191
+      }
+    },
+    {
+      "corrida": "un_proceso_r3",
+      "instancia": "c6a.large",
+      "precio_hora": 0.0765,
+      "cpu_pico_nucleos": 0.833,
+      "memoria_pico_gib": 0.69,
+      "ocupacion_cpu": 0.4163,
+      "ocupacion_memoria": 0.1724,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 48600.0,
+      "predicciones_hora": 83592.0,
+      "costo_por_peticion": 1.574074074074074e-06,
+      "costo_por_prediccion": 9.151593453919036e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 1.4054232804232805e-06,
+        "500": 9.151593453919036e-07,
+        "1000": 9.151593453919036e-07,
+        "2000": 7.852919438285292e-07
+      },
+      "utilizacion_real": 0.005646473346731745,
+      "siempre_encendido": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 43.08,
+        "costo_hora": 0.0009153927110249785,
+        "costo_mes": 0.6682366790482343,
+        "costo_por_prediccion": 1.9393913369173273e-06,
+        "ahorro": 0.9880340822088238
+      }
+    },
+    {
+      "corrida": "un_proceso_r4",
+      "instancia": "c6a.large",
+      "precio_hora": 0.0765,
+      "cpu_pico_nucleos": 1.4,
+      "memoria_pico_gib": 0.652,
+      "ocupacion_cpu": 0.6998,
+      "ocupacion_memoria": 0.1631,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 32256.000000000004,
+      "predicciones_hora": 54432.0,
+      "costo_por_peticion": 2.3716517857142855e-06,
+      "costo_por_prediccion": 1.4054232804232805e-06,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 7.277397260273973e-06,
+        "500": 1.4054232804232805e-06,
+        "1000": 1.4054232804232805e-06,
+        "2000": 5.016525023607176e-07
+      },
+      "utilizacion_real": 0.008671369782480894,
+      "siempre_encendido": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 49.1,
+        "costo_hora": 0.0010433097883597883,
+        "costo_mes": 0.7616161455026454,
+        "costo_por_prediccion": 2.2104020939826026e-06,
+        "ahorro": 0.9863619635508525
+      }
+    },
+    {
+      "corrida": "un_proceso_r5",
+      "instancia": "c6a.large",
+      "precio_hora": 0.0765,
+      "cpu_pico_nucleos": 0.917,
+      "memoria_pico_gib": 0.667,
+      "ocupacion_cpu": 0.4585,
+      "ocupacion_memoria": 0.1667,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 48600.0,
+      "predicciones_hora": 83592.0,
+      "costo_por_peticion": 1.574074074074074e-06,
+      "costo_por_prediccion": 9.151593453919036e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 9.151593453919036e-07,
+        "500": 9.151593453919036e-07,
+        "1000": 9.151593453919036e-07,
+        "2000": 6.261048909840896e-07
+      },
+      "utilizacion_real": 0.005646473346731745,
+      "siempre_encendido": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 28.86,
+        "costo_hora": 0.0006132177110249785,
+        "costo_mes": 0.4476489290482343,
+        "costo_por_prediccion": 1.2991900657308866e-06,
+        "ahorro": 0.9919840822088238
+      }
+    },
+    {
+      "corrida": "un_proceso_en_serie",
+      "instancia": "c6a.large",
+      "precio_hora": 0.0765,
+      "cpu_pico_nucleos": 0.855,
+      "memoria_pico_gib": 0.679,
+      "ocupacion_cpu": 0.4275,
+      "ocupacion_memoria": 0.1698,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 64656.0,
+      "predicciones_hora": 105264.0,
+      "costo_por_peticion": 1.183184855233853e-06,
+      "costo_por_prediccion": 7.267441860465116e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 7.267441860465116e-07,
+        "500": 7.267441860465116e-07,
+        "1000": 7.267441860465116e-07,
+        "2000": 4.829545454545455e-07
+      },
+      "utilizacion_real": 0.004483964128286974,
+      "siempre_encendido": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 34.56,
+        "costo_hora": 0.0007344482558139536,
+        "costo_mes": 0.5361472267441861,
+        "costo_por_prediccion": 1.5560344402838e-06,
+        "ahorro": 0.9903993692050463
+      }
+    },
+    {
+      "corrida": "un_proceso_en_serie_r2",
+      "instancia": "c6a.large",
+      "precio_hora": 0.0765,
+      "cpu_pico_nucleos": 0.783,
+      "memoria_pico_gib": 0.68,
+      "ocupacion_cpu": 0.3914,
+      "ocupacion_memoria": 0.1699,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 96984.0,
+      "predicciones_hora": 165672.0,
+      "costo_por_peticion": 7.887899034892353e-07,
+      "costo_por_prediccion": 4.6175575836592786e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 4.6175575836592786e-07,
+        "500": 4.6175575836592786e-07,
+        "1000": 4.6175575836592786e-07,
+        "2000": 2.589568608335364e-07
+      },
+      "utilizacion_real": 0.002849002849002849,
+      "siempre_encendido": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 22.07,
+        "costo_hora": 0.00046891121794871796,
+        "costo_mes": 0.34230518910256413,
+        "costo_por_prediccion": 9.934559702303346e-07,
+        "ahorro": 0.9938704415954416
+      }
+    },
+    {
+      "corrida": "un_proceso_en_serie_r3",
+      "instancia": "c6a.large",
+      "precio_hora": 0.0765,
+      "cpu_pico_nucleos": 1.395,
+      "memoria_pico_gib": 0.669,
+      "ocupacion_cpu": 0.6976,
+      "ocupacion_memoria": 0.1674,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 96984.0,
+      "predicciones_hora": 165672.0,
+      "costo_por_peticion": 7.887899034892353e-07,
+      "costo_por_prediccion": 4.6175575836592786e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 2.2463002114164904e-06,
+        "500": 4.6175575836592786e-07,
+        "1000": 4.6175575836592786e-07,
+        "2000": 3.0716970222607685e-07
+      },
+      "utilizacion_real": 0.002849002849002849,
+      "siempre_encendido": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 33.18,
+        "costo_hora": 0.0007049987179487179,
+        "costo_mes": 0.5146490641025641,
+        "costo_por_prediccion": 1.4936413515862668e-06,
+        "ahorro": 0.9907843304843305
+      }
+    },
+    {
+      "corrida": "un_proceso_en_serie_r4",
+      "instancia": "c6a.large",
+      "precio_hora": 0.0765,
+      "cpu_pico_nucleos": 1.03,
+      "memoria_pico_gib": 0.655,
+      "ocupacion_cpu": 0.515,
+      "ocupacion_memoria": 0.1638,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 96984.0,
+      "predicciones_hora": 165672.0,
+      "costo_por_peticion": 7.887899034892353e-07,
+      "costo_por_prediccion": 4.6175575836592786e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 4.6175575836592786e-07,
+        "500": 4.6175575836592786e-07,
+        "1000": 4.6175575836592786e-07,
+        "2000": 2.68375852488002e-07
+      },
+      "utilizacion_real": 0.002849002849002849,
+      "siempre_encendido": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 20.51,
+        "costo_hora": 0.0004357612179487179,
+        "costo_mes": 0.31810568910256404,
+        "costo_por_prediccion": 9.232229193828769e-07,
+        "ahorro": 0.994303774928775
+      }
+    },
+    {
+      "corrida": "dos_procesos_un_cpu",
+      "instancia": "c6a.large",
+      "precio_hora": 0.0765,
+      "cpu_pico_nucleos": 0.74,
+      "memoria_pico_gib": 0.907,
+      "ocupacion_cpu": 0.3701,
+      "ocupacion_memoria": 0.2268,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 32256.000000000004,
+      "predicciones_hora": 54432.0,
+      "costo_por_peticion": 2.3716517857142855e-06,
+      "costo_por_prediccion": 1.4054232804232805e-06,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 1.4054232804232805e-06,
+        "500": 1.4054232804232805e-06,
+        "1000": 1.4054232804232805e-06,
+        "2000": 8.249223602484472e-07
+      },
+      "utilizacion_real": 0.008671369782480894,
+      "siempre_encendido": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 62.63,
+        "costo_hora": 0.0013308222883597883,
+        "costo_mes": 0.9715002705026454,
+        "costo_por_prediccion": 2.819538746524975e-06,
+        "ahorro": 0.9826036302175191
+      }
+    },
+    {
+      "corrida": "dos_procesos_un_cpu_r2",
+      "instancia": "c6a.large",
+      "precio_hora": 0.0765,
+      "cpu_pico_nucleos": 1.284,
+      "memoria_pico_gib": 0.892,
+      "ocupacion_cpu": 0.6419,
+      "ocupacion_memoria": 0.223,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 48888.0,
+      "predicciones_hora": 84168.0,
+      "costo_por_peticion": 1.5648011782032401e-06,
+      "costo_por_prediccion": 9.08896492728828e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 1.4554794520547944e-06,
+        "500": 9.08896492728828e-07,
+        "1000": 9.08896492728828e-07,
+        "2000": 7.789589442815249e-07
+      },
+      "utilizacion_real": 0.005607831955137344,
+      "siempre_encendido": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 42.02,
+        "costo_hora": 0.0008928866445680069,
+        "costo_mes": 0.651807250534645,
+        "costo_por_prediccion": 1.8917089927288283e-06,
+        "ahorro": 0.9883282791559738
+      }
+    },
+    {
+      "corrida": "dos_procesos",
+      "instancia": "c6a.large",
+      "precio_hora": 0.0765,
+      "cpu_pico_nucleos": 0.829,
+      "memoria_pico_gib": 0.918,
+      "ocupacion_cpu": 0.4145,
+      "ocupacion_memoria": 0.2296,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 48672.0,
+      "predicciones_hora": 83808.0,
+      "costo_por_peticion": 1.5717455621301776e-06,
+      "costo_por_prediccion": 9.128006872852233e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 9.128006872852233e-07,
+        "500": 9.128006872852233e-07,
+        "1000": 9.128006872852233e-07,
+        "2000": 7.551528073916133e-07
+      },
+      "utilizacion_real": 0.005631920580374188,
+      "siempre_encendido": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 51.37,
+        "costo_hora": 0.0010917169243986253,
+        "costo_mes": 0.7969533548109965,
+        "costo_por_prediccion": 2.312959585590308e-06,
+        "ahorro": 0.9857291905307369
+      }
+    },
+    {
+      "corrida": "dos_procesos_r2",
+      "instancia": "c6a.large",
+      "precio_hora": 0.0765,
+      "cpu_pico_nucleos": 0.749,
+      "memoria_pico_gib": 0.906,
+      "ocupacion_cpu": 0.3746,
+      "ocupacion_memoria": 0.2265,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 32328.0,
+      "predicciones_hora": 54504.0,
+      "costo_por_peticion": 2.366369710467706e-06,
+      "costo_por_prediccion": 1.4035667107001322e-06,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 1.4035667107001322e-06,
+        "500": 1.4035667107001322e-06,
+        "1000": 9.247171453437772e-07,
+        "2000": 5.267724343083788e-07
+      },
+      "utilizacion_real": 0.008659914868633494,
+      "siempre_encendido": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 62.9,
+        "costo_hora": 0.0013365334874504621,
+        "costo_mes": 0.9756694458388374,
+        "costo_por_prediccion": 2.831638744598437e-06,
+        "ahorro": 0.9825289740202554
+      }
+    },
+    {
+      "corrida": "dos_procesos_r3",
+      "instancia": "c6a.large",
+      "precio_hora": 0.0765,
+      "cpu_pico_nucleos": 1.426,
+      "memoria_pico_gib": 0.886,
+      "ocupacion_cpu": 0.7128,
+      "ocupacion_memoria": 0.2215,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 96984.0,
+      "predicciones_hora": 165672.0,
+      "costo_por_peticion": 7.887899034892353e-07,
+      "costo_por_prediccion": 4.6175575836592786e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 7.267441860465116e-07,
+        "500": 4.6175575836592786e-07,
+        "1000": 4.6175575836592786e-07,
+        "2000": 4.6175575836592786e-07
+      },
+      "utilizacion_real": 0.002849002849002849,
+      "siempre_encendido": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 22.03,
+        "costo_hora": 0.00046806121794871786,
+        "costo_mes": 0.34168468910256405,
+        "costo_por_prediccion": 9.916551227727073e-07,
+        "ahorro": 0.9938815527065528
+      }
+    },
+    {
+      "corrida": "dos_procesos_en_serie",
+      "instancia": "c6a.large",
+      "precio_hora": 0.0765,
+      "cpu_pico_nucleos": 0.956,
+      "memoria_pico_gib": 0.909,
+      "ocupacion_cpu": 0.4778,
+      "ocupacion_memoria": 0.2274,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 96984.0,
+      "predicciones_hora": 165672.0,
+      "costo_por_peticion": 7.887899034892353e-07,
+      "costo_por_prediccion": 4.6175575836592786e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 4.6175575836592786e-07,
+        "500": 4.6175575836592786e-07,
+        "1000": 4.6175575836592786e-07,
+        "2000": 2.3876404494382023e-07
+      },
+      "utilizacion_real": 0.002849002849002849,
+      "siempre_encendido": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 32.56,
+        "costo_hora": 0.0006918237179487181,
+        "costo_mes": 0.5050313141025642,
+        "costo_por_prediccion": 1.4657282159930468e-06,
+        "ahorro": 0.9909565527065527
+      }
+    },
+    {
+      "corrida": "dos_procesos_en_serie_r2",
+      "instancia": "c6a.large",
+      "precio_hora": 0.0765,
+      "cpu_pico_nucleos": 1.859,
+      "memoria_pico_gib": 0.891,
+      "ocupacion_cpu": 0.9297,
+      "ocupacion_memoria": 0.2227,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 193752.0,
+      "predicciones_hora": 325368.0,
+      "costo_por_peticion": 3.9483463396506876e-07,
+      "costo_por_prediccion": 2.3511838902412038e-07,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 4.6175575836592786e-07,
+        "500": 2.3511838902412038e-07,
+        "1000": 2.3511838902412038e-07,
+        "2000": 2.3511838902412038e-07
+      },
+      "utilizacion_real": 0.0014506650930638538,
+      "siempre_encendido": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 25.96,
+        "costo_hora": 0.0005517008796193848,
+        "costo_mes": 0.4027416421221509,
+        "costo_por_prediccion": 1.1688577958037814e-06,
+        "ahorro": 0.992788223795825
+      }
+    },
+    {
+      "corrida": "lote_hora",
+      "instancia": "c6a.large",
+      "precio_hora": 0.0765,
+      "cpu_pico_nucleos": 0.421,
+      "memoria_pico_gib": 0.677,
+      "ocupacion_cpu": 0.2104,
+      "ocupacion_memoria": 0.1693,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 14400.0,
+      "predicciones_hora": 6796800.0,
+      "costo_por_peticion": 5.3124999999999995e-06,
+      "costo_por_prediccion": 1.1255296610169492e-08,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 1.1255296610169492e-08,
+        "500": 1.1255296610169492e-08,
+        "1000": 1.1255296610169492e-08,
+        "2000": 6.5930601913818e-09
+      },
+      "utilizacion_real": 6.944444444444444e-05,
+      "siempre_encendido": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 19.23,
+        "costo_hora": 0.0004086375,
+        "costo_mes": 0.298305375,
+        "costo_por_prediccion": 8.657574152542373e-07,
+        "ahorro": 0.9946583333333333
+      }
+    },
+    {
+      "corrida": "lote_hora_r2",
+      "instancia": "c6a.large",
+      "precio_hora": 0.0765,
+      "cpu_pico_nucleos": 1.099,
+      "memoria_pico_gib": 0.689,
+      "ocupacion_cpu": 0.5496,
+      "ocupacion_memoria": 0.1722,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 28800.0,
+      "predicciones_hora": 13593600.0,
+      "costo_por_peticion": 2.6562499999999998e-06,
+      "costo_por_prediccion": 5.627648305084746e-09,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 2.2510593220338983e-08,
+        "500": 5.627648305084746e-09,
+        "1000": 5.627648305084746e-09,
+        "2000": 5.217686804236811e-09
+      },
+      "utilizacion_real": 3.472222222222222e-05,
+      "siempre_encendido": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 31.02,
+        "costo_hora": 0.0006592812499999999,
+        "costo_mes": 0.48127531249999994,
+        "costo_por_prediccion": 1.3967823093220337e-06,
+        "ahorro": 0.9913819444444445
+      }
+    },
+    {
+      "corrida": "lote_hora_r3",
+      "instancia": "c6a.large",
+      "precio_hora": 0.0765,
+      "cpu_pico_nucleos": 1.076,
+      "memoria_pico_gib": 0.668,
+      "ocupacion_cpu": 0.5378,
+      "ocupacion_memoria": 0.167,
+      "cabe": true,
+      "cumple_objetivo": true,
+      "peticiones_hora": 28800.0,
+      "predicciones_hora": 13593600.0,
+      "costo_por_peticion": 2.6562499999999998e-06,
+      "costo_por_prediccion": 5.627648305084746e-09,
+      "costo_por_prediccion_segun_objetivo": {
+        "250": 5.627648305084746e-09,
+        "500": 5.627648305084746e-09,
+        "1000": 3.751765536723164e-09,
+        "2000": 3.751765536723164e-09
+      },
+      "utilizacion_real": 3.472222222222222e-05,
+      "siempre_encendido": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "con_compromiso": {
+        "costo_hora": 0.0765,
+        "costo_mes": 55.845,
+        "costo_por_prediccion": 0.00016207627118644067
+      },
+      "encendido_por_hora": {
+        "segundos_activos": 13.46,
+        "costo_hora": 0.00028591875,
+        "costo_mes": 0.2087206875,
+        "costo_por_prediccion": 6.057600635593221e-07,
+        "ahorro": 0.9962625
+      }
+    }
+  ]
+}

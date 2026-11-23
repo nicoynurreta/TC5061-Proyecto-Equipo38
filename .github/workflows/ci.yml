@@ -1,0 +1,184 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  pruebas:
+    name: Pruebas (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Instalar las dependencias
+        run: python -m pip install -r requirements.txt
+      - name: Correr las pruebas
+        run: python -m pytest -q tests --junitxml=pruebas-python-${{ matrix.python }}.xml
+      - name: Guardar el reporte de pruebas
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pruebas-python-${{ matrix.python }}
+          path: pruebas-python-${{ matrix.python }}.xml
+
+  seguridad:
+    name: Seguridad (bandit, pip-audit y secretos)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+      - name: Instalar bandit y pip-audit
+        run: python -m pip install bandit==1.9.4 pip-audit==2.10.1
+      - name: Reporte completo de bandit
+        run: python -m bandit -c pyproject.toml -r mibici api scripts carga servicios -f txt --exit-zero
+      - name: Compuerta de bandit (severidad media o alta)
+        run: python -m bandit -c pyproject.toml -r mibici api scripts carga servicios -q --severity-level medium
+      - name: Buscar secretos en el historial y en los archivos versionados
+        run: python chequeos/secretos.py
+      - name: Auditar las dependencias con pip-audit (informa, no bloquea)
+        continue-on-error: true
+        run: |
+          estado=0
+          for requisitos in requirements-api.txt servicios/mlflow/requirements.txt requirements.txt; do
+            test -f "$requisitos" || continue
+            python -m pip_audit -r "$requisitos" > auditoria.txt 2>&1 || estado=1
+            cat auditoria.txt
+            { echo "### pip-audit -r $requisitos"; echo '```'; cat auditoria.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          done
+          exit $estado
+
+  imagen:
+    name: Imagen del servicio
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4
+      - name: Construir la imagen con el Containerfile
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: Containerfile
+          load: true
+          tags: mibici-api:ci
+          cache-from: type=gha,scope=api
+          cache-to: type=gha,scope=api,mode=max
+      - name: Comprobar que la imagen arranca sin privilegios y trae la aplicación
+        run: |
+          docker image inspect mibici-api:ci --format 'usuario {{.Config.User}}, {{.Size}} bytes'
+          test "$(docker run --rm mibici-api:ci id -un)" = "servicio"
+          docker run --rm mibici-api:ci python -c "from api import main; print(main.app.title, main.app.version)"
+
+  sistema:
+    name: Sistema con Docker Compose y prueba de humo
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - name: Validar docker-compose.yml
+        id: compose
+        run: |
+          if [ ! -f docker-compose.yml ]; then
+            echo "::notice::El repositorio todavía no trae docker-compose.yml; no hay sistema que levantar"
+            exit 0
+          fi
+          docker compose --profile siembra --profile registro --profile carga config --quiet
+          echo "listo=si" >> "$GITHUB_OUTPUT"
+      - name: Levantar el sistema con un modelo de prueba sembrado
+        if: steps.compose.outputs.listo == 'si'
+        run: docker compose --profile siembra up --build --wait --wait-timeout 600
+      - name: Estado de los servicios
+        if: steps.compose.outputs.listo == 'si'
+        run: docker compose --profile siembra ps --all
+      - name: Prueba de humo de /health y de los endpoints de predicción
+        if: steps.compose.outputs.listo == 'si'
+        run: python3 scripts/prueba_humo.py --url http://127.0.0.1:8000 --mlflow http://127.0.0.1:5000
+      - name: Uso de recursos de los contenedores
+        if: steps.compose.outputs.listo == 'si'
+        run: docker stats --no-stream
+      - name: Registros de los servicios
+        if: always() && steps.compose.outputs.listo == 'si'
+        run: docker compose --profile siembra logs --no-color --tail 200
+      - name: Apagar el sistema
+        if: always() && steps.compose.outputs.listo == 'si'
+        run: docker compose --profile siembra down --volumes
+
+  resumen:
+    name: Resumen del pipeline
+    if: always()
+    needs: [pruebas, seguridad, imagen, sistema]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Publicar el resultado de cada trabajo
+        run: |
+          {
+            echo "## Pipeline de CI/CD en ${GITHUB_REF_NAME} (${GITHUB_SHA::7})"
+            echo "| Trabajo | Resultado |"
+            echo "|---|---|"
+            echo "| Pruebas con pytest en la matriz de Python | ${{ needs.pruebas.result }} |"
+            echo "| Seguridad: bandit, secretos y pip-audit | ${{ needs.seguridad.result }} |"
+            echo "| Imagen del servicio | ${{ needs.imagen.result }} |"
+            echo "| Sistema con Docker Compose y prueba de humo | ${{ needs.sistema.result }} |"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Fallar si algún trabajo no terminó bien
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: exit 1
+
+  publicar:
+    name: Publicar la imagen en GitHub Container Registry
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [pruebas, seguridad, imagen, sistema]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Etiquetas de la imagen
+        id: etiquetas
+        uses: docker/metadata-action@v6
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=raw,value=latest
+            type=sha
+      - name: Construir y publicar la imagen
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: Containerfile
+          push: true
+          tags: ${{ steps.etiquetas.outputs.tags }}
+          labels: ${{ steps.etiquetas.outputs.labels }}
+          cache-from: type=gha,scope=api

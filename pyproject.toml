@@ -15,7 +15,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     
 ]
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 
 
 [tool.ruff]
@@ -35,4 +35,6 @@ force-sort-within-sections = true
 # Sin skips: B403, B404 y B603 siguen en el reporte y se justifican aquí.
 # B403: pickle solo mide el tamaño del modelo con pickle.dumps; nunca se deserializa nada con pickle.load.
 # B404 y B603: subprocess corre git con una lista fija de argumentos y sin shell para leer el commit y la rama.
+# B404 y B603 en carga/: subprocess corre docker con una lista fija de argumentos y sin shell, con el ejecutable resuelto por shutil.which.
+# B311 en carga/locustfile.py: random solo desfasa el arranque de los usuarios simulados de la prueba de carga; no protege nada.
 exclude_dirs = ["tests", "venv", ".venv", ".venv-deepchecks", "mlruns", "mlartifacts"]
