@@ -169,6 +169,9 @@ celerybeat.pid
 .venv-deepchecks/
 reports/deepchecks/*.html
 reports/monitoreo/*.html
+reports/carga/*.html
+reports/carga/*_sistema.json
+reports/carga/*_escenario.json
 env/
 venv/
 ENV/
